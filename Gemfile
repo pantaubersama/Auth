@@ -92,3 +92,6 @@ gem 'rack-cors'
 gem 'kaminari'
 # Finally...
 gem 'api-pagination'
+
+# oauth
+gem 'doorkeeper'
