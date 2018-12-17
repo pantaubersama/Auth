@@ -10,11 +10,11 @@ module API
 
       # Swagger config
       add_swagger_documentation(
-        api_version:             'v2',
-        doc_version:             'v2',
-        hide_documentation_path: true,
-        mount_path:              "doc/api",
-        hide_format:             true
+          api_version:             'not set',
+          doc_version:             'not set',
+          hide_documentation_path: true,
+          mount_path:              "doc/api",
+          hide_format:             true
       )
     end
   end

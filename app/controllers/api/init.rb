@@ -17,7 +17,7 @@ module API
     mount API::V1::Main
     mount API::V2::Main
 
-    GrapeSwaggerRails.options.app_url            = "/v1/doc"
+    GrapeSwaggerRails.options.app_url            = "/auth/v1/doc"
     GrapeSwaggerRails.options.url                = "/api"
     GrapeSwaggerRails.options.hide_url_input     = false
     GrapeSwaggerRails.options.hide_api_key_input = true

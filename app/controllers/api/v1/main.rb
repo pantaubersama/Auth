@@ -7,11 +7,12 @@ module API
 
       # Mounting Modules Api
       mount API::V1::Adventures::Routes
+      mount API::V1::Infos::Routes
 
       # Swagger config
       add_swagger_documentation(
-          api_version:             'v1',
-          doc_version:             'v1',
+          api_version:             'not set',
+          doc_version:             'not set',
           hide_documentation_path: true,
           mount_path:              "doc/api",
           hide_format:             true
