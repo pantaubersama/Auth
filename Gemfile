@@ -95,3 +95,8 @@ gem 'api-pagination'
 
 # oauth
 gem 'doorkeeper'
+
+gem 'paranoia', '~> 2.2'
+gem 'paper_trail'
+gem 'seed_migration'
+
