@@ -34,5 +34,9 @@ module PantauBersamaAuth
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
     end
+    
+    config.middleware.insert_after ActionDispatch::Callbacks, ActionDispatch::Cookies
+    config.middleware.insert_after ActionDispatch::Cookies, ActionDispatch::Session::CookieStore
+    
   end
 end
