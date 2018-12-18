@@ -9,8 +9,8 @@ module API
               code    = 406
               message = e.message
               # Bad token
-            elsif e.class.name == 'RuntimeError' && e.message == 'Invalid base64 string'
-              code    = 406
+            elsif (e.class.name == 'RuntimeError' && e.message == 'Invalid base64 string')
+              code    = 401
               message = '401 Unauthorized'
               # Record not found
             elsif e.is_a?(ActiveRecord::RecordNotFound)
