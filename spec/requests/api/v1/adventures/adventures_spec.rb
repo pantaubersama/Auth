@@ -16,7 +16,7 @@ RSpec.describe "Api::V1::Adventures", type: :request do
                                                           { "id" => 2, "title" => "Hello World 2" },
                                                           { "id" => 3, "title" => "Hello World 3" }
                                                       ])
-      expect(json_response[:data][:meta]).to eq({ "pages" => { "page" => 1, "per_page" => 100, "total" => 1 } })
+      expect(json_response[:data][:meta]).to eq({ "pages" => { "page" => 1, "per_page" => 25, "total" => 1 } })
       expect(response.status).to eq(200)
     end
     it "should returns 200 with valid params when success using pagination (1)" do
