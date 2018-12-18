@@ -95,3 +95,13 @@ gem 'api-pagination'
 
 # oauth
 gem 'doorkeeper'
+gem 'wine_bouncer'
+
+gem 'paranoia', '~> 2.2'
+gem 'paper_trail'
+gem 'seed_migration'
+
+gem 'omniauth-identitas'
+gem 'httparty'
+gem 'ruby-identitas-api', '~> 0.6.0'
+
