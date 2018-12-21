@@ -6,6 +6,9 @@ module Api
           expose :access_token do |access_token|
             access_token.token
           end
+          expose :scopes do |access_token|
+            access_token.scopes
+          end
           expose :token_type do |access_token|
             "bearer"
           end

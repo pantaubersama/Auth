@@ -23,6 +23,7 @@ module API
       mount API::V1::SecureAdventures::Routes
       mount API::V1::Infos::Routes
       mount API::V1::Callback::Routes
+      mount API::V1::ValidToken::Routes
 
       # Swagger config
       add_swagger_documentation(
