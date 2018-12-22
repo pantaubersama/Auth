@@ -5,6 +5,7 @@ module Api
         class Cluster < Grape::Entity
           expose :id
           expose :name
+          expose :is_eligible
         end
       end
     end
