@@ -10,4 +10,13 @@ module API::V2::Helpers
   def current_user
     User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
   end
+
+  def prepare_file(f)
+    ActionDispatch::Http::UploadedFile.new(f)
+  end
+
+  def permitted_params(params)
+    ActionController::Parameters.new(params)
+  end
+  
 end

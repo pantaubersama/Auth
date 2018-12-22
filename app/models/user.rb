@@ -1,6 +1,10 @@
 class User < ApplicationRecord
   rolify strict: true
   acts_as_paranoid
+  mount_uploader :avatar, AvatarUploader
+
+  validates_uniqueness_of :username, allow_nil: true
+  validates_format_of :username, with: /\A[a-zA-Z0-9_]+\z/i, message: "can only contain letters, underscore, and numbers.", allow_nil: true
 
   include Moderation
   
