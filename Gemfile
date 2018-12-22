@@ -116,3 +116,5 @@ gem "rolify"
 
 gem 'mini_magick'
 gem 'carrierwave', '~> 1.0'
+gem 'fog-aws'
+gem 'file_validators'
