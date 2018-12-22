@@ -261,6 +261,7 @@ GEM
       thor (>= 0.19.1)
     request_store (1.4.1)
       rack (>= 1.4)
+    rolify (5.2.0)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
@@ -362,6 +363,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 5.2.1, >= 5.2.1.1)
   rename
+  rolify
   rspec-rails (~> 3.5)
   ruby-identitas-api (~> 0.6.0)
   seed_migration

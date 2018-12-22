@@ -1,7 +1,7 @@
 # README
 ## Pantau Bersama Auth
 
-##### Setup
+#### Setup
 - `git clone git@git.extrainteger.com:pantau-group/API/pantau-bersama-auth.git`
 - setup your database (postgresql)
 - create env variable files (.env.development , .env.test) from env.example
@@ -21,3 +21,10 @@ Password : admin
 
 #### make sure all success installed
 - [`http://localhost:4000/v1/infos`](http://localhost:4000/v1/infos)
+
+
+#### Test
+
+- run `rake db:test:prepare`
+- run `rake seed:migrate RAILS_ENV=test`
+- run `rspec`

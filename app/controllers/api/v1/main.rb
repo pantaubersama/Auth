@@ -20,10 +20,11 @@ module API
 
       # Mounting Modules Api
       mount API::V1::Adventures::Routes
-      mount API::V1::SecureAdventures::Routes
+      # mount API::V1::SecureAdventures::Routes
       mount API::V1::Infos::Routes
       mount API::V1::Callback::Routes
       mount API::V1::ValidToken::Routes
+      mount API::V1::OnlyStaging::Routes unless Rails.env.production?
 
       # Swagger config
       add_swagger_documentation(

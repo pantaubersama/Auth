@@ -112,3 +112,4 @@ gem 'ruby-identitas-api', '~> 0.6.0'
 
 gem 'unicorn', group: [:staging, :production]
 
+gem "rolify"
