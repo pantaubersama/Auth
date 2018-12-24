@@ -15,17 +15,31 @@ WineBouncer::OAuth2.class_eval do
     unless access.present?
       raise WineBouncer::Errors::OAuthUnauthorizedError, {name: WineBouncer::Errors::OAuthUnauthorizedError.class.to_s, state: :unauthorized, description: "Access token unauthorized"}
     end
-    user   = User.find_by(id: access.resource_owner_id)
-    if access.present? && access.accessible? && user.present?
-      the_scopes       = Doorkeeper::OAuth::Scopes.from_array(user.scopes)
-      no_scope_defined = scopes.blank? || scopes.any? {|s| the_scopes.exists?(s.to_s)}
-      unless no_scope_defined
-        raise WineBouncer::Errors::OAuthForbiddenError, {name: WineBouncer::Errors::OAuthForbiddenError.class.to_s, state: :forbidden, description: scopes.join(", ")}
+    if access.application.confidential == false
+      user = User.find_by(id: access.resource_owner_id)
+      if access.present? && access.accessible? && user.present?
+        the_scopes       = Doorkeeper::OAuth::Scopes.from_array(user.scopes)
+        no_scope_defined = scopes.blank? || scopes.any? {|s| the_scopes.exists?(s.to_s)}
+        unless no_scope_defined
+          raise WineBouncer::Errors::OAuthForbiddenError, {name: WineBouncer::Errors::OAuthForbiddenError.class.to_s, state: :forbidden, description: scopes.join(", ")}
+        end
+      else
+        # throw expired or revoked token
+        raise WineBouncer::Errors::OAuthUnauthorizedError, {name: WineBouncer::Errors::OAuthUnauthorizedError.class.to_s, state: :unauthorized, description: "Access token unauthorized"}
       end
+      $me = user
     else
-      # throw expired or revoked token
-      raise WineBouncer::Errors::OAuthUnauthorizedError, {name: WineBouncer::Errors::OAuthUnauthorizedError.class.to_s, state: :unauthorized, description: "Access token unauthorized"}
+      user = User.find_by(id: access.resource_owner_id)
+      $me = user if user.present?
+      if access.present? && access.accessible?
+        the_scopes       = Doorkeeper::OAuth::Scopes.from_array(access.scopes)
+        no_scope_defined = scopes.blank? || scopes.any? {|s| the_scopes.exists?(s.to_s)}
+        unless no_scope_defined
+          raise WineBouncer::Errors::OAuthForbiddenError, {name: WineBouncer::Errors::OAuthForbiddenError.class.to_s, state: :forbidden, description: scopes.join(", ")}
+        end
+      else
+        raise WineBouncer::Errors::OAuthUnauthorizedError, {name: WineBouncer::Errors::OAuthUnauthorizedError.class.to_s, state: :unauthorized, description: "Access token unauthorized"}
+      end
     end
-    $me = user
   end
 end

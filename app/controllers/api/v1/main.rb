@@ -24,6 +24,7 @@ module API
       mount API::V1::ValidToken::Routes
       mount API::V1::OnlyStaging::Routes unless Rails.env.production?
       mount Api::V1::Me::Routes
+      mount Api::V1::Users::Routes
 
       # Swagger config
       add_swagger_documentation(
