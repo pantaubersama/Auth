@@ -16,10 +16,11 @@ class Api::V1::Users::Resources::Users < API::V1::InternalResource
     paginate per_page: 50, max_per_page: 500
     internal
     params do
-      requires :ids, type: Array[String], desc: "ids"
+      optional :ids, type: String, desc: "string of ID separate by comma"
     end
     get "/" do
-      results   = User.where(id: params.ids)
+      results = User.order("created_at desc")
+      results = results.where(id: params.ids.split(",").map(&:strip)) if params.ids 
       resources = paginate(results)
       present :users, resources
       present_metas resources
