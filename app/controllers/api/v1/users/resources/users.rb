@@ -3,6 +3,15 @@ class Api::V1::Users::Resources::Users < API::V1::InternalResource
   
 
   resource "users" do
+    desc 'Find but return full data', headers: INTERNAL_API_HEADERS
+    params do
+      requires :id, type: String
+    end
+    internal
+    get "/:id/full" do
+      present :user, User.find(params[:id]), with: Api::V1::Me::Entities::User
+    end
+
     desc 'Find', headers: INTERNAL_API_HEADERS
     params do
       requires :id, type: String
