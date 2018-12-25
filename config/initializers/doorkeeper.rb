@@ -1,4 +1,4 @@
-require 'naked_token_parser'
+require 'api_extension/naked_token_parser'
 
 Doorkeeper.configure do
   # Change the ORM that doorkeeper will use (needs plugins)
@@ -69,7 +69,7 @@ Doorkeeper.configure do
   # By default it retrieves first from the `HTTP_AUTHORIZATION` header, then
   # falls back to the `:access_token` or `:bearer_token` params from the `params` object.
   # Check out the wiki for more information on customization
-  access_token_methods :from_bearer_authorization, :from_access_token_param, :from_bearer_param, NakedTokenParser
+  access_token_methods :from_bearer_authorization, :from_access_token_param, :from_bearer_param, ::ApiExtension::NakedTokenParser
 
   # Change the native redirect uri for client apps
   # When clients register with the following redirect uri, they won't be redirected to any server and the authorization code will be displayed within the provider

@@ -28,6 +28,7 @@ module API
 
       # Swagger config
       add_swagger_documentation(
+        array_use_braces:        true,
         api_version:             'v1',
         doc_version:             'v1',
         hide_documentation_path: true,

@@ -14,6 +14,13 @@ module API
     # Build params using object
     include Grape::Extensions::Hashie::Mash::ParamBuilder
 
+    # use middleware
+    use ::ApiExtension::InternalApi::Middleware
+
+    rescue_from ApiExtension::InternalApi::InvalidApiKey do |e|
+      error!("Your key is invalid", 401)
+    end
+
     mount API::V1::Main
     mount API::V2::Main
 
