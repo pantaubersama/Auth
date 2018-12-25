@@ -6,4 +6,5 @@ class Api::V1::Me::Entities::UserSimple < Grape::Entity
   expose :username
   expose :avatar
   expose :verified
+  expose :about
 end
