@@ -9,7 +9,7 @@ class Api::V1::Users::Resources::Users < API::V1::InternalResource
     end
     internal
     get "/:id" do
-      present User.find(params[:id]), with: Api::V1::Me::Entities::UserSimple
+      present :body, User.find(params[:id]), with: Api::V1::Me::Entities::UserSimple
     end
 
     desc 'Where', headers: INTERNAL_API_HEADERS
@@ -22,7 +22,7 @@ class Api::V1::Users::Resources::Users < API::V1::InternalResource
       results = User.order("created_at desc")
       results = results.where(id: params.ids.split(",").map(&:strip)) if params.ids 
       resources = paginate(results)
-      present :users, resources
+      present :body, resources, with: Api::V1::Me::Entities::UserSimple
       present_metas resources
     end
   end
