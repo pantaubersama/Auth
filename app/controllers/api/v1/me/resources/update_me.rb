@@ -10,7 +10,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
     end
     put "/" do
       response = current_user.update_attributes!(update_params)
-      present :me, current_user, with: Api::V1::Me::Entities::User
+      present :user, current_user, with: Api::V1::Me::Entities::User
     end 
 
     desc 'Update username' do
@@ -22,7 +22,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
     end
     put "/username" do
       response = current_user.update_attributes!({username: params[:username]})
-      present :me, current_user, with: Api::V1::Me::Entities::User
+      present :user, current_user, with: Api::V1::Me::Entities::User
     end
     
     desc 'Update avatar' do
@@ -33,7 +33,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
     put "/avatar" do
       params[:avatar] = prepare_file(params[:avatar]) if params[:avatar].present?
       response = current_user.update_attribute(:avatar, params[:avatar])
-      present :me, current_user, with: Api::V1::Me::Entities::User
+      present :user, current_user, with: Api::V1::Me::Entities::User
     end
 
   end

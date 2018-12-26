@@ -8,7 +8,7 @@ class Api::V1::Me::Resources::Me < API::V1::ApplicationResource
       headers AUTHORIZATION_HEADERS
     end
     get "/" do
-      present :me, current_user, with: Api::V1::Me::Entities::User
+      present :user, current_user, with: Api::V1::Me::Entities::User
     end
 
     desc "It's me! But simpler" do
@@ -16,7 +16,7 @@ class Api::V1::Me::Resources::Me < API::V1::ApplicationResource
       headers AUTHORIZATION_HEADERS
     end
     get "/simple" do
-      present :me, current_user, with: Api::V1::Me::Entities::UserSimple
+      present :user, current_user, with: Api::V1::Me::Entities::UserSimple
     end
 
   end
