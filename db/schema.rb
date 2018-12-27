@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_22_180954) do
+ActiveRecord::Schema.define(version: 2018_12_27_095927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 2018_12_22_180954) do
     t.string "location"
     t.string "education"
     t.string "occupation"
+    t.integer "vote_preference"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
   end
 
@@ -105,6 +106,17 @@ ActiveRecord::Schema.define(version: 2018_12_22_180954) do
     t.uuid "user_id"
     t.uuid "role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
+  end
+
+  create_table "verifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.string "ktp_number"
+    t.string "ktp_photo"
+    t.string "ktp_selfie"
+    t.string "signature"
+    t.boolean "approved", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "versions", force: :cascade do |t|

@@ -1,12 +1,25 @@
 class User < ApplicationRecord
+  # from gems
   rolify strict: true
   acts_as_paranoid
   mount_uploader :avatar, AvatarUploader
 
+  # from module
+  include Moderation
+
+  # validation
   validates_uniqueness_of :username, allow_nil: true
   validates_format_of :username, with: /\A[a-zA-Z0-9_]+\z/i, message: "can only contain letters, underscore, and numbers.", allow_nil: true
 
-  include Moderation
+  # association
+  has_one :verification
+
+  # callback
+  after_create :build_verification_model
+
+  def build_verification_model
+    Verification.find_or_create_by(user: self)
+  end
   
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create! do |user|

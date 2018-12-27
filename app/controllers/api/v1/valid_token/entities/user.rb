@@ -14,6 +14,7 @@ module Api
           end
           expose :is_moderator
           expose :cluster, using: Api::V1::ValidToken::Entities::Cluster
+          expose :vote_preference
           
         end
       end
