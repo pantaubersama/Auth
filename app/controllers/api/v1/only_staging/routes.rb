@@ -7,6 +7,7 @@ module API
         error_formatter :json, ::API::ErrorFormatter
 
         mount API::V1::OnlyStaging::Resources::RoleChanger
+        mount API::V1::OnlyStaging::Resources::VerificationChanger
       end
     end
   end

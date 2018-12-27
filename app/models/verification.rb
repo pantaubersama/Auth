@@ -6,7 +6,8 @@ class Verification < ApplicationRecord
   mount_uploader :signature, AvatarUploader
 
   def is_verified?
-    ktp_number? && ktp_selfie? && ktp_photo? && signature? && approved?
+    # ktp_number? && ktp_selfie? && ktp_photo? && signature? && approved?
+    approved?
   end
 
   def step
