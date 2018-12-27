@@ -8,6 +8,7 @@ module Api
 
         mount Api::V1::Me::Resources::Me
         mount Api::V1::Me::Resources::UpdateMe
+        mount Api::V1::Me::Resources::Password
       end
     end
   end

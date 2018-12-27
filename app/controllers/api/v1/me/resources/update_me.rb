@@ -2,12 +2,13 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
   helpers API::V1::Helpers
 
   namespace "me" do
-    
+
     desc 'Update detail' do
       detail "Update detail"
       params Api::V1::Me::Entities::UserUpdate.documentation
       headers AUTHORIZATION_HEADERS
     end
+    oauth2
     put "/" do
       response = current_user.update_attributes!(update_params)
       present :user, current_user, with: Api::V1::Me::Entities::User
@@ -20,6 +21,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
     params do
       requires :username, type: String, description: "Username (without @)"
     end
+    oauth2
     put "/username" do
       response = current_user.update_attributes!({username: params[:username]})
       present :user, current_user, with: Api::V1::Me::Entities::User
@@ -30,6 +32,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
       headers AUTHORIZATION_HEADERS
       params Api::V1::Me::Entities::UserAvatar.documentation
     end
+    oauth2
     put "/avatar" do
       params[:avatar] = prepare_file(params[:avatar]) if params[:avatar].present?
       response = current_user.update_attribute(:avatar, params[:avatar])

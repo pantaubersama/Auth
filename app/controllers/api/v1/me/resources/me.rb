@@ -7,6 +7,7 @@ class Api::V1::Me::Resources::Me < API::V1::ApplicationResource
       detail "Return my profile"
       headers AUTHORIZATION_HEADERS
     end
+    oauth2
     get "/" do
       present :user, current_user, with: Api::V1::Me::Entities::User
     end
@@ -15,6 +16,7 @@ class Api::V1::Me::Resources::Me < API::V1::ApplicationResource
       detail "Return simple profile"
       headers AUTHORIZATION_HEADERS
     end
+    oauth2
     get "/simple" do
       present :user, current_user, with: Api::V1::Me::Entities::UserSimple
     end

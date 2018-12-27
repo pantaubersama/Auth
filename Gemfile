@@ -108,7 +108,7 @@ gem 'seed_migration'
 
 gem 'omniauth-identitas'
 gem 'httparty'
-gem 'ruby-identitas-api', '~> 0.6.0'
+gem 'ruby-identitas-api', '~> 0.7.1'
 
 gem 'unicorn', group: [:staging, :production]
 

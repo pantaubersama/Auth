@@ -309,7 +309,7 @@ GEM
       rspec-mocks (~> 3.8.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-    ruby-identitas-api (0.6.0)
+    ruby-identitas-api (0.7.1)
       httparty
     ruby_dep (1.5.0)
     safe_yaml (1.0.4)
@@ -395,7 +395,7 @@ DEPENDENCIES
   rename
   rolify
   rspec-rails (~> 3.5)
-  ruby-identitas-api (~> 0.6.0)
+  ruby-identitas-api (~> 0.7.1)
   seed_migration
   shoulda-matchers (~> 3.1)
   spring
