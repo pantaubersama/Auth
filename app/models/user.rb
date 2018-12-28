@@ -4,9 +4,6 @@ class User < ApplicationRecord
   acts_as_paranoid
   mount_uploader :avatar, AvatarUploader
 
-  has_many :achieved_badges
-  has_many :badges, through: :achieved_badges
-
   # from module
   include Moderation
 
@@ -16,14 +13,21 @@ class User < ApplicationRecord
 
   # association
   has_one :verification
+  has_one :informant
+  has_many :achieved_badges
+  has_many :badges, through: :achieved_badges
 
   # callback
   after_create :build_verification_model
+  after_create :build_informant_model
 
   def verified
     verification.is_verified?
   end
   
+  def build_informant_model
+    Informant.find_or_create_by(user: self)
+  end
 
   def build_verification_model
     Verification.find_or_create_by(user: self)

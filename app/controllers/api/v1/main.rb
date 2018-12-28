@@ -30,6 +30,7 @@ module API
       mount Api::V1::Me::Routes
       mount Api::V1::Users::Routes
       mount API::V1::Verifications::Routes
+      mount API::V1::Informants::Routes
       mount API::V1::Badges::Routes
 
       # Swagger config

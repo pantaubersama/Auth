@@ -3,7 +3,7 @@ class API::V1::Verifications::Resources::Verifications < API::V1::ApplicationRes
 
   namespace "me" do
     desc 'My verification' do
-      detail "[My verification"
+      detail "My verification"
       headers AUTHORIZATION_HEADERS
     end
     oauth2
