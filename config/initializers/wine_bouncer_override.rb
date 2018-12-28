@@ -7,7 +7,13 @@ WineBouncer::OAuth2.class_eval do
 
   def valid_doorkeeper_token?(*scopes)
     token = if request.headers["Authorization"].present?
-      request.headers["Authorization"].include?("bearer") ? request.headers["Authorization"].try("split", "bearer").try(:last).try(:strip) : request.headers["Authorization"]
+      if request.headers["Authorization"].include?("bearer")
+        request.headers["Authorization"].try("split", "bearer").try(:last).try(:strip)
+      elsif request.headers["Authorization"].include?("Bearer")
+        request.headers["Authorization"].try("split", "Bearer").try(:last).try(:strip)
+      else
+        request.headers["Authorization"]
+      end
     else
       request.parameters["access_token"]
     end

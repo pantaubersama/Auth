@@ -10,12 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_27_095927) do
+ActiveRecord::Schema.define(version: 2018_12_28_063949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "achieved_badges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "badge_id"
+    t.uuid "user_id"
+    t.string "resource_type"
+    t.uuid "resource_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "badges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "image"
+    t.integer "star", default: 0
+    t.integer "position", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.boolean "hidden", default: false
+    t.index ["deleted_at"], name: "index_badges_on_deleted_at"
+  end
 
   create_table "clusters", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -94,7 +116,6 @@ ActiveRecord::Schema.define(version: 2018_12_27_095927) do
     t.string "avatar"
     t.string "username"
     t.text "about"
-    t.boolean "verified", default: false
     t.string "location"
     t.string "education"
     t.string "occupation"
