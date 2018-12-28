@@ -5,5 +5,6 @@ module API::V1::Badges
     error_formatter :json, ::API::ErrorFormatter
 
     mount API::V1::Badges::Resources::Badges
+    mount API::V1::Badges::Resources::BadgesInternal
   end
 end

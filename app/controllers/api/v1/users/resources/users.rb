@@ -3,7 +3,10 @@ class Api::V1::Users::Resources::Users < API::V1::InternalResource
   
 
   resource "users" do
-    desc 'Find but return full data', headers: INTERNAL_API_HEADERS
+    desc '[Internal API] Find but return full data' do
+      detail "[Internal API] Find but return full data"
+      headers INTERNAL_API_HEADERS
+    end
     params do
       requires :id, type: String
     end
@@ -12,7 +15,10 @@ class Api::V1::Users::Resources::Users < API::V1::InternalResource
       present :user, User.find(params[:id]), with: Api::V1::Me::Entities::User
     end
 
-    desc 'Find', headers: INTERNAL_API_HEADERS
+    desc '[Internal API] Find' do
+      detail "[Internal API] Find"
+      headers INTERNAL_API_HEADERS
+    end
     params do
       requires :id, type: String
     end
@@ -21,7 +27,10 @@ class Api::V1::Users::Resources::Users < API::V1::InternalResource
       present :user, User.find(params[:id]), with: Api::V1::Me::Entities::UserSimple
     end
 
-    desc 'Where', headers: INTERNAL_API_HEADERS
+    desc '[Internal API] Where' do
+      detail "[Internal API] Where"
+      headers INTERNAL_API_HEADERS
+    end
     paginate per_page: 50, max_per_page: 500
     internal
     params do

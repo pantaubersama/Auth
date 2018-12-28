@@ -3,6 +3,7 @@ module API::V1::Badges::Resources
     helpers ::API::V1::SharedParams
     helpers API::V1::Helpers
 
+    # optional
     namespace "badges" do
       desc "List of badges" do
         headers OPTIONAL_AUTHORIZATION_HEADERS
@@ -25,8 +26,19 @@ module API::V1::Badges::Resources
         present :badges, resources, with: API::V1::Badges::Entities::Badge
         present_metas resources
       end
+
+      desc 'Find' do
+        detail "Find"
+      end
+      params do
+        requires :id, type: String
+      end
+      get "/:id" do
+        present :badge, Badge.find(params[:id]), with: API::V1::Badges::Entities::Badge
+      end
     end
 
+    # protected
     namespace "me" do
       desc "Achieved badges" do
         headers AUTHORIZATION_HEADERS
