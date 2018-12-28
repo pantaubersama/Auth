@@ -1,4 +1,4 @@
-class VerificationUploader < CarrierWave::Uploader::Base
+class BadgeUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick

@@ -94,7 +94,7 @@ gem 'rack-cors'
 
 ###doc [9] paginator
 # Then choose your preferred paginator from the following:
-gem 'kaminari'
+gem 'pagy'
 # Finally...
 gem 'api-pagination'
 

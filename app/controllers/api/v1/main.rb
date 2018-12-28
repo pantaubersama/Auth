@@ -18,6 +18,10 @@ module API
         error!("You don't have scope " + e.to_s.gsub("\\n", ", "), 401)
       end
 
+      rescue_from Pagy::OverflowError do |e|
+        error!("Out of page :(", 406)
+      end
+
       # Mounting Modules Api
       mount API::V1::Infos::Routes
       mount API::V1::Callback::Routes
@@ -26,6 +30,7 @@ module API
       mount Api::V1::Me::Routes
       mount Api::V1::Users::Routes
       mount API::V1::Verifications::Routes
+      mount API::V1::Badges::Routes
 
       # Swagger config
       add_swagger_documentation(
