@@ -1,5 +1,5 @@
 module API::V1::Clusters::Entities
-  class Cluster < Api::V1::ValidToken::Entities::Cluster
+  class Cluster < API::V1::Clusters::Entities::ClusterSimple
     expose :name, documentation: {desc: "Name", required: true}
     expose :category_id, documentation: {desc: "Category ID", required: true}
     expose :category, using: API::V1::Categories::Entities::Category

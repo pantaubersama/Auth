@@ -16,6 +16,14 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
       present :cluster, b, with: API::V1::Clusters::Entities::Cluster
     end
 
+    desc "Display cluster" do
+      detail "Display visible / approved cluster"
+    end
+    get "/:id" do
+      c = ::Cluster.visible.find params[:id]
+      present :cluster, c, with: API::V1::Clusters::Entities::ClusterSimple
+    end
+
   end
 
   # permitted params
