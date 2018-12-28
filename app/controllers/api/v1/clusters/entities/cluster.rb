@@ -5,5 +5,6 @@ module API::V1::Clusters::Entities
     expose :category, using: API::V1::Categories::Entities::Category
     expose :description, documentation: {desc: "Description"}
     expose :image, documentation: {desc: "Image", type: File}
+    expose :is_displayed
   end
 end

@@ -6,6 +6,7 @@ module Api
           expose :id
           expose :name
           expose :is_eligible
+          expose :image
         end
       end
     end

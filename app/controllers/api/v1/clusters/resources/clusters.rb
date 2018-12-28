@@ -1,5 +1,6 @@
 class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
   helpers API::V1::Helpers
+  helpers API::V1::SharedParams
 
   resource "clusters" do
 
@@ -21,7 +22,24 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
     end
     get "/:id" do
       c = ::Cluster.visible.find params[:id]
-      present :cluster, c, with: API::V1::Clusters::Entities::ClusterSimple
+      present :cluster, c, with: API::V1::Clusters::Entities::Cluster
+    end
+
+    desc 'List, search, and filter' do
+      detail "List, search, and filter"
+    end
+    paginate per_page: 50, max_per_page: 500
+    params do
+      optional :q, type: String, desc: "Keyword"
+      use :filter, filter_by: %i(category_id)
+    end
+    get "/" do
+      results = ::Cluster.visible.order("created_at desc")
+      results = results.where("LOWER(name) like ? OR LOWER(description) like ?", "%"+params.q+"%", "%"+params.q+"%") if params.q.present?
+      results = results.where(params.filter_by.to_sym => params.filter_value) if params.filter_by.present? && params.filter_value.present?
+      resources = paginate(results)
+      present :clusters, resources, with: API::V1::Clusters::Entities::Cluster
+      present_metas resources
     end
 
   end
