@@ -41,6 +41,13 @@ module Moderation
     self.add_role MEMBER, cluster
   end
 
+  def quit_cluster!
+    self.remove_role MODERATOR
+    self.remove_role MEMBER
+    return true
+  end
+  
+
   class_methods do
     
   end

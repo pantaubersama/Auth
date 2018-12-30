@@ -2,6 +2,20 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
   helpers API::V1::Helpers
   helpers API::V1::SharedParams
 
+  namespace "me" do
+
+    desc "Quit cluster" do
+      detail "Quit cluster"
+      headers AUTHORIZATION_HEADERS
+    end
+    oauth2
+    delete "/clusters" do
+      cluster = current_user.cluster
+      present :status, current_user.quit_cluster!
+      present :cluster, cluster, with: API::V1::Clusters::Entities::Cluster
+    end
+  end
+
   resource "clusters" do
 
     desc 'Request' do
