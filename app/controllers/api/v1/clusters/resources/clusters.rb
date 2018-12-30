@@ -36,7 +36,7 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
     end
     get "/:id" do
       c = ::Cluster.visible.find params[:id]
-      present :cluster, c, with: API::V1::Clusters::Entities::Cluster
+      present :cluster, c, with: API::V1::Clusters::Entities::ClusterDetail
     end
 
     desc 'List, search, and filter' do

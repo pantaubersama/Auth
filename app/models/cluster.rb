@@ -14,5 +14,9 @@ class Cluster < ApplicationRecord
     self.requester.remove_role MEMBER
     self.requester.add_role MODERATOR, self
   end
+
+  def users_count
+    Role.where(resource: self).map{|x| x.users.count }.reduce(:+) || 0
+  end
   
 end

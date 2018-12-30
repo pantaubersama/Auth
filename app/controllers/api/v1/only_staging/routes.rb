@@ -9,6 +9,7 @@ module API
         mount API::V1::OnlyStaging::Resources::RoleChanger
         mount API::V1::OnlyStaging::Resources::VerificationChanger
         mount API::V1::OnlyStaging::Resources::Badges
+        mount API::V1::OnlyStaging::Resources::Clusters
       end
     end
   end
