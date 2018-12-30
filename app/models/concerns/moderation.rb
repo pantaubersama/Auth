@@ -42,8 +42,8 @@ module Moderation
   end
 
   def quit_cluster!
-    self.remove_role MODERATOR
-    self.remove_role MEMBER
+    self.remove_role MODERATOR, self.cluster
+    self.remove_role MEMBER, self.cluster
     return true
   end
   
