@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_28_120120) do
+ActiveRecord::Schema.define(version: 2018_12_28_131244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -39,11 +39,22 @@ ActiveRecord::Schema.define(version: 2018_12_28_120120) do
     t.index ["deleted_at"], name: "index_badges_on_deleted_at"
   end
 
+  create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "clusters", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_eligible", default: false
+    t.boolean "is_displayed", default: false
+    t.string "image"
+    t.text "description"
+    t.uuid "category_id"
+    t.uuid "requester_id"
   end
 
   create_table "informants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

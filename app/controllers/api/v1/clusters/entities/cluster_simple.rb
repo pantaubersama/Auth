@@ -1,12 +1,12 @@
-module Api
+module API
   module V1
-    module ValidToken
+    module Clusters
       module Entities
-        class Cluster < Grape::Entity
+        class ClusterSimple < Grape::Entity
           expose :id
           expose :name
-          expose :is_eligible
           expose :image
+          expose :is_displayed
         end
       end
     end

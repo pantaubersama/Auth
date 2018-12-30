@@ -32,6 +32,8 @@ module API
       mount API::V1::Verifications::Routes
       mount API::V1::Informants::Routes
       mount API::V1::Badges::Routes
+      mount API::V1::Categories::Routes
+      mount API::V1::Clusters::Routes
 
       # Swagger config
       add_swagger_documentation(

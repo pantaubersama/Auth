@@ -17,7 +17,7 @@ module API::V1::Badges::Resources
       end
       post "/" do
         params[:image] = prepare_file(params[:image]) if params[:image].present?
-        b = Badge.create badges_params
+        b = ::Badge.create badges_params
         present :badge, b, with: API::V1::Badges::Entities::Badge
       end
     end
