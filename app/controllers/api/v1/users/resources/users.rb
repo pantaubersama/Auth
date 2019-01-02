@@ -24,7 +24,7 @@ class Api::V1::Users::Resources::Users < API::V1::InternalResource
     end
     internal
     get "/:id" do
-      present :user, User.find(params[:id]), with: Api::V1::Me::Entities::UserSimple
+      present :user, User.find(params[:id]), with: Api::V1::Me::Entities::User
     end
 
     desc '[Internal API] Where' do
@@ -40,7 +40,7 @@ class Api::V1::Users::Resources::Users < API::V1::InternalResource
       results = User.order("created_at desc")
       results = results.where(id: params.ids.split(",").map(&:strip)) if params.ids 
       resources = paginate(results)
-      present :users, resources, with: Api::V1::Me::Entities::UserSimple
+      present :users, resources, with: Api::V1::Me::Entities::User
       present_metas resources
     end
   end
