@@ -27,6 +27,27 @@ class API::V1::Categories::Resources::Categories< API::V1::ApplicationResource
       present :categories, resources, with: API::V1::Categories::Entities::Category
       present_metas resources
     end
+
+    desc 'Create' do
+      detail "Create"
+      headers AUTHORIZATION_HEADERS
+    end
+    oauth2
+    params do
+      requires :name, type: String, desc: "Name"
+    end
+    post "/" do
+      b = ::Category.new categories_params
+      b.creator_id = current_user.id
+      b.save!
+      present :category, b, with: API::V1::Categories::Entities::Category
+    end
+  end
+
+  helpers do
+    def categories_params
+      permitted_params(params.except(:access_token)).permit(:name)
+    end
   end
 
 end
