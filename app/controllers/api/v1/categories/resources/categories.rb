@@ -19,10 +19,12 @@ class API::V1::Categories::Resources::Categories< API::V1::ApplicationResource
     paginate per_page: 50, max_per_page: 500
     params do
       optional :ids, type: String, desc: "string of ID separate by comma"
+      optional :name, type: String, desc: "name"
     end
     get "/" do
       results = ::Category.order("created_at desc")
       results = results.where(id: params.ids.split(",").map(&:strip)) if params.ids 
+      results = results.where("name like ?", "%"+params.name+"%") if params.name 
       resources = paginate(results)
       present :categories, resources, with: API::V1::Categories::Entities::Category
       present_metas resources

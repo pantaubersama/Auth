@@ -43,6 +43,14 @@ RSpec.describe "Api::V1::Categories", type: :request do
         params: { name: Faker::Lorem.sentence(2), creator: user }
       expect(response.status).to eq(201)
     end
+
+    it "search" do
+      get "/v1/categories", params: {name: @category.name}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:categories].size).to eq(1)
+      expect(json_response[:data][:categories][0][:name]).to eq(@category.name)
+    end
+
   end
   
 end
