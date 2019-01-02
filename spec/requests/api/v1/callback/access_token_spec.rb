@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "Api::V1::Callback", type: :request do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "Success callback" do
+    it "generate client token" do
+      get "/v1/callback/optional", headers: {Authorization: token.token}
+    end
+  end
 end

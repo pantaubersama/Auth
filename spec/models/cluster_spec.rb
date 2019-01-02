@@ -18,7 +18,7 @@ RSpec.describe Cluster, type: :model do
       cluster = FactoryBot.create :cluster
       expect{
         Cluster.visible.find cluster.id
-      }.to raise_error
+      }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it "should be visible" do
