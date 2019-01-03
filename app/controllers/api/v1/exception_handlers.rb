@@ -20,6 +20,18 @@ module API
             elsif e.is_a?(ActiveRecord::RecordInvalid) || e.is_a?(ActiveRecord::RecordNotDestroyed)
               code    = 422
               message = e.message
+            elsif e.is_a?(WineBouncer::Errors::OAuthUnauthorizedError)
+              code    = 401
+              message = "#{e.message } 401 Unauthorized"
+            elsif e.is_a?(WineBouncer::Errors::OAuthForbiddenError)
+              code    = 401
+              message = "You don't have scope #{e.to_s.gsub("\\n", ", ")}"
+            elsif e.is_a?(Pagy::OverflowError)
+              code    = 406
+              message = "Out of page :("
+            elsif e.is_a?(ApiExtension::InternalApi::InvalidApiKey)
+              code    = 401
+              message = "Your key is invalid"
             else
               code    = 500
               message = e.message
@@ -28,12 +40,12 @@ module API
             Rails.logger.error Rails.backtrace_cleaner.clean(e.backtrace).join("\n") if ENV['API_DEBUGGING'] == 'true'
 
             results = {
-              error: {
-                code:   code,
-                errors: [message]
-              }
+                error: {
+                    code:   code,
+                    errors: [message]
+                }
             }
-            Rack::Response.new(results.to_json, code, {"content-type" => "application/json; charset=UTF-8"}).finish
+            Rack::Response.new(results.to_json, code, { "content-type" => "application/json; charset=UTF-8" }).finish
           end
         end
       end

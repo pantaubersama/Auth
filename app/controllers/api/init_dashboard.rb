@@ -1,5 +1,5 @@
 module API
-  class Init < Grape::API
+  class InitDashboard < Grape::API
     # Create log in console
     if ENV['API_DEBUGGING'].eql?("true")
       insert_after Grape::Middleware::Formatter, Grape::Middleware::Logger, {
@@ -17,12 +17,9 @@ module API
     # use middleware
     use ::ApiExtension::InternalApi::Middleware
 
-    mount API::V1::Main
-    mount API::V2::Main
+    mount API::V1::MainDashboard
 
-    mount API::Oauth
-
-    GrapeSwaggerRails.options.app_url            = "/v1/doc"
+    GrapeSwaggerRails.options.app_url            = "/dashboard/v1/doc"
     GrapeSwaggerRails.options.url                = "/api"
     GrapeSwaggerRails.options.hide_url_input     = false
     GrapeSwaggerRails.options.hide_api_key_input = true

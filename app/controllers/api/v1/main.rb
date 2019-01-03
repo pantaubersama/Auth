@@ -7,20 +7,11 @@ module API
       # Default Config API
       include API::V1::Config
 
+      # Exception Handlers
+      include API::V1::ExceptionHandlers
+
       helpers Doorkeeper::Grape::Helpers
-
       use ::WineBouncer::OAuth2
-
-      rescue_from WineBouncer::Errors::OAuthUnauthorizedError do |e|
-        error!(e.message + " 401 Unauthorized", 401)
-      end
-      rescue_from WineBouncer::Errors::OAuthForbiddenError do |e|
-        error!("You don't have scope " + e.to_s.gsub("\\n", ", "), 401)
-      end
-
-      rescue_from Pagy::OverflowError do |e|
-        error!("Out of page :(", 406)
-      end
 
       # Mounting Modules Api
       mount API::V1::Infos::Routes

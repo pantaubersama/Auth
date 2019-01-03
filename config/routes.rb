@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   end
   
   mount API::Init, at: "/"
+  mount API::InitDashboard, at: "/dashboard"
 
   mount GrapeSwaggerRails::Engine, as: "doc", at: "/doc"
 end
