@@ -52,6 +52,20 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
       present :user, current_user, with: Api::V1::Me::Entities::User
     end
 
+    desc 'Update firebase key' do
+      detail "Update firebase key"
+      headers AUTHORIZATION_HEADERS
+    end
+    params do
+      optional :firebase_key, type: String, documentation: {desc: "Firebase key"}
+      optional :firebase_key_type, type: String, values: ["android", "ios", "web"], documentation: {desc: "Firebase key type"}
+    end
+    oauth2
+    put "/firebase_keys" do
+      response = FirebaseKey.assign! current_user.id, params.firebase_key_type, params.firebase_key
+      present :firebase_key, response, with: API::V1::Me::Entities::FirebaseKey
+    end
+
   end
 
   # permitted params
