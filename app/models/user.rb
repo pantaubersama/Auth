@@ -16,6 +16,7 @@ class User < ApplicationRecord
   has_one :informant
   has_many :achieved_badges
   has_many :badges, through: :achieved_badges
+  has_many :firebase_keys
 
   # callback
   after_create :build_verification_model

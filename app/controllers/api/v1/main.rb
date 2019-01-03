@@ -26,6 +26,7 @@ module API
       mount API::V1::Categories::Routes
       mount API::V1::Clusters::Routes
       mount API::V1::Examples::Routes unless Rails.env.production?
+      mount API::V1::PoliticalParties::Routes
 
       # Swagger config
       add_swagger_documentation(

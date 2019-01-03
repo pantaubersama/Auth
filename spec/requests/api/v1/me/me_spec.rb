@@ -103,6 +103,17 @@ RSpec.describe "Api::V1::Me", type: :request do
       expect(json_response[:data][:badges].size).to eq(1)
       expect(json_response[:data][:badges][0][:name]).to eq(badge.name)
     end
+
+    it "update firebase key" do
+      put "/v1/me/firebase_keys", headers: {Authorization: token.token},
+        params: {
+          firebase_key: "Cinta adalah misteri", firebase_key_type: "android"
+        }
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:firebase_key][:content]).to eq("Cinta adalah misteri")
+      expect(json_response[:data][:firebase_key][:key_type]).to eq("android")
+    end 
+
   end
 
 end
