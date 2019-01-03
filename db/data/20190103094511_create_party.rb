@@ -83,7 +83,7 @@ class CreateParty < SeedMigration::Migration
       },
     ]
 
-    # PoliticalParty.create(data)
+    PoliticalParty.create(data)
   end
 
   def down
