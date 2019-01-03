@@ -1,13 +1,13 @@
 FactoryBot.define do
   factory :informant do
-    user_id { "" }
-    identity_number { "MyString" }
-    pob { "MyString" }
-    dob { "MyString" }
+    identity_number { Faker::IDNumber.valid }
+    pob { Faker::Lorem.words(2) }
+    dob { Faker::Date }
     gender { 1 }
-    occupation { "MyString" }
-    nationality { "MyString" }
-    address { "MyText" }
-    phone_number { "MyString" }
+    occupation { Faker::Lorem.words(2) }
+    nationality { Faker::Lorem.words(2) }
+    address { Faker::Lorem.words(5) }
+    phone_number { Faker::PhoneNumber.cell_phone }
+    association :user
   end
 end
