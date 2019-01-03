@@ -57,7 +57,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
   # permitted params
   helpers do
     def update_params
-      permitted_params(params.except(:access_token)).permit(:first_name, :last_name, :username, :about, :location, :organization, :education, :occupation, :vote_preference)
+      permitted_params(params.except(:access_token)).permit(:full_name, :username, :about, :location, :organization, :education, :occupation, :vote_preference)
     end
 
     def vote_preference_params

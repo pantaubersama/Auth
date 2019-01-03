@@ -27,8 +27,7 @@ RSpec.describe "Api::V1::Me", type: :request do
     it "update profile" do
       put "/v1/me", headers: {Authorization: token.token},
         params: {
-          first_name: "John",
-          last_name: "Doe",
+          full_name: "John Doe",
           username: "johndoe",
           about: "about",
           location: "location",
@@ -36,8 +35,7 @@ RSpec.describe "Api::V1::Me", type: :request do
           occupation: "occupation"
         }
       expect(response.status).to eq(200)
-      expect(json_response[:data][:user][:first_name]).to eq("John")
-      expect(json_response[:data][:user][:last_name]).to eq("Doe")
+      expect(json_response[:data][:user][:full_name]).to eq("John Doe")
       expect(json_response[:data][:user][:username]).to eq("johndoe")
       expect(json_response[:data][:user][:about]).to eq("about")
       expect(json_response[:data][:user][:location]).to eq("location")

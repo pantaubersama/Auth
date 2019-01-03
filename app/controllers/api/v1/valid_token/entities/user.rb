@@ -5,8 +5,7 @@ module Api
         class User < Grape::Entity
           expose :id
           expose :email
-          expose :first_name
-          expose :last_name
+          expose :full_name
           expose :uid
           expose :provider
           expose :is_admin do |u, opt|
