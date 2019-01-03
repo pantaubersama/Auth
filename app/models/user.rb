@@ -17,6 +17,7 @@ class User < ApplicationRecord
   has_many :achieved_badges
   has_many :badges, through: :achieved_badges
   has_many :firebase_keys
+  belongs_to :political_party, optional: true
 
   # callback
   after_create :build_verification_model

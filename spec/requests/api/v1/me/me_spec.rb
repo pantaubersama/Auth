@@ -71,12 +71,15 @@ RSpec.describe "Api::V1::Me", type: :request do
     end
     
     it "update vote preference" do
+      @party = FactoryBot.create :political_party
       put "/v1/me/vote_preference", headers: {Authorization: token.token},
         params: {
-          vote_preference: 2
+          vote_preference: 2, 
+          political_party_id: @party.id
         }
       expect(response.status).to eq(200)
       expect(json_response[:data][:user][:vote_preference]).to eq(2)
+      expect(json_response[:data][:user][:political_party][:id]).to eq(@party.id)
     end
 
     it "My verification" do

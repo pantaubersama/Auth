@@ -45,6 +45,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
     end
     params do
       optional :vote_preference, type: Integer, values: [1, 2, 3], desc: "1 => Paslon 1 <br> 2 =>  Paslon 2 <br> 3 => Golput"
+      optional :political_party_id, type: String, desc: "Political Party ID"
     end
     oauth2
     put "/vote_preference" do
@@ -75,7 +76,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
     end
 
     def vote_preference_params
-      permitted_params(params.except(:access_token)).permit(:vote_preference)
+      permitted_params(params.except(:access_token)).permit(:vote_preference, :political_party_id)
     end
   end
 
