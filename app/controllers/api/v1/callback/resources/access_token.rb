@@ -6,6 +6,8 @@ class API::V1::Callback::Resources::AccessToken < API::V1::ApplicationResource
     params do
       optional :code, type: String, documentation: {desc: "Callback using code"}
       optional :provider_token, type: String, documentation: {desc: "Callback using symbolic token"}
+      optional :firebase_key, type: String, documentation: {desc: "Firebase key"}
+      optional :firebase_key_type, type: String, values: ["android", "ios", "web"], documentation: {desc: "Firebase key type"}
     end
     get "/" do
       token = params[:provider_token]
@@ -33,6 +35,10 @@ class API::V1::Callback::Resources::AccessToken < API::V1::ApplicationResource
           user = User.from_omniauth(response_obj)
           
           access_token = user.generate_access_token
+
+          if params.firebase_key.present? && params.firebase_key_type.present?
+            FirebaseKey.assign! user.id, params.firebase_key_type, params.firebase_key
+          end
 
           present access_token, with: Api::V1::Callback::Entities::AccessToken
         else

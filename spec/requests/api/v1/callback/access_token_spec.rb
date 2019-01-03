@@ -17,5 +17,11 @@ RSpec.describe "Api::V1::Callback", type: :request do
       expect(json_response[:data][:access_token]).not_to eq(nil)
       expect(json_response[:data][:refresh_token]).not_to eq(nil)
     end
+
+    it "generate client token with firebase token updated" do
+      get "/v1/callback", params: {provider_token: provider_token, firebase_key: "Hello", firebase_key_type: "android"}
+      expect(json_response[:data][:access_token]).not_to eq(nil)
+      expect(json_response[:data][:refresh_token]).not_to eq(nil)
+    end
   end
 end
