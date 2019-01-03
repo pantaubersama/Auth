@@ -57,8 +57,8 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
       headers AUTHORIZATION_HEADERS
     end
     params do
-      optional :firebase_key, type: String, documentation: {desc: "Firebase key"}
-      optional :firebase_key_type, type: String, values: ["android", "ios", "web"], documentation: {desc: "Firebase key type"}
+      requires :firebase_key, type: String, documentation: {desc: "Firebase key"}
+      requires :firebase_key_type, type: String, values: ["android", "ios", "web"], documentation: {desc: "Firebase key type"}
     end
     oauth2
     put "/firebase_keys" do
