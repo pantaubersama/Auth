@@ -36,7 +36,7 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
     end
     get "/:id" do
       c = ::Cluster.visible.find params[:id]
-      present :cluster, c, with: API::V1::Clusters::Entities::ClusterDetail
+      present :cluster, c, with: API::V1::Clusters::Entities::ClusterDetail 
     end
 
     desc 'List, search, and filter' do
@@ -49,7 +49,7 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
     end
     get "/" do
       results = ::Cluster.visible.order("created_at desc")
-      results = results.where("LOWER(name) like ? OR LOWER(description) like ?", "%"+params.q+"%", "%"+params.q+"%") if params.q.present?
+      results = results.where("LOWER(name) like ? OR LOWER(description) like ?", "%"+params.q.downcase+"%", "%"+params.q.downcase+"%") if params.q.present?
       results = results.where(params.filter_by.to_sym => params.filter_value) if params.filter_by.present? && params.filter_value.present?
       resources = paginate(results)
       present :clusters, resources, with: API::V1::Clusters::Entities::Cluster
