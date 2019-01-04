@@ -3,6 +3,7 @@ module API
     module PoliticalParties
       module Entities
         class PoliticalParty < Grape::Entity
+          expose :id
           expose :name
           expose :image
         end

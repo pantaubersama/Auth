@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_03_094126) do
+ActiveRecord::Schema.define(version: 2019_01_03_105439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 2019_01_03_094126) do
     t.string "occupation"
     t.integer "vote_preference"
     t.string "full_name"
+    t.uuid "political_party_id"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
   end
 
