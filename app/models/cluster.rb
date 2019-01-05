@@ -6,7 +6,7 @@ class Cluster < ApplicationRecord
   belongs_to :requester, optional: true, class_name: "User"
   belongs_to :creator, optional: true, class_name: "User"
   scope :visible, -> { where(status: :approved) }
-  enum status: { requested: 0, approved: 1, rejected: 3 }
+  enum status: { requested: 0, approved: 1, rejected: 2 }
   validates_presence_of :name
 
   def approve!
