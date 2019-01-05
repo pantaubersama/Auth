@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_03_105439) do
+ActiveRecord::Schema.define(version: 2019_01_05_020605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 2019_01_03_105439) do
     t.text "description"
     t.uuid "category_id"
     t.uuid "requester_id"
+    t.integer "status", default: 0, null: false
   end
 
   create_table "firebase_keys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
