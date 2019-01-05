@@ -28,7 +28,7 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
       params[:image] = prepare_file(params[:image]) if params[:image].present?
       b = ::Cluster.create cluster_params
       b.update_attribute(:requester, current_user)
-      present :cluster, b, with: API::V1::Clusters::Entities::Cluster
+      present :cluster, b, with: API::V1::Clusters::Entities::ClusterDetail
     end
 
     desc "Display cluster" do
@@ -52,7 +52,7 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
       results = results.where("LOWER(name) like ? OR LOWER(description) like ?", "%"+params.q.downcase+"%", "%"+params.q.downcase+"%") if params.q.present?
       results = results.where(params.filter_by.to_sym => params.filter_value) if params.filter_by.present? && params.filter_value.present?
       resources = paginate(results)
-      present :clusters, resources, with: API::V1::Clusters::Entities::Cluster
+      present :clusters, resources, with: API::V1::Clusters::Entities::ClusterDetail
       present_metas resources
     end
 
