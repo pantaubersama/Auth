@@ -27,6 +27,8 @@ RSpec.describe "Api::V1::Badges", type: :request do
       expect(response.status).to eq(200)
       
       expect(json_response[:data][:achieved_badges].size).to eq(1)
+      expect(json_response[:data][:achieved_badges][0][:achieved_id]).not_to eq(nil)
+      expect(json_response[:data][:achieved_badges][0][:badge][:name]).to eq(@badge.name)
       expect(json_response[:data][:badges].size).to eq(4)
     end
 

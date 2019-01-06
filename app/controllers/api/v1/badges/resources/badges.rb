@@ -15,14 +15,14 @@ module API::V1::Badges::Resources
       paginate
       get "/" do
         existing_badges = []
-        existing_badges = current_user.badges if current_user.present?
+        existing_badges = current_user.achieved_badges if current_user.present?
 
         default_order = {position: :asc}
         build_order = params.order_by.present? && params.direction.present? ? { params.order_by.to_sym => params.direction.to_sym } : default_order
         badges = Badge.includes(:achieved_badges).visible.order(build_order)
-        resources = paginate(badges - existing_badges)
+        resources = paginate(badges - existing_badges.map(&:badge))
 
-        present :achieved_badges, existing_badges, with: API::V1::Badges::Entities::Badge
+        present :achieved_badges, existing_badges, with: API::V1::Badges::Entities::AchievedBadge
         present :badges, resources, with: API::V1::Badges::Entities::Badge
         present_metas resources
       end
@@ -50,12 +50,12 @@ module API::V1::Badges::Resources
       paginate
       oauth2
       get "/badges" do
-        default_order = {position: :asc}
-        build_order = params.order_by.present? && params.direction.present? ? { params.order_by.to_sym => params.direction.to_sym } : default_order
-        badges = current_user.badges.order(build_order)
-        resources = paginate(badges)
+        default_order = "badges.position asc"
+        build_order = params.order_by.present? && params.direction.present? ? "badges.#{params.order_by} #{params.direction}" : default_order
+        achieved_badges = current_user.achieved_badges.joins(:badge, :user).order(build_order)
+        resources = paginate(achieved_badges)
 
-        present :badges, resources, with: API::V1::Badges::Entities::Badge
+        present :achieved_badges, resources, with: API::V1::Badges::Entities::AchievedBadge
         present_metas resources
       end
     end

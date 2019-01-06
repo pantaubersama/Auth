@@ -98,8 +98,9 @@ RSpec.describe "Api::V1::Me", type: :request do
       get "/v1/me/badges", headers: { Authorization: token.token }
       expect(response.status).to eq(200)
 
-      expect(json_response[:data][:badges].size).to eq(1)
-      expect(json_response[:data][:badges][0][:name]).to eq(badge.name)
+      expect(json_response[:data][:achieved_badges].size).to eq(1)
+      expect(json_response[:data][:achieved_badges][0][:badge][:name]).to eq(badge.name)
+      expect(json_response[:data][:achieved_badges][0][:achieved_id]).not_to eq(nil)
     end
 
     it "update firebase key" do
