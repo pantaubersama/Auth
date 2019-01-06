@@ -51,6 +51,47 @@ class API::V1::Clusters::Resources::Moderations < API::V1::ApplicationResource
       c.increase_referal
       present :cluster, c, with: API::V1::Clusters::Entities::ClusterDetail 
     end
+
+    desc "Invite to my cluster" do
+      detail "Invite to my cluster"
+      headers AUTHORIZATION_HEADERS
+    end
+    oauth2
+    params do
+      requires :emails, type: String, desc: "Email separated by comma"
+    end
+    post "invite" do
+      c = current_user.cluster
+
+      error! "Cluster not found", 404 unless c.present?
+      authorize_moderator! c
+
+      data_email = params.emails.split(",").map(&:strip)
+
+      results = []
+
+      # TODO : Optimize this !!
+      data_email.each_with_index do |email, idx|
+        invite_code = params.invite_code.present? ? (params.invite_code.to_s + "_" + idx.to_s) : SecureRandom.hex(5)
+
+        u = ::User.find_or_create_by!(email: email) do |x|
+          x.tmp_cluster_id = c.id
+          x.invite_code = invite_code
+        end
+
+        not_in_cluster = Cluster.find_roles(:moderator, u).count == 0 && Cluster.find_roles(:member, u).count == 0 
+        if not_in_cluster
+          result = current_user.invite_to_symbolic u, u.invite_code
+
+          status = u.update_attributes!({provider: result["provider"], uid: result["uid"]})
+
+          results << {id: u.id, email: u.email, status: u.tmp_cluster_id}
+        end
+      end
+
+      present results
+
+    end
     
   end
 

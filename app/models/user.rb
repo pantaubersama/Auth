@@ -42,6 +42,10 @@ class User < ApplicationRecord
     }
   end
   
+  def invite_to_symbolic(u, invite_code)
+    api = Ruby::Identitas::Main.new nil, ENV["AUTH_KEY"]
+    result = api.user_invite({email: u.email, invite_code: invite_code}).parsed_response
+  end
 
   def verified
     verification.is_verified?

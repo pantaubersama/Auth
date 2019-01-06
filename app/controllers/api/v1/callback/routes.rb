@@ -7,6 +7,7 @@ module API
         error_formatter :json, ::API::ErrorFormatter
 
         mount API::V1::Callback::Resources::AccessToken
+        mount API::V1::Callback::Resources::Invitation
       end
     end
   end
