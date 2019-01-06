@@ -3,6 +3,16 @@ class Api::V1::Users::Resources::UsersPublic < API::V1::ApplicationResource
   helpers API::V1::SharedParams
 
   resource "users" do
+    desc 'Find' do
+      detail "Find"
+    end
+    params do
+      requires :id, type: String
+    end
+    get "/:id/simple" do
+      present :user, User.find(params[:id]), with: Api::V1::Me::Entities::UserSimple
+    end
+
     desc 'List, Where' do
       detail "List, Where"
     end

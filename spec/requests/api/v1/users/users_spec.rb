@@ -55,5 +55,13 @@ RSpec.describe "Api::V1::Users", type: :request do
       expect(json_response[:data][:user][:cluster]).not_to  eq(nil)
       expect(json_response[:data][:user][:informant]).not_to  eq(nil)
     end
+
+    it "Display simple" do
+      get "/v1/users/#{@user.id}/simple"
+      expect(response.status).to  eq(200)
+      expect(json_response[:data][:user][:id]).to  eq(@user.id)
+      expect(json_response[:data][:user][:cluster]).to  eq(nil)
+      expect(json_response[:data][:user][:informant]).to  eq(nil)
+    end
   end
 end
