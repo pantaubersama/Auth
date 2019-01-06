@@ -11,6 +11,10 @@ module API::V1::Helpers
     error!("Tidak dapat mengakses API", 403) unless current_user.is_admin
   end
 
+  def authorize_moderator! cluster
+    error!("Tidak dapat mengakses API. Anda bukan moderator!", 403) unless current_user.has_role?(:moderator, cluster)
+  end
+
   def current_user
     User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
   end

@@ -6,6 +6,7 @@ module API
         formatter :json, ::API::SuccessFormatter
         error_formatter :json, ::API::ErrorFormatter
 
+        mount API::V1::Clusters::Resources::Moderations
         mount API::V1::Clusters::Resources::Clusters
       end
     end

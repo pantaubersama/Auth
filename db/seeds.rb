@@ -13,4 +13,4 @@
 ActiveRecord::Base.transaction do
 end
 
-SeedMigration::Migrator.bootstrap(20190103094511)
+SeedMigration::Migrator.bootstrap(20190106105142)

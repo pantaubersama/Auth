@@ -11,6 +11,12 @@ RSpec.describe Cluster, type: :model do
       cluster = FactoryBot.create :cluster
       expect(cluster).to be_valid
     end
+
+    it "should have magic link" do
+      cluster = FactoryBot.create :cluster
+      expect(cluster.magic_link).not_to eq(nil)
+      expect(cluster.is_link_active).to eq(false)
+    end
   end
 
   describe "List and find" do

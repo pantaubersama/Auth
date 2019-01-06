@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_05_020605) do
+ActiveRecord::Schema.define(version: 2019_01_06_111740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -58,6 +58,9 @@ ActiveRecord::Schema.define(version: 2019_01_05_020605) do
     t.uuid "category_id"
     t.uuid "requester_id"
     t.integer "status", default: 0, null: false
+    t.boolean "is_link_active", default: false
+    t.string "magic_link"
+    t.integer "referal_count", default: 0
   end
 
   create_table "firebase_keys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
