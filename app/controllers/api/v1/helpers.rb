@@ -26,5 +26,18 @@ module API::V1::Helpers
   def permitted_params(params)
     ActionController::Parameters.new(params)
   end
+
+  def user_filter(x)
+    case x
+    when :verified_true
+      { "verified" => true }
+    when :verified_false
+      { "verified" => false }
+    when :verified_all
+      {}
+    else
+      {}
+    end
+  end
   
 end

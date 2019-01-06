@@ -7,6 +7,7 @@ module Api
         error_formatter :json, ::API::ErrorFormatter
 
         mount Api::V1::Users::Resources::Users
+        mount Api::V1::Users::Resources::UsersPublic
       end
     end
   end

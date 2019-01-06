@@ -12,18 +12,32 @@ RSpec.describe "Api::V1::Users", type: :request do
 
   describe "Users" do
     it "List" do
-      get "/v1/users", headers: {PantauAuthKey: ENV["PANTAU_AUTH_KEY"]}
+      User.reindex
+      get "/v1/users"
       expect(response.status).to  eq(200)
       expect(json_response[:data][:users].size).to  eq(5)
     end
 
-    it "Search" do
-      get "/v1/users", headers: {PantauAuthKey: ENV["PANTAU_AUTH_KEY"]},
+    it "Search by ID" do
+      User.reindex
+      get "/v1/users",
         params: {
           ids: [User.last.id, User.first.id].join(", ")
         }
       expect(response.status).to  eq(200)
       expect(json_response[:data][:users].size).to  eq(2)
+    end
+
+    it "Search by query" do
+      User.reindex
+      get "/v1/users",
+        params: {
+          q: @user.full_name,
+          o: "and",
+          m: "word"
+        }
+      expect(response.status).to  eq(200)
+      expect(json_response[:data].size).to be >= 1
     end
 
     it "Display" do

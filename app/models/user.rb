@@ -3,6 +3,11 @@ class User < ApplicationRecord
   rolify strict: true
   acts_as_paranoid
   mount_uploader :avatar, AvatarUploader
+  searchkick searchable: [:full_name, :about], 
+    word_start: [:full_name, :about], 
+    word_middle: [:full_name, :about], 
+    word_end: [:full_name, :about], 
+    word: [:full_name, :about]
 
   # from module
   include Moderation
@@ -22,6 +27,21 @@ class User < ApplicationRecord
   # callback
   after_create :build_verification_model
   after_create :build_informant_model
+
+  def search_data
+    # Api::V1::Me::Entities::UserSimple
+    {
+      id: self.id,
+      email: self.email,
+      full_name: self.full_name,
+      username: self.username,
+      avatar: self.avatar,
+      verified: self.verified,
+      about: self.about,
+      created_at: self.created_at
+    }
+  end
+  
 
   def verified
     verification.is_verified?

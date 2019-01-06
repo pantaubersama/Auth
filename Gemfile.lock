@@ -93,6 +93,14 @@ GEM
     dotenv-rails (2.5.0)
       dotenv (= 2.5.0)
       railties (>= 3.2, < 6.0)
+    elasticsearch (6.1.0)
+      elasticsearch-api (= 6.1.0)
+      elasticsearch-transport (= 6.1.0)
+    elasticsearch-api (6.1.0)
+      multi_json
+    elasticsearch-transport (6.1.0)
+      faraday
+      multi_json
     equalizer (0.0.11)
     erubi (1.7.1)
     excon (0.62.0)
@@ -302,6 +310,10 @@ GEM
       httparty
     ruby_dep (1.5.0)
     safe_yaml (1.0.4)
+    searchkick (3.1.2)
+      activemodel (>= 4.2)
+      elasticsearch (>= 5)
+      hashie
     seed_migration (1.2.3)
     shellany (0.0.1)
     shoulda-matchers (3.1.2)
@@ -385,6 +397,7 @@ DEPENDENCIES
   rolify
   rspec-rails (~> 3.5)
   ruby-identitas-api (~> 0.7.1)
+  searchkick
   seed_migration
   shoulda-matchers (~> 3.1)
   spring
