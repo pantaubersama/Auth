@@ -78,6 +78,9 @@ class API::V1::Clusters::Resources::Moderations < API::V1::ApplicationResource
           x.tmp_cluster_id = c.id
           x.invite_code = invite_code
         end
+        u.tmp_cluster_id = c.id
+        u.invite_code = invite_code
+        u.save(validate: false)
 
         not_in_cluster = Cluster.find_roles(:moderator, u).count == 0 && Cluster.find_roles(:member, u).count == 0 
         if not_in_cluster
