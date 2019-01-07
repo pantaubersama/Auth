@@ -4,5 +4,6 @@ module API::V1::Clusters::Entities
     expose :is_eligible
     expose :magic_link
     expose :is_link_active
+    expose :status
   end
 end

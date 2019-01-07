@@ -25,9 +25,11 @@ class Cluster < ApplicationRecord
 
   def approve!
     self.update_attributes(is_displayed: true, status: 1)
-    self.requester.remove_role MODERATOR
-    self.requester.remove_role MEMBER
-    self.requester.add_role MODERATOR, self
+    if self.requester
+      self.requester.remove_role MODERATOR
+      self.requester.remove_role MEMBER
+      self.requester.add_role MODERATOR, self
+    end
   end
 
   def reject!

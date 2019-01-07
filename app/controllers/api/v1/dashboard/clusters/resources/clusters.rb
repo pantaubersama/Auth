@@ -15,7 +15,7 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       cluster = ::Cluster.find params.id
       error!("Cluster sudah di set `tidak di setujui` (Rejected)", 403) if cluster.rejected?
       cluster.approve!
-      present :cluster, cluster, with: API::V1::Clusters::Entities.ClusterDetail
+      present :cluster, cluster, with: API::V1::Clusters::Entities::ClusterDetail
     end
 
     desc 'Reject cluster request' do
@@ -31,7 +31,7 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       cluster = ::Cluster.find params.id
       error!("Cluster sudah di setujui (Approved)", 403) if cluster.approved?
       cluster.reject!
-      present :cluster, cluster, with: API::V1::Clusters::Entities.ClusterDetail
+      present :cluster, cluster, with: API::V1::Clusters::Entities::ClusterDetail
     end
 
     desc 'Make user as memeber cluster' do
