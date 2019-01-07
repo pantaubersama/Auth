@@ -19,7 +19,7 @@ RSpec.describe "Api::V1::Clusters", type: :request do
       get "/v1/clusters"
       expect(response.status).to eq(200)
       expect(json_response[:data][:clusters].size).to eq(5)
-    end  
+    end
 
     it "filter" do
       get "/v1/clusters", params: { filter_by: "category_id", filter_value: @c.id }
