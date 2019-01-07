@@ -11,7 +11,8 @@ RSpec.describe "Api::V1::Clusters", type: :request do
     end
     @c        = FactoryBot.create :category
     @cluster  = Cluster.first
-    @cluster2 = FactoryBot.create :cluster, category: @c, is_displayed: true, status: :approved
+    @cluster2 = FactoryBot.create :cluster, category: @c, is_displayed: true, status: :approved, name: "No Name"
+    Cluster.reindex
   end
 
   describe "Clusers" do
@@ -29,10 +30,9 @@ RSpec.describe "Api::V1::Clusters", type: :request do
     end
 
     it "search" do
-      get "/v1/clusters", params: { q: @cluster.name }
+      get "/v1/clusters", params: { q: "LEN" }
       expect(response.status).to eq(200)
-      expect(json_response[:data][:clusters].size).to eq(1)
-      expect(json_response[:data][:clusters].last[:name]).to eq(@cluster.name)
+      expect(json_response[:data][:clusters].size).to eq(4)
     end
 
     it "display" do

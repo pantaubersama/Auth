@@ -1,15 +1,16 @@
 class Cluster < ApplicationRecord
   resourcify
   mount_uploader :image, ClusterUploader
+  searchkick text_middle: [:all_fields]
 
   belongs_to :category, optional: true
   belongs_to :requester, optional: true, class_name: "User"
   belongs_to :creator, optional: true, class_name: "User"
-  
+
   scope :visible, -> { where(status: :approved) }
-  
+
   enum status: { requested: 0, approved: 1, rejected: 2 }
-  
+
   validates_presence_of :name
 
   after_create :create_magic_link
@@ -21,7 +22,7 @@ class Cluster < ApplicationRecord
     self.magic_link = code
     self.save(validate: false)
   end
-  
+
 
   def approve!
     self.update_attributes(is_displayed: true, status: 1)
@@ -49,10 +50,19 @@ class Cluster < ApplicationRecord
 
   def decrease_referal
     self.with_lock do
-      self.referal_count += - 1
+      self.referal_count += -1
       self.save(validate: false)
     end if self.referal_count > 0
   end
-  
+
+  def search_data
+    resluts = {}
+    Cluster.column_names.each do |column|
+      resluts[column] = self.send(column.to_s)
+    end
+    resluts.merge({
+                    all_fields:  ["--", self.name, "--"].compact.join(' ')
+                  })
+  end
 
 end
