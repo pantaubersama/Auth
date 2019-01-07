@@ -12,7 +12,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
     put "/" do
       response = current_user.update_attributes!(update_params)
       present :user, current_user, with: Api::V1::Me::Entities::User
-    end 
+    end
 
     desc 'Update username' do
       detail "Update username"
@@ -23,10 +23,10 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
     end
     oauth2
     put "/username" do
-      response = current_user.update_attributes!({username: params[:username]})
+      response = current_user.update_attributes!({ username: params[:username] })
       present :user, current_user, with: Api::V1::Me::Entities::User
     end
-    
+
     desc 'Update avatar' do
       detail "Update avatar"
       headers AUTHORIZATION_HEADERS
@@ -35,7 +35,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
     oauth2
     put "/avatar" do
       params[:avatar] = prepare_file(params[:avatar]) if params[:avatar].present?
-      response = current_user.update_attribute(:avatar, params[:avatar])
+      response        = current_user.update_attribute(:avatar, params[:avatar])
       present :user, current_user, with: Api::V1::Me::Entities::User
     end
 
@@ -58,8 +58,8 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
       headers AUTHORIZATION_HEADERS
     end
     params do
-      requires :firebase_key, type: String, documentation: {desc: "Firebase key"}
-      requires :firebase_key_type, type: String, values: ["android", "ios", "web"], documentation: {desc: "Firebase key type"}
+      requires :firebase_key, type: String, documentation: { desc: "Firebase key" }
+      requires :firebase_key_type, type: String, values: ["android", "ios", "web"], documentation: { desc: "Firebase key type" }
     end
     oauth2
     put "/firebase_keys" do
