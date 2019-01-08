@@ -24,7 +24,7 @@ class API::V1::Categories::Resources::Categories< API::V1::ApplicationResource
     get "/" do
       results = ::Category.order("created_at desc")
       results = results.where(id: params.ids.split(",").map(&:strip)) if params.ids 
-      results = results.where("name like ?", "%"+params.name+"%") if params.name 
+      results = results.where("lower(name) like ?", "%"+params.name.downcase+"%") if params.name 
       resources = paginate(results)
       present :categories, resources, with: API::V1::Categories::Entities::Category
       present_metas resources
