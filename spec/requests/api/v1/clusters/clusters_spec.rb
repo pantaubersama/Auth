@@ -29,6 +29,16 @@ RSpec.describe "Api::V1::Clusters", type: :request do
       expect(json_response[:data][:clusters].last[:category_id]).to eq(@c.id)
     end
 
+    it "Success" do
+      get "/v1/clusters?filter_by=category_id&filter_value="
+      expect(response.status).to  eq(200)
+    end
+
+    it "Success" do
+      get "/v1/clusters?filter_by=category_id&filter_value="
+      expect(response.status).to  eq(200)
+    end
+
     it "search" do
       get "/v1/clusters", params: { q: "LEN" }
       expect(response.status).to eq(200)

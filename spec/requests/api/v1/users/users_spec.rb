@@ -40,6 +40,12 @@ RSpec.describe "Api::V1::Users", type: :request do
       expect(json_response[:data].size).to be >= 1
     end
 
+    it "Success" do
+      User.reindex
+      get "/v1/users?ids=&q=&o=&m=&filter_by="
+      expect(response.status).to  eq(200)
+    end
+
     it "Display" do
       get "/v1/users/#{@user.id}", headers: {PantauAuthKey: ENV["PANTAU_AUTH_KEY"]}
       expect(response.status).to  eq(200)

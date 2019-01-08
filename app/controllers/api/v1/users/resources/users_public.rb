@@ -19,13 +19,13 @@ class Api::V1::Users::Resources::UsersPublic < API::V1::ApplicationResource
     paginate per_page: 25, max_per_page: 500
     params do
       optional :ids, type: String, desc: "string of ID separate by comma"
-      use :searchkick_search, default_m: :word_start, default_o: "and"
-      use :filter_no_value, filter_by: %i(verified_true verified_false verified_all)
+      use :searchkick_search, default_m: "word_start", default_o: "and"
+      use :filter_no_value, filter_by: ["", "verified_true" "verified_false" "verified_all"]
     end
     get "/" do
       q = params.q.nil? || params.q.empty? ? "*" : params.q
       operator = params.o.nil? || params.o.empty? ? "and" : params.o
-      match_word = params.m.nil? || params.m.empty? ? :word_start : params.m.to_sym
+      match_word = params.m.nil? || params.m.empty? ? "word_start" : params.m.to_sym
 
       default_order = {created_at: :desc}
       build_order = params.order_by.present? && params.direction.present? ? { params.order_by.to_sym => params.direction.to_sym } : default_order

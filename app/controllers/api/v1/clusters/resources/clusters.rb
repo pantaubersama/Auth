@@ -31,7 +31,7 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
     paginate per_page: 50, max_per_page: 500
     params do
       optional :q, type: String, desc: "Keyword"
-      use :filter, filter_by: %i(category_id)
+      use :filter, filter_by: ["", "category_id"]
     end
     get "/" do
       query = "*"
