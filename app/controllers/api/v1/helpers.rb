@@ -29,11 +29,11 @@ module API::V1::Helpers
 
   def user_filter(x)
     case x
-    when :verified_true
+    when "verified_true"
       { "verified" => true }
-    when :verified_false
+    when "verified_false"
       { "verified" => false }
-    when :verified_all
+    when "verified_all"
       {}
     else
       {}

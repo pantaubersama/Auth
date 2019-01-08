@@ -40,6 +40,16 @@ RSpec.describe "Api::V1::Users", type: :request do
       expect(json_response[:data].size).to be >= 1
     end
 
+    it "Filter" do
+      User.reindex
+      get "/v1/users",
+        params: {
+          filter_by: "verified_true"
+        }
+      expect(response.status).to  eq(200)
+      expect(json_response[:data].size).to be >= 1
+    end
+
     it "Success" do
       User.reindex
       get "/v1/users?ids=&q=&o=&m=&filter_by="
