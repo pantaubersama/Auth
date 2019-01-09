@@ -16,6 +16,12 @@ module Api
           expose :vote_preference
           expose :political_party, using: API::V1::PoliticalParties::Entities::PoliticalParty
           expose :verified
+          expose :twitter do |obj, opts|
+            obj.twitter?
+          end
+          expose :facebook do |obj, opts|
+            obj.facebook?
+          end
         end
       end
     end

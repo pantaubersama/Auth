@@ -54,6 +54,8 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano3-unicorn'
   gem 'capistrano-rvm'
+
+  gem "t"
 end
 
 group :test do
@@ -120,3 +122,5 @@ gem 'fog-aws'
 gem 'file_validators'
 
 gem 'searchkick'
+
+gem "twitter", "6.1.0"

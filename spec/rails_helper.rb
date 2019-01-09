@@ -67,6 +67,7 @@ RSpec.configure do |config|
   config.include JSONResponseReader, type: :request
   config.include AuthStubber
   config.include SymbolicStubber
+  config.include TwitterStubber
 
   # start by truncating all the tables but then use the faster transaction strategy the rest of the time.
   config.before(:suite) do

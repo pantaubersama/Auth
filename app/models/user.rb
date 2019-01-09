@@ -23,6 +23,7 @@ class User < ApplicationRecord
   has_many :badges, through: :achieved_badges
   has_many :firebase_keys
   belongs_to :political_party, optional: true
+  has_many :accounts
 
   # callback
   after_create :build_verification_model
@@ -85,4 +86,13 @@ class User < ApplicationRecord
     response     = Doorkeeper::OAuth::TokenResponse.new(access_token)
     response.token
   end
+
+  def twitter?
+    accounts.twitter.size == 1
+  end
+
+  def facebook?
+    accounts.facebook.size == 1
+  end
+  
 end

@@ -38,5 +38,6 @@ module PantauBersamaAuth
     config.middleware.insert_after ActionDispatch::Callbacks, ActionDispatch::Cookies
     config.middleware.insert_after ActionDispatch::Cookies, ActionDispatch::Session::CookieStore
     
+    config.autoload_paths += Dir["#{config.root}/services/**/"]
   end
 end
