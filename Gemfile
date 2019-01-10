@@ -124,3 +124,4 @@ gem 'file_validators'
 gem 'searchkick'
 
 gem "twitter", "6.1.0"
+gem 'koala'

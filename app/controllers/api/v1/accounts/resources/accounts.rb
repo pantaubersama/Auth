@@ -11,10 +11,11 @@ module API::V1::Accounts::Resources
       params do
         requires :account_type, type: String, values: ["twitter", "facebook"]
         requires :oauth_access_token, type: String
-        requires :oauth_access_token_secret, type: String
+        optional :oauth_access_token_secret, type: String, desc: "Required if you choose twitter"
       end
       oauth2
       post "/connect" do
+        error! "Twitter needs oauth_access_token_secret", 422 if params.account_type == "twitter" && ( params.oauth_access_token_secret.nil? || params.oauth_access_token_secret.empty? )
         a = Account.connect! current_user.id, params.account_type, params.oauth_access_token, params.oauth_access_token_secret
         present :account, a, with: API::V1::Accounts::Entities::Account
       end

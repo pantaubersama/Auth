@@ -5,7 +5,7 @@ module API
         base.instance_eval do
           rescue_from :all do |e|
             # When required params are missing or validation fails
-            if e.class.name.in? ['Twitter::Error::Unauthorized', 'Twitter::Error::Forbidden']
+            if e.class.name.in? ['Twitter::Error::Unauthorized', 'Twitter::Error::Forbidden', 'Koala::Facebook::AuthenticationError']
               code    = 422
               message = "Invalid or expired token"
             elsif e.class.name == 'Grape::Exceptions::ValidationErrors'

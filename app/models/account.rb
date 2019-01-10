@@ -18,12 +18,21 @@ class Account < ApplicationRecord
 
   def connect_twitter token, secret
     api = TwitterApi::Main.new token, secret
-    self.update_attributes!({access_token: token, access_token_secret: secret}) if api.valid?
+    self.update_attributes!({
+      access_token: token, access_token_secret: secret,
+      uid: api.credentials.id,
+      email: api.credentials.email,
+    }) if api.valid?
     self.user
   end
 
   def connect_facebook token
-    update_attributes!({access_token: token})
+    api = FacebookApi::Main.new token
+    self.update_attributes!({
+      access_token: token,
+      uid: api.credentials["id"],
+      email: api.credentials["email"]
+    }) if api.valid?
   end
 
   def disconnect! tipe
@@ -44,7 +53,13 @@ class Account < ApplicationRecord
     self.destroy!
     u
   end
-  
-  
+
+  def disconnect_facebook
+    api = FacebookApi::Main.new self.access_token
+    api.invalidate self.access_token, self.uid
+    u = self.user
+    self.destroy!
+    u
+  end
   
 end
