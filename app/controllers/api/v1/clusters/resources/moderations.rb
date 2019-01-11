@@ -28,7 +28,7 @@ class API::V1::Clusters::Resources::Moderations < API::V1::ApplicationResource
     post "/:id/magic_link" do
       c = ::Cluster.visible.find params.id
       
-      authorize_moderator! c
+      authorize_moderator_or_admin! c
 
       c.update_attribute :is_link_active, params.enable
       present :cluster, c, with: API::V1::Clusters::Entities::ClusterDetail 
@@ -59,12 +59,14 @@ class API::V1::Clusters::Resources::Moderations < API::V1::ApplicationResource
     oauth2
     params do
       requires :emails, type: String, desc: "Email separated by comma"
+      optional :cluster_id, type: String, desc: "Cluster ID (Admin Only)"
     end
     post "invite" do
-      c = current_user.cluster
+      c = current_user.cluster unless current_user.is_admin?
+      c = Cluster.approved.find(params.cluster_id) if current_user.is_admin?
 
       error! "Cluster not found", 404 unless c.present?
-      authorize_moderator! c
+      authorize_moderator_or_admin! c
 
       data_email = params.emails.split(",").map(&:strip)
 
