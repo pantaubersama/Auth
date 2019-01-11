@@ -12,6 +12,12 @@ RSpec.describe User, type: :model do
       expect(@user.has_role? ADMIN).to eq true  
     end
 
+    it "remove admin" do
+      @user.make_me_admin!
+      @user.remove_admin!
+      expect(@user.has_role? ADMIN).to eq false  
+    end
+
     it "became moderator of cluster" do
       @user.make_me_moderator! @cluster
       expect(@user.has_role? MODERATOR, @cluster).to eq true  

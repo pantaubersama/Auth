@@ -29,6 +29,11 @@ module Moderation
     self.add_role ADMIN
   end
 
+  def remove_admin!
+    self.remove_role ADMIN
+  end
+  
+
   def make_me_moderator! cluster
     self.remove_role MODERATOR
     self.remove_role MEMBER
