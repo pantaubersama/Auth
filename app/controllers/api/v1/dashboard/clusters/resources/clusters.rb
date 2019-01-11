@@ -25,7 +25,7 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       build_conditions = params.filter_by.present? && params.filter_value.present? ? { params.filter_by => params.filter_value } : {}
       build_conditions = params.status.present? ? build_conditions.merge({status: params.status})  : build_conditions
       resources        = ::Cluster.visible.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { name: :desc }, where: build_conditions).results
-      present :clusters, resources, with: API::V1::Dashboard::Clusters::Entities::ClusterDetail
+      present :clusters, resources, with: API::V1::Clusters::Entities::ClusterDetail
       present_metas resources
     end
 
@@ -61,7 +61,7 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
 
     desc 'Make user as member cluster' do
       headers AUTHORIZATION_HEADERS
-      detail "Make user as memebr cluster"
+      detail "Make user as member cluster"
     end
     oauth2
     params do
@@ -70,9 +70,27 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
     end
     put "/make_members/:id" do
       user    = User.find(params.user_id)
-      cluster = Cluster.find params[:cluster_id]
+      cluster = Cluster.find params.id
       user.add_me_to_cluster! cluster if cluster
       present :user, user, with: Api::V1::ValidToken::Entities::User
     end
+
+    desc 'Remove user from cluster' do
+      headers AUTHORIZATION_HEADERS
+      detail "Remove user from cluster"
+    end
+    oauth2
+    params do
+      requires :id, type: String, desc: "Cluster ID"
+      requires :user_id, type: String, desc: "User ID"
+    end
+    delete "/remove_members/:id" do
+      user    = User.find(params.user_id)
+      cluster = Cluster.find params.id
+
+      user.quit_cluster! if user.has_role?(MODERATOR, cluster) || user.has_role?(MEMBER, cluster)
+      present :user, user, with: Api::V1::ValidToken::Entities::User
+    end
+
   end
 end

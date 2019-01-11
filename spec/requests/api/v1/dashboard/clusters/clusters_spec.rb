@@ -36,6 +36,33 @@ RSpec.describe "Api::V1::Dashboard::Clusters", type: :request do
     end
   end
 
+  describe "Add and remove member" do
+    it "Add" do
+      new_user = FactoryBot.create :user
+      put "/dashboard/v1/clusters/make_members/#{ @cluster.id }", headers: {Authorization: token.token},
+        params: {
+          user_id: new_user.id
+        }
+      expect(json_response["data"]["user"]["cluster"]["id"]).to eq(@cluster.id)
+      expect(@cluster.members_count).to eq(1)
+    end
+
+    it "Remove" do
+      new_user = FactoryBot.create :user
+      put "/dashboard/v1/clusters/make_members/#{ @cluster.id }", headers: {Authorization: token.token},
+        params: {
+          user_id: new_user.id
+        }
+      
+      delete "/dashboard/v1/clusters/remove_members/#{ @cluster.id }", headers: {Authorization: token.token},
+        params: {
+          user_id: new_user.id
+        }
+        expect(json_response["data"]["user"]["cluster"]).to eq(nil)
+        expect(@cluster.members_count).to eq(0)
+    end
+  end
+
   describe "List cluster" do
     it "list" do
       Cluster.reindex
