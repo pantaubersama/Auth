@@ -8,7 +8,7 @@ module API::V1::Helpers
   end
 
   def authorize_admin!
-    error!("Tidak dapat mengakses API", 403) unless current_user.is_admin?
+    error!("Tidak dapat mengakses API. Anda bukan admin!", 403) if current_user.nil? || !current_user.is_admin?
   end
 
   def authorize_moderator! cluster
