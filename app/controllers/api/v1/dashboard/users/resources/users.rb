@@ -34,5 +34,33 @@ class API::V1::Dashboard::Users::Resources::Users < API::V1::ApplicationResource
       present :user, u, with: Api::V1::ValidToken::Entities::User
     end
 
+    desc 'Approve verification' do
+      headers AUTHORIZATION_HEADERS
+      detail "Approve verification"
+    end
+    oauth2
+    params do
+      requires :id, type: String, desc: "User ID"
+    end
+    post "/approve" do
+      u = User.find params.id
+      u.verification.verified!
+      present :user, u, with: Api::V1::ValidToken::Entities::User
+    end
+
+    desc 'Reject verification' do
+      headers AUTHORIZATION_HEADERS
+      detail "Reject verification"
+    end
+    oauth2
+    params do
+      requires :id, type: String, desc: "User ID"
+    end
+    delete "/reject" do
+      u = User.find params.id
+      u.verification.rejected!
+      present :user, u, with: Api::V1::ValidToken::Entities::User
+    end
+
   end
 end

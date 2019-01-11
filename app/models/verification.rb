@@ -1,4 +1,6 @@
 class Verification < ApplicationRecord
+  enum status: [:requested, :verified, :rejected]
+
   belongs_to :user
 
   mount_uploader :ktp_selfie, AvatarUploader
@@ -6,8 +8,7 @@ class Verification < ApplicationRecord
   mount_uploader :signature, AvatarUploader
 
   def is_verified?
-    # ktp_number? && ktp_selfie? && ktp_photo? && signature? && approved?
-    approved?
+    verified?
   end
 
   def step
