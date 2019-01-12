@@ -17,6 +17,7 @@ module API
       mount API::V1::Dashboard::Clusters::Routes
       mount API::V1::Dashboard::Users::Routes
       mount API::V1::Dashboard::Categories::Routes
+      mount API::V1::Dashboard::Badges::Routes
 
       # Swagger config
       add_swagger_documentation(
