@@ -51,6 +51,21 @@ RSpec.describe "Api::V1::Dashboard::badges", type: :request do
     end
   end
 
+  describe "create" do
+    it "success" do
+      post "/dashboard/v1/badges", headers: {Authorization: admin_token.token},
+        params: {
+          name: "Hello",
+          description: "Mbel",
+          image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
+          position: 1,
+        }
+      expect(response.status).to  eq(201)
+      expect(json_response[:data][:badge][:name]).to  eq("Hello")
+      expect(json_response[:data][:badge][:description]).not_to  eq(nil)
+    end
+  end
+
   describe "delete" do
     it "success" do
       delete "/dashboard/v1/badges/#{@badge.id}", headers: {Authorization: admin_token.token}

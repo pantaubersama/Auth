@@ -52,8 +52,9 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
     end
     oauth2
     post "/" do
-      q = Badge.find params.id
-      error! "Not found" unless q.present?
+      q = Badge.new badge_params
+      status = q.save!
+      present :status, status
       present :badge, q, with: API::V1::Badges::Entities::Badge
     end
 
