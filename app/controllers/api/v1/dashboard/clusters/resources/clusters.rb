@@ -17,6 +17,7 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       use :filter, filter_by: ["", "category_id"]
       optional :status, type: String, values: ["", "requested", "approved", "rejected"]
     end
+    oauth2
     get "/" do
       query = "*"
       if params.q.present?
