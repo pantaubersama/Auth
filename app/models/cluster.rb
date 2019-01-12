@@ -1,9 +1,10 @@
 class Cluster < ApplicationRecord
+  acts_as_paranoid
   resourcify
   mount_uploader :image, ClusterUploader
   searchkick text_middle: [:all_fields]
 
-  belongs_to :category, optional: true
+  belongs_to :category, optional: true, counter_cache: true
   belongs_to :requester, optional: true, class_name: "User"
   belongs_to :creator, optional: true, class_name: "User"
 
@@ -64,5 +65,10 @@ class Cluster < ApplicationRecord
                     all_fields:  ["--", self.name, "--"].compact.join(' ')
                   })
   end
+
+  def should_index?
+    deleted_at.nil?
+  end
+  
 
 end

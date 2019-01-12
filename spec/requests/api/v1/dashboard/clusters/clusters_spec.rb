@@ -100,4 +100,68 @@ RSpec.describe "Api::V1::Dashboard::Clusters", type: :request do
 
   end
 
+  describe "create" do
+    it "success" do
+      category = FactoryBot.create :category
+      creator = FactoryBot.create :user
+
+      post "/dashboard/v1/clusters", headers: {Authorization: token.token},
+        params: {
+          name: "Cluster 1",
+          description: "Mbel lah",
+          category_id: category.id,
+          image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
+          status: "approved",
+          requester_id: creator.id
+        }
+      expect(response.status).to  eq(201)
+      expect(json_response[:data][:cluster][:name]).to  eq("Cluster 1")
+      expect(json_response[:data][:cluster][:description]).to  eq("Mbel lah")
+      expect(json_response[:data][:cluster][:category_id]).to  eq(category.id)
+      expect(json_response[:data][:cluster][:is_displayed]).to  eq(true)
+      expect(creator.reload.has_role?(MODERATOR, Cluster.find(json_response[:data][:cluster][:id]))).to  eq(true)
+    end
+  end
+
+  describe "update" do
+    it "success" do
+      category = FactoryBot.create :category
+      creator = FactoryBot.create :user
+
+      post "/dashboard/v1/clusters", headers: {Authorization: token.token},
+        params: {
+          name: "Cluster 1",
+          description: "Mbel lah",
+          category_id: category.id,
+          image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
+          status: "requested",
+          requester_id: creator.id
+        }
+      expect(creator.reload.has_role?(MODERATOR, Cluster.find(json_response[:data][:cluster][:id]))).to  eq(false)
+
+      c = Cluster.find json_response[:data][:cluster][:id]
+      
+      put "/dashboard/v1/clusters/#{c.id}", headers: {Authorization: token.token},
+        params: {
+          name: "Cluster 2",
+          description: "Mbel iki",
+          status: "approved"
+        }
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:cluster][:name]).to eq("Cluster 2")
+      expect(json_response[:data][:cluster][:description]).to eq("Mbel iki")
+      expect(json_response[:data][:cluster][:is_displayed]).to eq(true)
+      expect(creator.reload.has_role?(MODERATOR, Cluster.find(json_response[:data][:cluster][:id]))).to  eq(true)
+    end
+  end
+
+  describe "delete" do
+    it "success" do
+      c = FactoryBot.create :cluster
+      delete "/dashboard/v1/clusters/#{c.id}", headers: {Authorization: token.token}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:status]).to eq(true)
+    end
+  end
+
 end

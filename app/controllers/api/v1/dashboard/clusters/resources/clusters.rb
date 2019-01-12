@@ -17,6 +17,7 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       use :filter, filter_by: ["", "category_id"]
       optional :status, type: String, values: ["", "requested", "approved", "rejected"]
     end
+    oauth2
     get "/" do
       query = "*"
       if params.q.present?
@@ -92,5 +93,78 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       present :user, user, with: Api::V1::ValidToken::Entities::User
     end
 
+    desc "Update cluster" do
+      detail "Update cluster"
+      headers AUTHORIZATION_HEADERS
+    end
+    params do
+      optional :name, desc: "Name"
+      optional :category_id, desc: "Category ID"
+      optional :requester_id, desc: "User ID to become Admin"
+      optional :description, desc: "Description"
+      optional :image, desc: "Image", type: File
+      optional :status, type: String, values: ["","requested", "approved", "rejected"]
+    end
+    oauth2
+    put "/:id" do
+      q = Cluster.find params.id
+      error! "Not found" unless q.present?
+      params[:image] = prepare_file(params[:image]) if params[:image].present?
+      status = q.update_attributes!(cluster_params)
+
+      if params.status == "approved"
+        q.approve!
+      end
+      
+      present :status, status
+      present :cluster, q, with: API::V1::Clusters::Entities::ClusterDetail
+    end
+
+    desc "Delete cluster" do
+      detail "Delete cluster"
+      headers AUTHORIZATION_HEADERS
+    end
+    oauth2
+    delete "/:id" do
+      q = Cluster.find params.id
+      error! "Not found" unless q.present?
+      status = q.destroy!
+      present :status, status.paranoia_destroyed?
+      present :cluster, q, with: API::V1::Clusters::Entities::ClusterDetail
+    end
+
+    desc "Create cluster" do
+      detail "Create cluster"
+      headers AUTHORIZATION_HEADERS
+    end
+    params do
+      requires :name, desc: "Name"
+      requires :requester_id, desc: "User ID to become Admin"
+      requires :category_id, desc: "Category ID"
+      requires :description, desc: "Description"
+      requires :image, desc: "Image", type: File
+      requires :status, type: String, values: ["","requested", "approved", "rejected"]
+    end
+    oauth2
+    post "/" do
+      params[:image] = prepare_file(params[:image]) if params[:image].present?
+      q = Cluster.new cluster_params
+      status = q.save!
+
+      if params.status == "approved"
+        q.approve!
+      end 
+
+      error! "Not found" unless q.present?
+      present :status, status
+      present :cluster, q, with: API::V1::Clusters::Entities::ClusterDetail
+    end
+
+  end
+
+  helpers do
+    def cluster_params
+      permitted_params(params.except(:access_token)).permit(:name, :category_id, :description, :image, :status, :requester_id)
+    end
   end
 end
