@@ -4,6 +4,7 @@ module API::V1::Badges::Entities
     expose :name
     expose :description
     expose :image
+    expose :image_gray
     expose :position
     # expose :is_claimed, if: lambda { |c,o| o[:current_user].nil? } 
     # expose :achieved_badges, as: :is_claimed, if: lambda { |c,o| o[:current_user].present? } do |c,o|

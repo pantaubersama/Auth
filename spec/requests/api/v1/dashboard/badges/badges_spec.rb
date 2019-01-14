@@ -23,6 +23,8 @@ RSpec.describe "Api::V1::Dashboard::badges", type: :request do
       expect(response.status).to  eq(200)
       expect(json_response[:data][:badge][:name]).to  eq("Hello")
       expect(json_response[:data][:badge][:description]).to  eq("hello bro")
+      expect(json_response[:data][:badge][:image][:url]).not_to  eq(nil)
+      expect(json_response[:data][:badge][:image_gray][:url]).to  eq(nil)
     end
     it "not authorized" do
       put "/dashboard/v1/badges/#{@badge.id}", headers: {Authorization: user_token.token},
@@ -43,11 +45,14 @@ RSpec.describe "Api::V1::Dashboard::badges", type: :request do
           name: "Hello",
           description: "Mbel",
           image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
+          image_gray: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           position: 1,
         }
       expect(response.status).to  eq(200)
       expect(json_response[:data][:badge][:name]).to  eq("Hello")
       expect(json_response[:data][:badge][:description]).not_to  eq(nil)
+      expect(json_response[:data][:badge][:image][:url]).not_to  eq(nil)
+      expect(json_response[:data][:badge][:image_gray][:url]).not_to  eq(nil)
     end
   end
 
@@ -58,6 +63,7 @@ RSpec.describe "Api::V1::Dashboard::badges", type: :request do
           name: "Hello",
           description: "Mbel",
           image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
+          image_gray: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           position: 1,
         }
       expect(response.status).to  eq(201)

@@ -15,11 +15,13 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
       requires :name, type: String, desc: "Name"
       optional :description, type: String, desc: "Description"
       optional :image, type: File, desc: "Image"
+      optional :image_gray, type: File, desc: "Image Gray"
       optional :position, type: Integer, desc: "Position"
     end
     oauth2
     put "/:id" do
       params[:image] = prepare_file(params[:image]) if params[:image].present?
+      params[:image_gray] = prepare_file(params[:image_gray]) if params[:image_gray].present?
       q = Badge.find params.id
       error! "Not found" unless q.present?
       status = q.update_attributes!(badge_params)
@@ -48,10 +50,13 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
       requires :name, type: String, desc: "Name"
       optional :description, type: String, desc: "Description"
       optional :image, type: File, desc: "Image"
+      optional :image_gray, type: File, desc: "Image Gray"
       optional :position, type: Integer, desc: "Position"
     end
     oauth2
     post "/" do
+      params[:image] = prepare_file(params[:image]) if params[:image].present?
+      params[:image_gray] = prepare_file(params[:image_gray]) if params[:image_gray].present?
       q = Badge.new badge_params
       status = q.save!
       present :status, status
@@ -63,7 +68,7 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
   # permitted params
   helpers do
     def badge_params
-      permitted_params(params.except(:access_token)).permit(:name, :description, :image, :position)
+      permitted_params(params.except(:access_token)).permit(:name, :description, :image, :position, :image_gray)
     end
   end
 
