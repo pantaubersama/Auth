@@ -31,6 +31,7 @@ class User < ApplicationRecord
 
   def search_data
     # Api::V1::Me::Entities::UserSimple
+    # API::V1::Clusters::Entities::ClusterDetail
     {
       id:         self.id,
       email:      self.email,
@@ -39,7 +40,24 @@ class User < ApplicationRecord
       avatar:     self.avatar,
       verified:   self.verified,
       about:      self.about,
-      created_at: self.created_at
+      created_at: self.created_at,
+      cluster:    {
+        id: self.cluster.try(:id),
+        members_count: self.cluster.try(:members_count),
+        is_eligible: self.cluster.try(:is_eligible),
+        magic_link: self.cluster.try(:magic_link),
+        is_link_active: self.cluster.try(:is_link_active),
+        status: self.cluster.try(:status),
+        name: self.cluster.try(:name),
+        category_id: self.cluster.try(:category_id),
+        category: {
+          id: self.cluster.try(:category).try(:id),
+          name: self.cluster.try(:category).try(:name)
+        },
+        description: self.cluster.try(:description),
+        image: self.cluster.try(:image),
+        is_displayed: self.cluster.try(:is_displayed)
+      }
     }
   end
 

@@ -5,9 +5,9 @@ RSpec.describe "Api::V1::Users", type: :request do
     5.times do
       FactoryBot.create :user
     end
-    cluster = FactoryBot.create :cluster
+    @cluster = FactoryBot.create :cluster
     @user = User.last
-    @user.make_me_moderator! cluster
+    @user.make_me_moderator! @cluster
   end
 
   describe "Users" do
@@ -16,6 +16,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       get "/v1/users"
       expect(response.status).to  eq(200)
       expect(json_response[:data][:users].size).to  eq(5)
+      expect(json_response[:data][:users][0][:cluster][:id]).to  eq(@cluster.id)
     end
 
     it "Search by ID" do
@@ -76,7 +77,7 @@ RSpec.describe "Api::V1::Users", type: :request do
       get "/v1/users/#{@user.id}/simple"
       expect(response.status).to  eq(200)
       expect(json_response[:data][:user][:id]).to  eq(@user.id)
-      expect(json_response[:data][:user][:cluster]).to  eq(nil)
+      expect(json_response[:data][:user][:cluster][:id]).to  eq(@cluster.id)
       expect(json_response[:data][:user][:informant]).to  eq(nil)
     end
   end

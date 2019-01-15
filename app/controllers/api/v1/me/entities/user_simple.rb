@@ -12,4 +12,5 @@ class Api::V1::Me::Entities::UserSimple < Grape::Entity
   expose :facebook do |obj, opts|
     obj.facebook?
   end
+  expose :cluster, using: API::V1::Clusters::Entities::ClusterDetail
 end
