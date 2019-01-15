@@ -8,6 +8,7 @@ module Api
           expose :full_name
           expose :uid
           expose :provider
+          expose :avatar
           expose :is_admin do |u, opt|
             u.is_admin?
           end
