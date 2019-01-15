@@ -15,7 +15,9 @@ module AuthStubber
       "info": {
         "id": 2,
         "email": "helmy@extrainteger.com",
-        "full_name": "Yunan Helmy",
+        "first_name": "Yunan",
+        "last_name": "Helmy",
+        "username": "yunanhelmy",
         "name": "Yunan Helmy",
         "invitation_accepted_at": nil,
         "invitations_count": 8
@@ -36,7 +38,9 @@ module AuthStubber
         "info": {
           "id": 2,
           "email": "helmy@extrainteger.com",
-          "full_name": "Yunan Helmy",
+          "first_name": "Yunan",
+          "last_name": "Helmy",
+          "username": "yunanhelmy",
           "name": "Yunan Helmy",
           "invitation_accepted_at": nil,
           "invitations_count": 8
