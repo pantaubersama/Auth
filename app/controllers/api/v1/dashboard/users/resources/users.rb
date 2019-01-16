@@ -17,6 +17,7 @@ class API::V1::Dashboard::Users::Resources::Users < API::V1::ApplicationResource
     post "/admin" do
       u = User.find params.id
       u.make_me_admin!
+      u.reindex
       present :user, u, with: Api::V1::ValidToken::Entities::User
     end
 
@@ -31,6 +32,7 @@ class API::V1::Dashboard::Users::Resources::Users < API::V1::ApplicationResource
     delete "/admin" do
       u = User.find params.id
       u.remove_admin!
+      u.reindex
       present :user, u, with: Api::V1::ValidToken::Entities::User
     end
 
@@ -45,6 +47,7 @@ class API::V1::Dashboard::Users::Resources::Users < API::V1::ApplicationResource
     post "/approve" do
       u = User.find params.id
       u.verification.verified!
+      u.reindex
       present :user, u, with: Api::V1::ValidToken::Entities::User
     end
 
@@ -59,6 +62,7 @@ class API::V1::Dashboard::Users::Resources::Users < API::V1::ApplicationResource
     delete "/reject" do
       u = User.find params.id
       u.verification.rejected!
+      u.reindex
       present :user, u, with: Api::V1::ValidToken::Entities::User
     end
 

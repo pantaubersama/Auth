@@ -42,6 +42,7 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       cluster = ::Cluster.find params.id
       error!("Cluster sudah di set `tidak di setujui` (Rejected)", 403) if cluster.rejected?
       cluster.approve!
+      cluster.requester.reindex
       present :cluster, cluster, with: API::V1::Clusters::Entities::ClusterDetail
     end
 
@@ -73,6 +74,7 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       user    = User.find(params.user_id)
       cluster = Cluster.find params.id
       user.add_me_to_cluster! cluster if cluster
+      user.reindex
       present :user, user, with: Api::V1::ValidToken::Entities::User
     end
 
@@ -90,6 +92,7 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       cluster = Cluster.find params.id
 
       user.quit_cluster! if user.has_role?(MODERATOR, cluster) || user.has_role?(MEMBER, cluster)
+      user.reindex
       present :user, user, with: Api::V1::ValidToken::Entities::User
     end
 
