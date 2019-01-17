@@ -16,7 +16,7 @@ class Api::V1::Users::Resources::UsersPublic < API::V1::ApplicationResource
     desc 'List, Where' do
       detail "List, Where"
     end
-    paginate per_page: 25, max_per_page: 500
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     params do
       optional :ids, type: String, desc: "string of ID separate by comma"
       use :searchkick_search, default_m: "word_start", default_o: "and"
@@ -39,8 +39,8 @@ class Api::V1::Users::Resources::UsersPublic < API::V1::ApplicationResource
         match: match_word, 
         misspellings: false,
         load: false, 
-        page: params.page, 
-        per_page: params.per_page, 
+        page: (params.page || 1), 
+        per_page: (params.per_page || Pagy::VARS[:items]),
         order: build_order, 
         where: build_conditions
       )

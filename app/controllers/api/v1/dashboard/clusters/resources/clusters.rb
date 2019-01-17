@@ -11,7 +11,7 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       detail "List, search, and filter"
       headers AUTHORIZATION_HEADERS
     end
-    paginate per_page: 50, max_per_page: 500
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     params do
       optional :q, type: String, desc: "Keyword"
       use :filter, filter_by: ["", "category_id"]
@@ -29,8 +29,8 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
         match: :word_start, 
         misspellings: false, 
         load: false, 
-        page: params.page, 
-        per_page: params.per_page, 
+        page: (params.page || 1), 
+        per_page: (params.per_page || Pagy::VARS[:items]),
         order: { name: :desc }, 
         where: build_conditions
       )

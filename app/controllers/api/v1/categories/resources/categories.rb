@@ -16,7 +16,7 @@ class API::V1::Categories::Resources::Categories< API::V1::ApplicationResource
     desc 'Where' do
       detail "Where"
     end
-    paginate per_page: 50, max_per_page: 500
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     params do
       optional :ids, type: String, desc: "string of ID separate by comma"
       optional :name, type: String, desc: "name"

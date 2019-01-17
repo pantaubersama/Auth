@@ -7,7 +7,7 @@ class API::V1::PoliticalParties::Resources::PoliticalParties < API::V1::Applicat
     desc 'List' do
       detail "List"
     end
-    paginate per_page: 50, max_per_page: 500
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     get "/" do
       parties = PoliticalParty.all
       resources = paginate(parties)

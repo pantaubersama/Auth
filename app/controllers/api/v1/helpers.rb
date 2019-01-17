@@ -9,7 +9,7 @@ module API::V1::Helpers
   def present_metas_searchkick resources
     total_pages  = (resources.total_count.to_f / (params.per_page || Pagy::VARS[:max_per_page])).ceil
     limit_value  = params.per_page || Pagy::VARS[:max_per_page]
-    current_page = params.page
+    current_page = params.page || 1
     present :meta, { total_pages: total_pages, limit_value: limit_value, current_page: current_page }, with: API::V1::Metas::Entities::Meta
   end
 

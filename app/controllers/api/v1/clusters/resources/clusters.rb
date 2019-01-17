@@ -28,7 +28,7 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
     desc 'List, search, and filter' do
       detail "List, search, and filter"
     end
-    paginate per_page: 50, max_per_page: 500
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     params do
       optional :q, type: String, desc: "Keyword"
       use :filter, filter_by: ["", "category_id"]
@@ -44,8 +44,8 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
         match: :word_start, 
         misspellings: false, 
         load: false, 
-        page: params.page, 
-        per_page: params.per_page, 
+        page: (params.page || 1), 
+        per_page: (params.per_page || Pagy::VARS[:items]),
         order: { name: :desc }, 
         where: build_conditions
       )
