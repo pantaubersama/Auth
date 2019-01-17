@@ -81,4 +81,67 @@ RSpec.describe "Api::V1::Users", type: :request do
       expect(json_response[:data][:user][:informant]).to  eq(nil)
     end
   end
+
+  describe "pagination" do
+    it "paginate searchkick page 1" do
+      8.times do
+        FactoryBot.create :user
+      end
+      User.reindex
+      # total record = 13
+      get "/v1/users",
+        params: {page: 1, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:users].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(1)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 2" do
+      8.times do
+        FactoryBot.create :user
+      end
+      User.reindex
+      # total record = 13
+      get "/v1/users",
+        params: {page: 2, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:users].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(2)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 3" do
+      8.times do
+        FactoryBot.create :user
+      end
+      User.reindex
+      # total record = 13
+      get "/v1/users",
+        params: {page: 3, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:users].size).to eq(3)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 4" do
+      8.times do
+        FactoryBot.create :user
+      end
+      User.reindex
+      # total record = 13
+      get "/v1/users",
+        params: {page: 4, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:users].size).to eq(0)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(4)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+  end
+
 end

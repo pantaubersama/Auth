@@ -34,11 +34,19 @@ class Api::V1::Users::Resources::UsersPublic < API::V1::ApplicationResource
       build_conditions = params.filter_by.present? ? user_filter(params.filter_by) : default_conditions
       build_conditions = build_conditions.merge({id: params.ids.split(",").map(&:strip)}) if params.ids.present?
 
-      resources = User.search(q, operator: operator, match: match_word, misspellings: false,
-        load: false, page: params.page, per_page: params.per_page, order: build_order, where: build_conditions).results
+      resources = User.search(q, 
+        operator: operator, 
+        match: match_word, 
+        misspellings: false,
+        load: false, 
+        page: params.page, 
+        per_page: params.per_page, 
+        order: build_order, 
+        where: build_conditions
+      )
       
       present :users, resources, with: Api::V1::Me::Entities::UserSimple
-      present_metas resources
+      present_metas_searchkick resources
     end
   end
 

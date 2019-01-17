@@ -1,8 +1,14 @@
 module API::V1::Helpers
-  # meta response
   def present_metas resources
-    total_pages  = resources.count
-    limit_value  = params.per_page
+    total_pages  = resources.total_pages
+    limit_value  = params.limit_value || params.per_page || Pagy::VARS[:max_per_page]
+    current_page = params.current_page || params.page || 1
+    present :meta, { total_pages: total_pages, limit_value: limit_value, current_page: current_page }, with: API::V1::Metas::Entities::Meta
+  end
+
+  def present_metas_searchkick resources
+    total_pages  = (resources.total_count.to_f / (params.per_page || Pagy::VARS[:max_per_page])).ceil
+    limit_value  = params.per_page || Pagy::VARS[:max_per_page]
     current_page = params.page
     present :meta, { total_pages: total_pages, limit_value: limit_value, current_page: current_page }, with: API::V1::Metas::Entities::Meta
   end

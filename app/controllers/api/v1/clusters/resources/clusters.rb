@@ -40,9 +40,17 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
       end
       build_conditions = { status: "approved" }
       build_conditions = params.filter_by.present? && params.filter_value.present? ? { params.filter_by => params.filter_value } : build_conditions
-      resources        = ::Cluster.search(query, match: :text_middle, misspellings: false, load: true, page: params.page, per_page: params.per_page, order: { name: :desc }, where: build_conditions).results
+      resources        = ::Cluster.search(query, 
+        match: :word_start, 
+        misspellings: false, 
+        load: false, 
+        page: params.page, 
+        per_page: params.per_page, 
+        order: { name: :desc }, 
+        where: build_conditions
+      )
       present :clusters, resources, with: API::V1::Clusters::Entities::ClusterDetail
-      present_metas resources
+      present_metas_searchkick resources
     end
 
   end

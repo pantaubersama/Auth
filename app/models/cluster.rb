@@ -2,7 +2,11 @@ class Cluster < ApplicationRecord
   acts_as_paranoid
   resourcify
   mount_uploader :image, ClusterUploader
-  searchkick text_middle: [:all_fields]
+  searchkick searchable: [:name, :description], 
+    word_start: [:name, :description], 
+    word_middle: [:name, :description], 
+    word_end: [:name, :description], 
+    word: [:name, :description]
 
   belongs_to :category, optional: true, counter_cache: true
   belongs_to :requester, optional: true, class_name: "User"

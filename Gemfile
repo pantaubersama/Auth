@@ -98,7 +98,7 @@ gem 'rack-cors'
 # Then choose your preferred paginator from the following:
 gem 'pagy'
 # Finally...
-gem 'api-pagination'
+gem 'api-pagination', github: "extrainteger/api-pagination"
 
 # oauth
 gem 'doorkeeper'

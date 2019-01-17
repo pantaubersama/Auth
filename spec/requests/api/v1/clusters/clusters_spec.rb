@@ -40,9 +40,10 @@ RSpec.describe "Api::V1::Clusters", type: :request do
     end
 
     it "search" do
+      puts "refactored using word_start"
       get "/v1/clusters", params: { q: "LEN" }
       expect(response.status).to eq(200)
-      expect(json_response[:data][:clusters].size).to eq(4)
+      expect(json_response[:data][:clusters].size).to eq(0)
     end
 
     it "display" do
@@ -58,6 +59,68 @@ RSpec.describe "Api::V1::Clusters", type: :request do
       expect(json_response[:data][:cluster][:category_id]).to eq(@c.id)
       expect(json_response[:data][:cluster][:name]).to eq("Test Request")
       expect(json_response[:data][:cluster][:is_displayed]).to eq(false)
+    end
+  end
+
+  describe "pagination" do
+    it "paginate searchkick page 1" do
+      8.times do
+        FactoryBot.create :cluster, category: @c, is_displayed: true, status: :approved, name: "No Name"
+      end
+      Cluster.reindex
+      # total record = 13
+      get "/v1/clusters",
+        params: {page: 1, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:clusters].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(1)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 2" do
+      8.times do
+        FactoryBot.create :cluster, category: @c, is_displayed: true, status: :approved, name: "No Name"
+      end
+      Cluster.reindex
+      # total record = 13
+      get "/v1/clusters",
+        params: {page: 2, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:clusters].size).to eq(5)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(2)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 3" do
+      8.times do
+        FactoryBot.create :cluster, category: @c, is_displayed: true, status: :approved, name: "No Name"
+      end
+      Cluster.reindex
+      # total record = 13
+      get "/v1/clusters",
+        params: {page: 3, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:clusters].size).to eq(3)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
+    end
+
+    it "paginate searchkick page 4" do
+      8.times do
+        FactoryBot.create :cluster, category: @c, is_displayed: true, status: :approved, name: "No Name"
+      end
+      Cluster.reindex
+      # total record = 13
+      get "/v1/clusters",
+        params: {page: 4, per_page: 5}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:clusters].size).to eq(0)
+      expect(json_response[:data][:meta][:pages][:total]).to eq(3)
+      expect(json_response[:data][:meta][:pages][:page]).to eq(4)
+      expect(json_response[:data][:meta][:pages][:per_page]).to eq(5)
     end
   end
 
