@@ -62,7 +62,7 @@ class API::V1::Clusters::Resources::Moderations < API::V1::ApplicationResource
       optional :cluster_id, type: String, desc: "Cluster ID (Admin Only)"
     end
     post "invite" do
-      c = current_user.cluster unless current_user.is_admin?
+      c = current_user.cluster if current_user.has_role? MODERATOR, current_user.cluster
       c = Cluster.approved.find(params.cluster_id) if current_user.is_admin? && params.cluster_id.present?
 
       error! "Cluster not found", 404 unless c.present?
