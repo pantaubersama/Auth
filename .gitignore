@@ -35,3 +35,6 @@
 # Ignore uploaded files
 /public/uploads
 /spec/support/uploads
+
+# Ignore production recipe
+/config/deploy/production.rb
