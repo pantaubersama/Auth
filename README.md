@@ -1,40 +1,30 @@
 # README
 ## Pantau Bersama Auth
 
-##### Setup
+#### Setup
 - `git clone git@git.extrainteger.com:pantau-group/API/pantau-bersama-auth.git`
 - setup your database (postgresql)
-- create env variable files (.env.development , .env.test)
-    - `.env.development`
-```
-    BASE_URL="http://0.0.0.0:3000"
-    
-    # database master
-    DATABASE_NAME=auth_development
-    DATABASE_USERNAME=postgres
-    DATABASE_PASSWORD=namakualam
-    DATABASE_HOSTNAME= localhost
-    DATABASE_PORT="5432"
-    RAILS_MAX_THREADS="5"
-```
-
- - `.env.test` 
-```
-    BASE_URL="http://0.0.0.0:3000"
-    
-    # database master
-    DATABASE_NAME=auth_test
-    DATABASE_USERNAME=postgres
-    DATABASE_PASSWORD=namakualam
-    DATABASE_HOSTNAME= localhost
-    DATABASE_PORT="5432"
-    RAILS_MAX_THREADS="5"
-```
-   
+- create env variable files (.env.development , .env.test) from env.example
 - `$ bundle install`
-- `$ rails db:create db:migrate`
-- `$ rails s`
-- go to [`http://localhost:3000/doc`](http://localhost:3000/doc)
+- `$ rails db:create db:migrate seed:migrate`
+- `$ rails s -p 4000`
+- go to [`http://localhost:4000/doc`](http://localhost:4000/doc)
+
+#### HTTP Authentication
+
+Check it out in your `.env.development`
+
+```
+Username : admin
+Password : admin
+```
 
 #### make sure all success installed
-- [`http://localhost:3000/auth/v1/infos`](http://localhost:3000/auth/v1/infos)
+- [`http://localhost:4000/v1/infos`](http://localhost:4000/v1/infos)
+
+
+#### Test
+
+- run `rake db:test:prepare`
+- run `rake seed:migrate RAILS_ENV=test`
+- run `rspec`

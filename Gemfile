@@ -38,6 +38,10 @@ group :development, :test do
 
   gem 'guard-rspec', require: false
   # then run $ bundle exec guard init rspec
+
+  ###doc [2] set up factory_girl
+  # DEPRECATION gem 'factory_girl_rails'
+  gem 'factory_bot_rails', '~> 4.0'
 end
 
 group :development do
@@ -45,13 +49,16 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  gem 'capistrano'
+  gem 'capistrano-rails'
+  gem 'capistrano3-unicorn'
+  gem 'capistrano-rvm'
+
+  gem "t"
 end
 
 group :test do
-  ###doc [2] set up factory_girl
-  # DEPRECATION gem 'factory_girl_rails'
-  gem 'factory_bot_rails', '~> 4.0'
-
   ###doc [3] set up shoulda_matchers
   gem 'shoulda-matchers', '~> 3.1'
 
@@ -89,9 +96,32 @@ gem 'rack-cors'
 
 ###doc [9] paginator
 # Then choose your preferred paginator from the following:
-gem 'kaminari'
+gem 'pagy'
 # Finally...
-gem 'api-pagination'
+gem 'api-pagination', github: "extrainteger/api-pagination"
 
 # oauth
 gem 'doorkeeper'
+gem 'wine_bouncer'
+
+gem 'paranoia', '~> 2.2'
+gem 'paper_trail'
+gem 'seed_migration'
+
+gem 'omniauth-identitas'
+gem 'httparty'
+gem 'ruby-identitas-api', '~> 0.8.0'
+
+gem 'unicorn', group: [:staging, :production]
+
+gem "rolify"
+
+gem 'mini_magick'
+gem 'carrierwave', '~> 1.0'
+gem 'fog-aws'
+gem 'file_validators'
+
+gem 'searchkick'
+
+gem "twitter", "6.1.0"
+gem 'koala'
