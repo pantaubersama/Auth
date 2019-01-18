@@ -63,7 +63,7 @@ class API::V1::Clusters::Resources::Moderations < API::V1::ApplicationResource
     end
     post "invite" do
       c = current_user.cluster unless current_user.is_admin?
-      c = Cluster.approved.find(params.cluster_id) if current_user.is_admin?
+      c = Cluster.approved.find(params.cluster_id) if current_user.is_admin? && params.cluster_id.present?
 
       error! "Cluster not found", 404 unless c.present?
       authorize_moderator_or_admin! c
