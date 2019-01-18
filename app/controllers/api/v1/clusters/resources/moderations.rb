@@ -84,8 +84,8 @@ class API::V1::Clusters::Resources::Moderations < API::V1::ApplicationResource
         u.invite_code = invite_code
         u.save(validate: false)
 
-        not_in_cluster = Cluster.find_roles(:moderator, u).count == 0 && Cluster.find_roles(:member, u).count == 0 
-        if not_in_cluster
+        in_cluster = u.has_role?(MODERATOR, c) || u.has_role?(MEMBER, c)
+        if !in_cluster
           result = current_user.invite_to_symbolic u, u.invite_code
 
           status = u.update_attributes!({provider: result["provider"], uid: result["uid"]})
