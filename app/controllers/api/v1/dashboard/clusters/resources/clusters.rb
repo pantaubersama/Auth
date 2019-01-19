@@ -25,13 +25,14 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       end
       build_conditions = params.filter_by.present? && params.filter_value.present? ? { params.filter_by => params.filter_value } : {}
       build_conditions = params.status.present? ? build_conditions.merge({status: params.status})  : build_conditions
+      default_order = {name: {order: :desc, unmapped_type: "long"}}
       resources        = ::Cluster.visible.search(query, 
         match: :word_start, 
         misspellings: false, 
         load: false, 
         page: (params.page || 1), 
         per_page: (params.per_page || Pagy::VARS[:items]),
-        order: { name: :desc }, 
+        order: default_order, 
         where: build_conditions
       )
       present :clusters, resources, with: API::V1::Clusters::Entities::ClusterDetail
