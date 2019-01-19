@@ -57,7 +57,8 @@ class User < ApplicationRecord
         description: self.cluster.try(:description),
         image: self.cluster.try(:image),
         is_displayed: self.cluster.try(:is_displayed)
-      }
+      },
+      status_verification: self.verification.try(:status)
     }
   end
 
@@ -115,5 +116,5 @@ class User < ApplicationRecord
   def facebook?
     accounts.facebook.size == 1
   end
-  
+
 end
