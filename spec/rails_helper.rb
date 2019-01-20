@@ -7,6 +7,8 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 require 'webmock/rspec'
+require 'bunny-mock'
+BunnyMock::use_bunny_queue_pop_api = true
 WebMock.disable_net_connect!(allow_localhost: true)
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -74,6 +76,11 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
     DatabaseCleaner.strategy = :transaction
+  end
+
+
+  config.before(:each) do
+    Publishers::User.connection = BunnyMock.new.start
   end
 
   config.after(:all) do
