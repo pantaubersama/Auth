@@ -28,6 +28,12 @@ class User < ApplicationRecord
   # callback
   after_create :build_verification_model
   after_create :build_informant_model
+  after_commit :publish_changes
+
+  def publish_changes
+    Publishers::User.publish QUEUE_USER_CHANGED, {id: self.id}
+  end
+  
 
   def search_data
     # Api::V1::Me::Entities::UserSimple

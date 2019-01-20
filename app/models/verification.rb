@@ -1,7 +1,7 @@
 class Verification < ApplicationRecord
   enum status: [:requested, :verified, :rejected]
 
-  belongs_to :user
+  belongs_to :user, touch: true
 
   mount_uploader :ktp_selfie, AvatarUploader
   mount_uploader :ktp_photo, AvatarUploader

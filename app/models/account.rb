@@ -1,5 +1,5 @@
 class Account < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, touch: true
 
   enum account_type: [:twitter, :facebook]
 
