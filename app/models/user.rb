@@ -58,7 +58,8 @@ class User < ApplicationRecord
         image: self.cluster.try(:image),
         is_displayed: self.cluster.try(:is_displayed)
       },
-      status_verification: self.verification.try(:status)
+      status_verification: self.verification.try(:status),
+      sent_at_verification: self.verification.try(:created_at),
     }
   end
 
