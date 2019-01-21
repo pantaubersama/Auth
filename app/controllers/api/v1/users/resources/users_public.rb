@@ -27,8 +27,8 @@ class Api::V1::Users::Resources::UsersPublic < API::V1::ApplicationResource
       operator = params.o.nil? || params.o.empty? ? "and" : params.o
       match_word = params.m.nil? || params.m.empty? ? "word_start" : params.m.to_sym
 
-      default_order = {created_at: :desc}
-      build_order = params.order_by.present? && params.direction.present? ? { params.order_by.to_sym => params.direction.to_sym } : default_order
+      default_order = {created_at: {order: :desc, unmapped_type: "long"}}
+      build_order = params.order_by.present? && params.direction.present? ? { params.order_by.to_sym => { order: params.direction.to_sym, unmapped_type: "long"  } } : default_order
 
       default_conditions = {}
       build_conditions = params.filter_by.present? ? user_filter(params.filter_by) : default_conditions

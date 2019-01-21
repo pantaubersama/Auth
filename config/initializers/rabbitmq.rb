@@ -1,0 +1,1 @@
+QUEUE_USER_CHANGED="user.changed"

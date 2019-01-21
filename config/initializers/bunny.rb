@@ -1,0 +1,1 @@
+# Publishers::User.connection = Bunny.new(ENV["RABBITMQ_URL"]).start
