@@ -101,7 +101,7 @@ class API::V1::Dashboard::Users::Resources::Users < API::V1::ApplicationResource
         where: build_conditions
       )
 
-      present :users, resources, with: Api::V1::Me::Entities::UserSimple
+      present :users, resources, with: Api::V1::Dashboard::Verifications::Entities::User
       present_metas_searchkick resources
     end
 

@@ -19,6 +19,7 @@ module API
       mount API::V1::Dashboard::Categories::Routes
       mount API::V1::Dashboard::Badges::Routes
       mount API::V1::Dashboard::PoliticalParties::Routes
+      mount API::V1::Dashboard::Verifications::Routes
 
       # Swagger config
       add_swagger_documentation(

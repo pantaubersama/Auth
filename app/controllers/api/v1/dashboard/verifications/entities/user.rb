@@ -1,4 +1,4 @@
-class Api::V1::Me::Entities::UserSimple < Grape::Entity
+class Api::V1::Dashboard::Verifications::Entities::User < Grape::Entity
   expose :id
   expose :email
   expose :full_name
@@ -13,4 +13,6 @@ class Api::V1::Me::Entities::UserSimple < Grape::Entity
     obj.facebook?
   end
   expose :cluster, using: API::V1::Clusters::Entities::ClusterDetail
+  expose :status_verification
+  expose :sent_at_verification
 end
