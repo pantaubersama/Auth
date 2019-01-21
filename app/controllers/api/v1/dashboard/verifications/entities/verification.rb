@@ -11,6 +11,7 @@ module API
             expose :signature
             expose :approved
             expose :step
+            expose :status
             expose :user, with: Api::V1::Me::Entities::User
           end
         end
