@@ -140,6 +140,22 @@ class API::V1::Dashboard::Users::Resources::Users < API::V1::ApplicationResource
       response = user.informant.update_attributes(informant_params)
       present :informant, user.informant, with: API::V1::Informants::Entities::Informant
     end
+
+    desc 'Update avatar' do
+      detail "Update avatar"
+      headers AUTHORIZATION_HEADERS
+      params Api::V1::Me::Entities::UserAvatar.documentation
+    end
+    oauth2
+    params do
+      requires :id, type: String, desc: "User ID"
+    end
+    put "/avatar" do
+      params[:avatar] = prepare_file(params[:avatar]) if params[:avatar].present?
+      user = User.find(params.id)
+      response        = user.update_attribute(:avatar, params[:avatar])
+      present :user, user, with: Api::V1::Me::Entities::User
+    end
   end
 
   # permitted params
