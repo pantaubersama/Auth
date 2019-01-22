@@ -17,6 +17,8 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
       optional :image, type: File, desc: "Image"
       optional :image_gray, type: File, desc: "Image Gray"
       optional :position, type: Integer, desc: "Position"
+      optional :code, type: String, desc: "<b>[Jangan diganti jika sudah dikoding]</b> Code"
+      optional :namespace, type: String, desc: "<b>[Jangan diganti jika sudah dikoding]</b> Namespace", values: BADGE_NAMESPACE
     end
     oauth2
     put "/:id" do
@@ -26,7 +28,7 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
       error! "Not found" unless q.present?
       status = q.update_attributes!(badge_params)
       present :status, status
-      present :badge, q, with: API::V1::Badges::Entities::Badge
+      present :badge, q, with: API::V1::Badges::Entities::Badge, current_user: current_user
     end
 
     desc "Delete badge" do
@@ -39,7 +41,7 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
       error! "Not found" unless q.present?
       status = q.destroy!
       present :status, status.paranoia_destroyed?
-      present :badge, q, with: API::V1::Badges::Entities::Badge
+      present :badge, q, with: API::V1::Badges::Entities::Badge, current_user: current_user
     end
 
     desc "Create badge" do
@@ -52,6 +54,8 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
       optional :image, type: File, desc: "Image"
       optional :image_gray, type: File, desc: "Image Gray"
       optional :position, type: Integer, desc: "Position"
+      optional :code, type: String, desc: "Code"
+      optional :namespace, type: String, desc: "Namespace", values: BADGE_NAMESPACE
     end
     oauth2
     post "/" do
@@ -60,7 +64,7 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
       q = Badge.new badge_params
       status = q.save!
       present :status, status
-      present :badge, q, with: API::V1::Badges::Entities::Badge
+      present :badge, q, with: API::V1::Badges::Entities::Badge, current_user: current_user
     end
 
   end
@@ -68,7 +72,7 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
   # permitted params
   helpers do
     def badge_params
-      permitted_params(params.except(:access_token)).permit(:name, :description, :image, :position, :image_gray)
+      permitted_params(params.except(:access_token)).permit(:name, :description, :image, :position, :image_gray, :code, :namespace)
     end
   end
 

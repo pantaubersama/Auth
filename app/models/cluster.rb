@@ -61,7 +61,7 @@ class Cluster < ApplicationRecord
   end
 
   def search_data
-    resluts = {}
+    resluts = {members_count: members_count}
     Cluster.column_names.each do |column|
       resluts[column] = self.send(column.to_s)
     end

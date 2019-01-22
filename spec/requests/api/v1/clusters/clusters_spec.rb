@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "Api::V1::Clusters", type: :request do
   let!(:application) { FactoryBot.create :application }
   let!(:user) { FactoryBot.create :user }
+  let!(:user2) { FactoryBot.create :user }
   let!(:token) { FactoryBot.create :access_token, :application => application, :resource_owner_id => user.id }
 
   before do
@@ -12,14 +13,17 @@ RSpec.describe "Api::V1::Clusters", type: :request do
     @c        = FactoryBot.create :category
     @cluster  = Cluster.first
     @cluster2 = FactoryBot.create :cluster, category: @c, is_displayed: true, status: :approved, name: "No Name"
+    user2.add_me_to_cluster! @cluster
     Cluster.reindex
   end
 
   describe "Clusers" do
     it "list" do
+      Cluster.reindex
       get "/v1/clusters"
       expect(response.status).to eq(200)
       expect(json_response[:data][:clusters].size).to eq(5)
+      expect(json_response[:data][:clusters][0][:members_count]).to eq(1)
     end
 
     it "filter" do

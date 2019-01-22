@@ -4,4 +4,12 @@ class AchievedBadge < ApplicationRecord
   belongs_to :resource, polymorphic: true, optional: true
 
   validates :badge, uniqueness: { scope: :user }
+
+  after_create :send_notification
+
+  def send_notification
+    Publishers::ProfileNotification.publish "pemilu.profile", { 
+      receiver_id: user.id, notif_type: :profile, event_type: badge.namespace, name: badge.name 
+    }
+  end
 end
