@@ -63,7 +63,15 @@ class Cluster < ApplicationRecord
   def search_data
     index_all.merge({
                     members_count: members_count,
-                    all_fields:  ["--", self.name, "--"].compact.join(' ')
+                    all_fields:  ["--", self.name, "--"].compact.join(' '),
+                    category: {
+                      id: self.category.try(:id),
+                      name: self.category.try(:name)
+                    },
+                    requester: {
+                      id: self.requester.try(:id),
+                      full_name: self.requester.try(:full_name)
+                    }
                   })
   end
 

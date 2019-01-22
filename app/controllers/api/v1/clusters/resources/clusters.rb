@@ -22,7 +22,7 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
     end
     get "/:id" do
       c = ::Cluster.visible.find params[:id]
-      present :cluster, c, with: API::V1::Clusters::Entities::ClusterDetail
+      present :cluster, c, with: API::V1::Clusters::Entities::ClusterDetail, current_user: current_user
     end
 
     desc 'List, search, and filter' do
@@ -50,7 +50,7 @@ class API::V1::Clusters::Resources::Clusters < API::V1::ApplicationResource
         order: default_order, 
         where: build_conditions
       )
-      present :clusters, resources, with: API::V1::Clusters::Entities::ClusterDetail
+      present :clusters, resources, with: API::V1::Clusters::Entities::ClusterDetail, current_user: current_user
       present_metas_searchkick resources
     end
 
