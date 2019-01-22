@@ -105,5 +105,51 @@ class API::V1::Dashboard::Users::Resources::Users < API::V1::ApplicationResource
       present_metas_searchkick resources
     end
 
+
+    desc 'update user detail' do
+      detail "Update detail"
+      headers AUTHORIZATION_HEADERS
+    end
+    oauth2
+    params do
+      requires :id, type: String, desc: "User ID"
+      optional :full_name, type: String, desc: "Full Name"
+      optional :username, type: String, desc: "Username (without @)"
+      optional :about, type: String, desc: "About"
+      optional :location, type: String, desc: "Location"
+      optional :education, type: String, desc: "Education"
+      optional :occupation, type: String, desc: "Occupation"
+    end
+    put '/update_detail' do
+      user = User.find(params.id)
+      user.update(update_detail_params)
+      present :user, user, with: Api::V1::Me::Entities::User
+    end
+
+    desc 'Update user informant' do
+      detail "Update user informant"
+      headers AUTHORIZATION_HEADERS
+      params API::V1::Informants::Entities::Informant.documentation
+    end
+    oauth2
+    params do
+      requires :id, type: String, desc: "User ID"
+    end
+    put "/update_informant" do
+      user = User.find(params.id)
+      response = user.informant.update_attributes(informant_params)
+      present :informant, user.informant, with: API::V1::Informants::Entities::Informant
+    end
+  end
+
+  # permitted params
+  helpers do
+    def update_detail_params
+      permitted_params(params.except(:access_token)).permit(:full_name, :username, :about, :location, :education, :occupation)
+    end
+
+    def informant_params
+      permitted_params(params.except(:access_token)).permit(:identity_number, :pob, :dob, :gender, :occupation, :nationality, :address, :phone_number)
+    end
   end
 end
