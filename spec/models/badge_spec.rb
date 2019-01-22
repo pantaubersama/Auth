@@ -6,6 +6,21 @@ RSpec.describe Badge, type: :model do
       badge = FactoryBot.create :badge
       expect(badge).to be_valid
     end
+
+    it "should be success" do
+      badge = FactoryBot.create :badge, code: "TANYA1", namespace: "pendidikan_politik"
+      expect(badge).to be_valid
+
+      expect {
+        badge = FactoryBot.create :badge, code: "TANYA1", namespace: "pendidikan_politik"
+      }.to raise_error ActiveRecord::RecordInvalid
+
+      badge = FactoryBot.create :badge, code: "TANYA10", namespace: "pendidikan_politik"
+      expect(badge).to be_valid
+
+      badge = FactoryBot.create :badge, code: "TANYA10", namespace: "janji_politik"
+      expect(badge).to be_valid
+    end
   end
 
   describe "Achieved" do

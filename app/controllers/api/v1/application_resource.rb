@@ -9,6 +9,11 @@ module API
 
       AUTHORIZATION_HEADERS = { Authorization: { description: 'Access Token', required: true } }.freeze
       OPTIONAL_AUTHORIZATION_HEADERS = { Authorization: { description: 'Access Token', required: false } }.freeze
+
+      BADGE_NAMESPACE = [
+        "", "badge_janji_politik", "badge_tanya", "badge_tanya_interaksi", "badge_kuis", "badge_lapor",
+        "badge_profile", "badge_relawan", "badge_pantau_bersama"
+      ].freeze
     end
   end
 end

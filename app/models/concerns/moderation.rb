@@ -38,17 +38,21 @@ module Moderation
     self.remove_role MODERATOR
     self.remove_role MEMBER
     self.add_role MODERATOR, cluster
+    cluster.reindex
   end
     
   def add_me_to_cluster! cluster
     self.remove_role MODERATOR
     self.remove_role MEMBER
     self.add_role MEMBER, cluster
+    cluster.reindex
   end
 
   def quit_cluster!
+    c = self.cluster
     self.remove_role MODERATOR, self.cluster
     self.remove_role MEMBER, self.cluster
+    c.reindex
     return true
   end
   
