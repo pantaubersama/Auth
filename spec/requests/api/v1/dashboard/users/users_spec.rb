@@ -51,6 +51,22 @@ RSpec.describe "Api::V1::Dashboard::Clusters", type: :request do
       expect(response.status).to eq(200)
       expect(json_response[:data][:user][:is_admin]).to eq(false)
     end
+
+    it "list user verification" do
+      pending "add some examples to (or delete) #{__FILE__}"
+    end
+    it "update user detail" do
+      pending "add some examples to (or delete) #{__FILE__}"
+    end
+    it "Update user informant" do
+      pending "add some examples to (or delete) #{__FILE__}"
+    end
+    it "Update avatar" do
+      pending "add some examples to (or delete) #{__FILE__}"
+    end
+    it "show user verification" do
+      pending "add some examples to (or delete) #{__FILE__}"
+    end
   end
 
 end
