@@ -203,7 +203,6 @@ class DefaultBadge < SeedMigration::Migration
       }
     ]
     Badge.create!(data)
-    Badge.reindex
   end
 
   def down
