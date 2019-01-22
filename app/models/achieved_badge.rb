@@ -9,7 +9,7 @@ class AchievedBadge < ApplicationRecord
 
   def send_notification
     Publishers::ProfileNotification.publish "pemilu.profile", { 
-      receiver_id: user.id, notif_type: :profile, event_type: badge.namespace, name: badge.name 
+      receiver_id: user.id, notif_type: :profile, event_type: badge.namespace, badge_title: badge.name 
     }
   end
 end
