@@ -6,6 +6,9 @@ class Api::V1::Me::Entities::UserSimple < Grape::Entity
   expose :avatar
   expose :verified
   expose :about
+  expose :location
+  expose :education
+  expose :occupation
   expose :twitter do |obj, opts|
     obj.twitter?
   end
