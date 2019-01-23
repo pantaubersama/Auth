@@ -56,6 +56,7 @@ group :development do
   gem 'capistrano-rails'
   gem 'capistrano3-unicorn'
   gem 'capistrano-rvm'
+  gem 'capistrano-sneakers', github: "yunanhelmy/capistrano-sneakers", branch: "release/1.2.1"
 
   gem "t"
 end

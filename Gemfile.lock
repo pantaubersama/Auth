@@ -4,6 +4,15 @@ GIT
   specs:
     api-pagination (4.8.2)
 
+GIT
+  remote: https://github.com/yunanhelmy/capistrano-sneakers.git
+  revision: e29721c00d140a3d111eee8f25d6a20c2954b1ec
+  branch: release/1.2.1
+  specs:
+    capistrano-sneakers (1.2.1)
+      capistrano (>= 3.9.0)
+      sneakers (>= 2.6)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -435,6 +444,7 @@ DEPENDENCIES
   capistrano
   capistrano-rails
   capistrano-rvm
+  capistrano-sneakers!
   capistrano3-unicorn
   carrierwave (~> 1.0)
   database_cleaner
