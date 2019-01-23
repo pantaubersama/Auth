@@ -6,6 +6,7 @@ module API
           expose :id
           expose :name
           expose :image
+          expose :number
         end
       end
     end
