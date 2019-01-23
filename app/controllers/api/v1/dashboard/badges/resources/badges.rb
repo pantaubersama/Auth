@@ -17,8 +17,8 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
       optional :image, type: File, desc: "Image"
       optional :image_gray, type: File, desc: "Image Gray"
       optional :position, type: Integer, desc: "Position"
-      optional :code, type: String, desc: "<b>[Jangan diganti jika sudah dikoding]</b> Code"
-      optional :namespace, type: String, desc: "<b>[Jangan diganti jika sudah dikoding]</b> Namespace", values: BADGE_NAMESPACE
+      requires :code, type: String, desc: "<b>[Jangan diganti jika sudah dikoding]</b> Code"
+      requires :namespace, type: String, desc: "<b>[Jangan diganti jika sudah dikoding]</b> Namespace", values: BADGE_NAMESPACE
     end
     oauth2
     put "/:id" do
@@ -54,8 +54,8 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
       optional :image, type: File, desc: "Image"
       optional :image_gray, type: File, desc: "Image Gray"
       optional :position, type: Integer, desc: "Position"
-      optional :code, type: String, desc: "Code"
-      optional :namespace, type: String, desc: "Namespace", values: BADGE_NAMESPACE
+      requires :code, type: String, desc: "Code"
+      requires :namespace, type: String, desc: "Namespace", values: BADGE_NAMESPACE
     end
     oauth2
     post "/" do

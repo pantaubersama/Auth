@@ -1,12 +1,12 @@
 module Publishers
   class User < ApplicationPublisher
 
-    def self.publish exchange, message = {}
-      # endpoint: Publishers::User.publish exchange, message
-      #  - exchange: "user.changed""
+    def self.publish routing_key, message = {}
+      # endpoint: Publishers::User.publish QUEUE_USER_CHANGED, message
+      #  - routing_key: QUEUE_USER_CHANGED
       #  - message:
       #         - {id: UUID}
-      push exchange, message, :auth
+      push routing_key, message
     end
   end
 end

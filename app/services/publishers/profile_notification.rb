@@ -1,9 +1,9 @@
 module Publishers
   class ProfileNotification < ApplicationPublisher
 
-    def self.publish exchange, message = {}
-      # endpoint: Publishers::ProfileNotification.publish exchange, message
-      #  - exchange: "pemilu.profile"
+    def self.publish routing_key, message = {}
+      # endpoint: Publishers::ProfileNotification.publish BADGE_NOTIFICATION, message
+      #  - routing_key: "pemilu.profile"
       #  - message:
       #         - {receiver_id: UUID, notif_type: :profile, event_type: :gagal_verifikasi }
       #         - { reciver_id: UUID, notif_type: :profile, event_type: :berhasil_verifikasi }
@@ -19,9 +19,7 @@ module Publishers
       #         - { reciver_id: UUID, notif_type: :profile, event_type: :badge_relawan, badge_title: "badge_1" }
       #         - { reciver_id: UUID, notif_type: :profile, event_type: :pantau_bersama, badge_title: "badge_1" }
 
-
-      # grab the fanout exchange
-      push exchange, message, :notification
+      push routing_key, message
     end
   end
 end

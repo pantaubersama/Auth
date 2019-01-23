@@ -128,4 +128,10 @@ gem 'searchkick'
 gem "twitter", "6.1.0"
 gem 'koala'
 
+# sub
+gem 'sneakers'
+gem 'json'
+gem 'redis'
+
+# pub
 gem "bunny"
