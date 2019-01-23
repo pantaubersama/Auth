@@ -35,7 +35,7 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
         order: default_order, 
         where: build_conditions
       )
-      present :clusters, resources, with: API::V1::Clusters::Entities::ClusterDetail
+      present :clusters, resources, with: API::V1::Clusters::Entities::ClusterDetail, current_user: current_user
       present_metas_searchkick resources
     end
 
@@ -129,7 +129,7 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       end
       
       present :status, status
-      present :cluster, q, with: API::V1::Clusters::Entities::ClusterDetail
+      present :cluster, q, with: API::V1::Clusters::Entities::ClusterDetail, current_user: current_user
     end
 
     desc "Delete cluster" do

@@ -4,6 +4,7 @@ class Badge < ApplicationRecord
   acts_as_paranoid
 
   validates_presence_of :name
+  validates :code, uniqueness: { scope: :namespace }
 
   scope :visible, -> { where(hidden: false) }
   has_many :achieved_badges

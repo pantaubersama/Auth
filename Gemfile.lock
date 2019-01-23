@@ -4,6 +4,15 @@ GIT
   specs:
     api-pagination (4.8.2)
 
+GIT
+  remote: https://github.com/yunanhelmy/capistrano-sneakers.git
+  revision: e29721c00d140a3d111eee8f25d6a20c2954b1ec
+  branch: release/1.2.1
+  specs:
+    capistrano-sneakers (1.2.1)
+      capistrano (>= 3.9.0)
+      sneakers (>= 2.6)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -312,6 +321,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
+    redis (4.1.0)
     rename (1.0.6)
       activesupport
       rails (>= 3.0.0)
@@ -350,10 +360,19 @@ GEM
       elasticsearch (>= 5)
       hashie
     seed_migration (1.2.3)
+    serverengine (2.0.7)
+      sigdump (~> 0.2.2)
     shellany (0.0.1)
     shoulda-matchers (3.1.2)
       activesupport (>= 4.0.0)
+    sigdump (0.2.4)
     simple_oauth (0.3.1)
+    sneakers (2.11.0)
+      bunny (~> 2.12)
+      concurrent-ruby (~> 1.0)
+      rake
+      serverengine (~> 2.0.5)
+      thor
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -425,6 +444,7 @@ DEPENDENCIES
   capistrano
   capistrano-rails
   capistrano-rvm
+  capistrano-sneakers!
   capistrano3-unicorn
   carrierwave (~> 1.0)
   database_cleaner
@@ -442,6 +462,7 @@ DEPENDENCIES
   guard-rspec
   hashie-forbidden_attributes
   httparty
+  json
   koala
   listen (>= 3.0.5, < 3.2)
   mini_magick
@@ -453,6 +474,7 @@ DEPENDENCIES
   puma (~> 3.11)
   rack-cors
   rails (~> 5.2.1, >= 5.2.1.1)
+  redis
   rename
   rolify
   rspec-rails (~> 3.5)
@@ -460,6 +482,7 @@ DEPENDENCIES
   searchkick
   seed_migration
   shoulda-matchers (~> 3.1)
+  sneakers
   spring
   spring-watcher-listen (~> 2.0.0)
   t

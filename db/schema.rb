@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_14_085708) do
+ActiveRecord::Schema.define(version: 2019_01_23_071014) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -49,6 +49,9 @@ ActiveRecord::Schema.define(version: 2019_01_14_085708) do
     t.datetime "deleted_at"
     t.boolean "hidden", default: false
     t.string "image_gray"
+    t.string "code"
+    t.string "namespace"
+    t.index ["code", "namespace"], name: "index_badges_on_code_and_namespace", unique: true
     t.index ["deleted_at"], name: "index_badges_on_deleted_at"
   end
 
@@ -148,6 +151,7 @@ ActiveRecord::Schema.define(version: 2019_01_14_085708) do
     t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "number", default: 0
   end
 
   create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

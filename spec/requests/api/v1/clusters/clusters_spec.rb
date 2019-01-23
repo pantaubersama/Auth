@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "Api::V1::Clusters", type: :request do
   let!(:application) { FactoryBot.create :application }
   let!(:user) { FactoryBot.create :user }
+  let!(:user2) { FactoryBot.create :user }
   let!(:token) { FactoryBot.create :access_token, :application => application, :resource_owner_id => user.id }
 
   before do

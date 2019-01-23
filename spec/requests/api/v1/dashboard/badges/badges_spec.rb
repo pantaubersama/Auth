@@ -19,6 +19,8 @@ RSpec.describe "Api::V1::Dashboard::badges", type: :request do
           description: "hello bro",
           image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           position: 1,
+          namespace: "badge_pantau_bersama",
+          code: Faker::Lorem.sentence(2)
         }
       expect(response.status).to  eq(200)
       expect(json_response[:data][:badge][:name]).to  eq("Hello")
@@ -33,6 +35,8 @@ RSpec.describe "Api::V1::Dashboard::badges", type: :request do
           description: "hello bro",
           image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           position: 1,
+          namespace: "badge_pantau_bersama",
+          code: Faker::Lorem.sentence(2)
         }
       expect(response.status).to  eq(403)
     end
@@ -47,6 +51,8 @@ RSpec.describe "Api::V1::Dashboard::badges", type: :request do
           image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           image_gray: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           position: 1,
+          namespace: "badge_pantau_bersama",
+          code: Faker::Lorem.sentence(2)
         }
       expect(response.status).to  eq(200)
       expect(json_response[:data][:badge][:name]).to  eq("Hello")
@@ -65,10 +71,23 @@ RSpec.describe "Api::V1::Dashboard::badges", type: :request do
           image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           image_gray: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           position: 1,
+          namespace: "badge_pantau_bersama",
+          code: Faker::Lorem.sentence(2)
         }
       expect(response.status).to  eq(201)
       expect(json_response[:data][:badge][:name]).to  eq("Hello")
       expect(json_response[:data][:badge][:description]).not_to  eq(nil)
+    end
+  end
+
+  describe "grant badge to user" do
+    it "success" do
+      post "/dashboard/v1/badges/#{@badge.id}/grant", headers: {Authorization: admin_token.token},
+        params: {
+          user_id: user.id
+        }
+      expect(response.status).to eq(201)
+      expect(json_response[:data][:badge][:id]).to eq(@badge.id)
     end
   end
 

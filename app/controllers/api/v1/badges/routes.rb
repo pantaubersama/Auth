@@ -6,6 +6,7 @@ module API::V1::Badges
 
     mount API::V1::Badges::Resources::Badges
     mount API::V1::Badges::Resources::AchievedBadges
-    mount API::V1::Badges::Resources::BadgesInternal
+    mount API::V1::Badges::Resources::User
+    # mount API::V1::Badges::Resources::BadgesInternal
   end
 end

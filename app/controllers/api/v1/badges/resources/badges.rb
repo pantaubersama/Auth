@@ -22,8 +22,8 @@ module API::V1::Badges::Resources
         badges = Badge.includes(:achieved_badges).visible.order(build_order)
         resources = paginate(badges - existing_badges.map(&:badge))
 
-        present :achieved_badges, existing_badges, with: API::V1::Badges::Entities::AchievedBadge
-        present :badges, resources, with: API::V1::Badges::Entities::Badge
+        present :achieved_badges, existing_badges, with: API::V1::Badges::Entities::AchievedBadge, current_user: current_user
+        present :badges, resources, with: API::V1::Badges::Entities::Badge, current_user: current_user
         present_metas resources
       end
 
@@ -34,7 +34,7 @@ module API::V1::Badges::Resources
         requires :id, type: String
       end
       get "/:id" do
-        present :badge, Badge.find(params[:id]), with: API::V1::Badges::Entities::Badge
+        present :badge, Badge.find(params[:id]), with: API::V1::Badges::Entities::Badge, current_user: current_user
       end
     end
 
@@ -55,7 +55,7 @@ module API::V1::Badges::Resources
         achieved_badges = current_user.achieved_badges.joins(:badge, :user).order(build_order)
         resources = paginate(achieved_badges)
 
-        present :achieved_badges, resources, with: API::V1::Badges::Entities::AchievedBadge
+        present :achieved_badges, resources, with: API::V1::Badges::Entities::AchievedBadge, current_user: current_user
         present_metas resources
       end
     end

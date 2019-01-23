@@ -28,7 +28,16 @@ class User < ApplicationRecord
   # callback
   after_create :build_verification_model
   after_create :build_informant_model
-  after_commit :publish_changes
+  after_save :publish_changes
+  after_save :give_achievement
+
+  def give_achievement
+    Badges::Achieve.new.run({user_id: self.id, badge_code: "biodata"}) if is_complete?
+  end
+  
+  def is_complete?
+    full_name.present? && username.present? && location.present? && about.present? && education.present? && occupation.present?
+  end
 
   def publish_changes
     Publishers::User.publish QUEUE_USER_CHANGED, {id: self.id}
@@ -64,7 +73,8 @@ class User < ApplicationRecord
         image: self.cluster.try(:image),
         is_displayed: self.cluster.try(:is_displayed)
       },
-      status_verification: self.verification.try(:status)
+      status_verification: self.verification.try(:status),
+      sent_at_verification: self.verification.try(:created_at),
     }
   end
 
@@ -95,8 +105,14 @@ class User < ApplicationRecord
     end
     u.update_attributes({full_name: [auth.info.first_name, auth.info.last_name].join(" ")})
     u.update_attribute(:username, auth.info.username) if auth.info.username.present?
+    u.give_default_badge
     u
   end
+
+  def give_default_badge
+    Badges::Achieve.new.run({user_id: self.id, badge_code: "pantaubersama"})
+  end
+  
 
   def is_admin
     is_admin?

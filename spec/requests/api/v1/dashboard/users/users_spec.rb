@@ -53,4 +53,24 @@ RSpec.describe "Api::V1::Dashboard::Clusters", type: :request do
     end
   end
 
+  describe "list user verification" do
+    pending "add some examples to (or delete) #{__FILE__}"
+  end
+
+  describe "update user detail" do
+    pending "add some examples to (or delete) #{__FILE__}"
+  end
+
+  describe "Update user informant" do
+    pending "add some examples to (or delete) #{__FILE__}"
+  end
+
+  describe "Update avatar" do
+    pending "add some examples to (or delete) #{__FILE__}"
+  end
+
+  describe "show user verification" do
+    pending "add some examples to (or delete) #{__FILE__}"
+  end
+
 end

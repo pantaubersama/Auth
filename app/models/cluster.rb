@@ -61,12 +61,17 @@ class Cluster < ApplicationRecord
   end
 
   def search_data
-    resluts = {}
-    Cluster.column_names.each do |column|
-      resluts[column] = self.send(column.to_s)
-    end
-    resluts.merge({
-                    all_fields:  ["--", self.name, "--"].compact.join(' ')
+    index_all.merge({
+                    members_count: members_count,
+                    all_fields:  ["--", self.name, "--"].compact.join(' '),
+                    category: {
+                      id: self.category.try(:id),
+                      name: self.category.try(:name)
+                    },
+                    requester: {
+                      id: self.requester.try(:id),
+                      full_name: self.requester.try(:full_name)
+                    }
                   })
   end
 
