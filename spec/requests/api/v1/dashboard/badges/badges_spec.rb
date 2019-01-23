@@ -80,6 +80,17 @@ RSpec.describe "Api::V1::Dashboard::badges", type: :request do
     end
   end
 
+  describe "grant badge to user" do
+    it "success" do
+      post "/dashboard/v1/badges/#{@badge.id}/grant", headers: {Authorization: admin_token.token},
+        params: {
+          user_id: user.id
+        }
+      expect(response.status).to eq(201)
+      expect(json_response[:data][:badge][:id]).to eq(@badge.id)
+    end
+  end
+
   describe "delete" do
     it "success" do
       delete "/dashboard/v1/badges/#{@badge.id}", headers: {Authorization: admin_token.token}
