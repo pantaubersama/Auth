@@ -172,6 +172,32 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       present :cluster, q, with: API::V1::Clusters::Entities::ClusterDetail
     end
 
+    desc 'Trash Clusters' do
+      detail "Trash Clusters"
+      headers AUTHORIZATION_HEADERS
+    end
+    paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
+    oauth2
+    get "/trash" do
+      results        = ::Cluster.deleted
+      resources = paginate(results)
+      present :clusters, resources, with: API::V1::Clusters::Entities::ClusterDetail, current_user: current_user
+      present_metas resources      
+    end
+
+    desc 'Detail Trash Cluster' do
+      detail "Detail Trash Cluster"
+      headers AUTHORIZATION_HEADERS
+    end
+    oauth2
+    params do
+      requires :id, type: String, desc: "Cluster Trash ID"
+    end
+    get "/trash/:id" do
+      results        = ::Cluster.deleted.find(params.id)
+      present :cluster, results, with: API::V1::Clusters::Entities::ClusterDetail, current_user: current_user
+    end
+
   end
 
   helpers do
