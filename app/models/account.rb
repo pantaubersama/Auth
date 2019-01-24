@@ -1,5 +1,5 @@
 class Account < ApplicationRecord
-  belongs_to :user, touch: true
+  belongs_to :user
 
   enum account_type: [:twitter, :facebook]
 
@@ -13,7 +13,7 @@ class Account < ApplicationRecord
     else
       nil
     end
-    a
+    a 
   end
 
   def connect_twitter token, secret

@@ -7,6 +7,20 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
 
   resource "badges" do
 
+    desc 'Grant badge to user' do
+      headers AUTHORIZATION_HEADERS
+      detail "Grant badge to user"
+    end
+    oauth2
+    params do
+      requires :user_id, type: String, desc: "User ID"
+    end
+    post ":id/grant" do
+      user = User.find params.user_id
+      b = AchievedBadge.create user: user, badge: Badge.find(params[:id])
+      present :badge, b.badge, with: API::V1::Badges::Entities::Badge
+    end
+
     desc "Update badge" do
       detail "Update badge"
       headers AUTHORIZATION_HEADERS
@@ -17,8 +31,8 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
       optional :image, type: File, desc: "Image"
       optional :image_gray, type: File, desc: "Image Gray"
       optional :position, type: Integer, desc: "Position"
-      optional :code, type: String, desc: "<b>[Jangan diganti jika sudah dikoding]</b> Code"
-      optional :namespace, type: String, desc: "<b>[Jangan diganti jika sudah dikoding]</b> Namespace", values: BADGE_NAMESPACE
+      requires :code, type: String, desc: "<b>[Jangan diganti jika sudah dikoding]</b> Code"
+      requires :namespace, type: String, desc: "<b>[Jangan diganti jika sudah dikoding]</b> Namespace", values: BADGE_NAMESPACE
     end
     oauth2
     put "/:id" do
@@ -54,8 +68,8 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
       optional :image, type: File, desc: "Image"
       optional :image_gray, type: File, desc: "Image Gray"
       optional :position, type: Integer, desc: "Position"
-      optional :code, type: String, desc: "Code"
-      optional :namespace, type: String, desc: "Namespace", values: BADGE_NAMESPACE
+      requires :code, type: String, desc: "Code"
+      requires :namespace, type: String, desc: "Namespace", values: BADGE_NAMESPACE
     end
     oauth2
     post "/" do
@@ -66,7 +80,6 @@ class API::V1::Dashboard::Badges::Resources::Badges < API::V1::ApplicationResour
       present :status, status
       present :badge, q, with: API::V1::Badges::Entities::Badge, current_user: current_user
     end
-
   end
 
   # permitted params

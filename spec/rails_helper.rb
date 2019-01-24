@@ -76,11 +76,7 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
     DatabaseCleaner.strategy = :transaction
-  end
-
-
-  config.before(:each) do
-    Publishers::User.connection = BunnyMock.new.start
+    Publishers::ApplicationPublisher.connection = BunnyMock.new.start
   end
 
   config.after(:all) do

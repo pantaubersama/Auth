@@ -8,6 +8,7 @@ FactoryBot.define do
     nationality { Faker::Lorem.words(2) }
     address { Faker::Lorem.words(5) }
     phone_number { Faker::PhoneNumber.cell_phone }
-    association :user
+    user_id { nil }
+    # association :user
   end
 end

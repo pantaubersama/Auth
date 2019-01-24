@@ -1,27 +1,24 @@
 module Publishers
   class ApplicationPublisher
-    def self.push exchange, message, server_code
-      # grab the fanout exchange
-      fanout = channel.fanout("#{server_code}.#{exchange}")
-      queue  = channel.queue(exchange, durable: true).bind("#{server_code}.#{exchange}")
-      # and simply publish message
-      fanout.publish(message.to_json)
-      queue
+    @@connection = (Bunny.new ENV["RABBITMQ_URL"], automatically_recover: false)
+
+    # direct
+    def self.push routing_key, message
+      connetion.start
+      channel = @@connection.create_channel
+      queue = channel.queue(routing_key, durable: true)
+      queue.publish(message.to_json, persistent: true)
+
+      connetion.close
     end
 
-    def self.channel
-      @channel ||= connection.create_channel
+    def self.connetion
+      @@connection
     end
 
-    def self.connection
-      @connection ||= Bunny.new(ENV["RABBITMQ_URL"]).tap do |c|
-        c.start
-      end
+    def self.connection=(conn=nil)
+      @@connection = conn
     end
-
-    def self.connection=(conn)
-      @connection = conn
-    end
-
+    
   end
 end
