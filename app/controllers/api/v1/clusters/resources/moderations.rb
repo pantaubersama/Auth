@@ -10,6 +10,7 @@ class API::V1::Clusters::Resources::Moderations < API::V1::ApplicationResource
     oauth2
     delete "/clusters" do
       cluster = current_user.cluster
+      error! "You don't have cluster", 404 if cluster.nil?
       present :status, current_user.quit_cluster!
       present :cluster, cluster, with: API::V1::Clusters::Entities::Cluster
     end

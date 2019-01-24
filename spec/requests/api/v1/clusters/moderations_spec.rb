@@ -25,6 +25,12 @@ RSpec.describe "Api::V1::Moderations", type: :request do
       get "/v1/me", headers: {Authorization: token.token}
       expect(json_response[:data][:user][:cluster]).to eq(nil)
     end
+
+    it "quit but don't have cluster" do
+      user.quit_cluster!
+      delete "/v1/me/clusters", headers: {Authorization: token.token}
+      expect(response.status).to eq(404)
+    end
   end
 
   describe "join cluster" do
