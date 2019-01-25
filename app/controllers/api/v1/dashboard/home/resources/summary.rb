@@ -47,7 +47,8 @@ class API::V1::Dashboard::Home::Resources::Summary < API::V1::ApplicationResourc
       if params.month_to.present? && params.year_to.present?
         res = res.where("created_at <= ?", Date.civil(params.year_to, params.month_to, -11).to_s)
       end
-      present res.group_by_month(:created_at, format: "%b %Y").count
+      data = res.group_by_month(:created_at, format: "%b %Y").count
+      present data
     end
 
   end
