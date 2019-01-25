@@ -9,7 +9,7 @@ class API::V1::Verifications::Resources::Verifications < API::V1::ApplicationRes
     oauth2
     get "/verifications" do
       present :user, current_user.verification, with: API::V1::Verifications::Entities::Verification
-    end 
+    end
   end
 
   resource "verifications" do
@@ -22,9 +22,9 @@ class API::V1::Verifications::Resources::Verifications < API::V1::ApplicationRes
     end
     oauth2
     put "/ktp_number" do
-      response = current_user.verification.update_attribute(:ktp_number, params[:ktp_number])
+      response = current_user.verification.update_attributes(:ktp_number => params[:ktp_number], :status => :requested)
       present :user, current_user.verification, with: API::V1::Verifications::Entities::Verification
-    end 
+    end
 
     desc '[2] Verify KTP Selfie' do
       detail "[2] Verify KTP Selfie"
@@ -36,7 +36,7 @@ class API::V1::Verifications::Resources::Verifications < API::V1::ApplicationRes
     oauth2
     put "/ktp_selfie" do
       params[:ktp_selfie] = prepare_file(params[:ktp_selfie]) if params[:ktp_selfie].present?
-      response = current_user.verification.update_attribute(:ktp_selfie, params[:ktp_selfie])
+      response = current_user.verification.update_attributes(:ktp_selfie => params[:ktp_selfie], :status => :requested)
       present :user, current_user.verification, with: API::V1::Verifications::Entities::Verification
     end
 
@@ -50,7 +50,7 @@ class API::V1::Verifications::Resources::Verifications < API::V1::ApplicationRes
     oauth2
     put "/ktp_photo" do
       params[:ktp_photo] = prepare_file(params[:ktp_photo]) if params[:ktp_photo].present?
-      response = current_user.verification.update_attribute(:ktp_photo, params[:ktp_photo])
+      response = current_user.verification.update_attributes(:ktp_photo => params[:ktp_photo], :status => :requested)
       present :user, current_user.verification, with: API::V1::Verifications::Entities::Verification
     end
 
@@ -64,7 +64,7 @@ class API::V1::Verifications::Resources::Verifications < API::V1::ApplicationRes
     oauth2
     put "/signature" do
       params[:signature] = prepare_file(params[:signature]) if params[:signature].present?
-      response = current_user.verification.update_attribute(:signature, params[:signature])
+      response = current_user.verification.update_attributes(:signature => params[:signature],:status => :requested)
       present :user, current_user.verification, with: API::V1::Verifications::Entities::Verification
     end
 
