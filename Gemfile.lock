@@ -174,6 +174,8 @@ GEM
       grape (>= 0.16.2)
     grape-swagger-rails (0.3.0)
       railties (>= 3.2.12)
+    groupdate (4.1.1)
+      activesupport (>= 4.2)
     guard (2.15.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -459,6 +461,7 @@ DEPENDENCIES
   grape-middleware-logger
   grape-swagger
   grape-swagger-rails
+  groupdate
   guard-rspec
   hashie-forbidden_attributes
   httparty
