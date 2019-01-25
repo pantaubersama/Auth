@@ -11,6 +11,7 @@ module API::V1::Badges::Resources
       end
       params do
         use :order, order_by: %i(position), default_order_by: :position, default_order: :asc
+        optional :name, type: String, desc: "Name Badge"
       end
       paginate
       get "/" do
@@ -19,7 +20,7 @@ module API::V1::Badges::Resources
 
         default_order = {position: :asc}
         build_order = params.order_by.present? && params.direction.present? ? { params.order_by.to_sym => params.direction.to_sym } : default_order
-        badges = Badge.includes(:achieved_badges).visible.order(build_order)
+        badges = Badge.includes(:achieved_badges).visible.order(build_order).where("lower(name) LIKE lower(?)", "%#{params.name}%")
         resources = paginate(badges - existing_badges.map(&:badge))
 
         present :achieved_badges, existing_badges, with: API::V1::Badges::Entities::AchievedBadge, current_user: current_user
