@@ -75,6 +75,7 @@ class API::V1::Dashboard::Users::Resources::Users < API::V1::ApplicationResource
     paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     params do
       optional :ids, type: String, desc: "string of ID separate by comma"
+      optional :email, type: String, desc: "Email"
       use :searchkick_search, default_m: "word_start", default_o: "and"
       optional :status, type: String, values: ["", "requested", "verified", "rejected"]
     end
@@ -89,6 +90,7 @@ class API::V1::Dashboard::Users::Resources::Users < API::V1::ApplicationResource
       default_conditions = {}
       build_conditions = params.status.present? ? {status_verification: params.status}  : default_conditions
       build_conditions = build_conditions.merge({id: params.ids.split(",").map(&:strip)}) if params.ids.present?
+      build_conditions = build_conditions.merge({email: params.email }) if params.email.present?
 
       resources = User.search(q,
         operator: operator,
@@ -98,7 +100,8 @@ class API::V1::Dashboard::Users::Resources::Users < API::V1::ApplicationResource
         page: (params.page || 1),
         per_page: (params.per_page || Pagy::VARS[:items]),
         order: build_order,
-        where: build_conditions
+        where: build_conditions,
+        fields: [:full_name, :about, :email]
       )
 
       present :users, resources, with: Api::V1::Dashboard::Verifications::Entities::User

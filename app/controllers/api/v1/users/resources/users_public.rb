@@ -21,6 +21,8 @@ class Api::V1::Users::Resources::UsersPublic < API::V1::ApplicationResource
       optional :ids, type: String, desc: "string of ID separate by comma"
       use :searchkick_search, default_m: "word_start", default_o: "and"
       use :filter_no_value, filter_by: ["", "verified_true", "verified_false", "verified_all"]
+      optional :email, type: String, desc: "Email"
+      optional :cluster_name, type: String, desc: "Cluster name"
     end
     get "/" do
       q = params.q.nil? || params.q.empty? ? "*" : params.q
@@ -33,6 +35,8 @@ class Api::V1::Users::Resources::UsersPublic < API::V1::ApplicationResource
       default_conditions = {}
       build_conditions = params.filter_by.present? ? user_filter(params.filter_by) : default_conditions
       build_conditions = build_conditions.merge({id: params.ids.split(",").map(&:strip)}) if params.ids.present?
+      build_conditions = build_conditions.merge({email: params.email}) if params.email.present?
+      build_conditions = build_conditions.merge({"cluster.name" => params.cluster_name}) if params.cluster_name.present?
 
       resources = User.search(q, 
         operator: operator, 
