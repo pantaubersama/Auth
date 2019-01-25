@@ -8,6 +8,7 @@ module Api
 
         mount Api::V1::Users::Resources::Users
         mount Api::V1::Users::Resources::UsersPublic
+        mount Api::V1::Users::Resources::UsersCluster
       end
     end
   end
