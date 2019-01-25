@@ -1,4 +1,4 @@
-class Api::V1::Users::Resources::UsersCluster < API::V1::ApplicationResource
+class API::V1::Dashboard::Users::Resources::UsersClusters < API::V1::ApplicationResource
     helpers API::V1::Helpers
     helpers API::V1::SharedParams
   
@@ -21,7 +21,7 @@ class Api::V1::Users::Resources::UsersCluster < API::V1::ApplicationResource
         default_order = {created_at: {order: :desc, unmapped_type: "long"}}
         build_order = params.order_by.present? && params.direction.present? ? { params.order_by.to_sym => { order: params.direction.to_sym, unmapped_type: "long"  } } : default_order
   
-        default_conditions = {}
+        default_conditions = {cluster: {not: nil}}
         build_conditions = params.filter_by.present? ? user_filter(params.filter_by) : default_conditions
         build_conditions = build_conditions.merge({id: params.ids.split(",").map(&:strip)}) if params.ids.present?
         

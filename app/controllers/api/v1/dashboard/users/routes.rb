@@ -5,5 +5,6 @@ module API::V1::Dashboard::Users
     error_formatter :json, ::API::ErrorFormatter
 
     mount API::V1::Dashboard::Users::Resources::Users
+    mount API::V1::Dashboard::Users::Resources::UsersClusters
   end
 end
