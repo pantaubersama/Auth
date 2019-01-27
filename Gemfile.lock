@@ -119,6 +119,17 @@ GEM
       elasticsearch-transport (= 6.1.0)
     elasticsearch-api (6.1.0)
       multi_json
+    elasticsearch-model (6.0.0)
+      activesupport (> 3)
+      elasticsearch (> 1)
+      hashie
+    elasticsearch-persistence (6.0.0)
+      activemodel (> 4)
+      activesupport (> 4)
+      elasticsearch (~> 6)
+      elasticsearch-model (>= 5)
+      hashie
+    elasticsearch-rails (6.0.0)
     elasticsearch-transport (6.1.0)
       faraday
       multi_json
@@ -174,6 +185,8 @@ GEM
       grape (>= 0.16.2)
     grape-swagger-rails (0.3.0)
       railties (>= 3.2.12)
+    groupdate (4.1.1)
+      activesupport (>= 4.2)
     guard (2.15.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -450,6 +463,9 @@ DEPENDENCIES
   database_cleaner
   doorkeeper
   dotenv-rails
+  elasticsearch-model
+  elasticsearch-persistence
+  elasticsearch-rails
   factory_bot_rails (~> 4.0)
   faker
   file_validators
@@ -459,6 +475,7 @@ DEPENDENCIES
   grape-middleware-logger
   grape-swagger
   grape-swagger-rails
+  groupdate
   guard-rspec
   hashie-forbidden_attributes
   httparty

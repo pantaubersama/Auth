@@ -9,4 +9,8 @@ class ApplicationRecord < ActiveRecord::Base
     results
   end
 
+
+  def to_hash
+    self.as_json
+  end
 end
