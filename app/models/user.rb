@@ -47,7 +47,7 @@ class User < ApplicationRecord
   def publish_changes
     repository = Repository.new(index_name: :users, klass: User)
     user       = User.search("*", load: false, order: { created_at: { order: :desc, unmapped_type: "long" } }, where: { id: self.id }).results.last
-    repository.create(user.without("_index", "_type", "_id", "_score", "sort"))
+    repository.create(user.without("_index", "_type", "_id", "_score", "sort")) if user.present?
     Publishers::User.publish QUEUE_USER_CHANGED, { id: self.id }
   end
 
