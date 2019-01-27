@@ -11,7 +11,7 @@ set :rails_env, 'staging'
 set :sneakers_roles, :app
 set :sneakers_processes, 1
 set :sneakers_run_config, -> { true }
-set :sneakers_workers, ["Subscribers::JanjiSubscriber", "Subscribers::QuestionSubscriber", "Subscribers::QuestionUpvotingSubscriber", "Subscribers::QuizSubscriber"]
+set :sneakers_workers, ["Subscribers::JanjiSubscriber", "Subscribers::QuestionSubscriber", "Subscribers::QuestionUpvotingSubscriber", "Subscribers::QuizSubscriber", "ActiveJob::QueueAdapters::SneakersAdapter::JobWrapper"]
 
 server "52.221.66.226", user: "ubuntu", roles: %w{app web db}
 

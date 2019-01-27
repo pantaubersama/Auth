@@ -39,5 +39,6 @@ module PantauBersamaAuth
     config.middleware.insert_after ActionDispatch::Cookies, ActionDispatch::Session::CookieStore
     
     config.autoload_paths += Dir["#{config.root}/services/**/"]
+    config.active_job.queue_adapter = :sneakers
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_23_071014) do
+ActiveRecord::Schema.define(version: 2019_01_27_154350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2019_01_23_071014) do
     t.uuid "resource_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "image_result"
     t.index ["user_id", "badge_id"], name: "index_achieved_badges_on_user_id_and_badge_id", unique: true
   end
 
