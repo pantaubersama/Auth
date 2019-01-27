@@ -1,3 +1,4 @@
+require 'elasticsearch/model'
 class User < ApplicationRecord
   # from gems
   rolify strict: true
@@ -8,6 +9,10 @@ class User < ApplicationRecord
              word_middle: [:full_name, :about],
              word_end:    [:full_name, :about],
              word:        [:full_name, :about]
+  #  User.__elasticsearch__.create_index!
+  #  User.import(force: true)
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
 
   # from module
   include Moderation
@@ -40,42 +45,49 @@ class User < ApplicationRecord
   end
 
   def publish_changes
-    Publishers::User.publish QUEUE_USER_CHANGED, {id: self.id}
+    repository = Repository.new(index_name: :users, klass: User)
+    user       = User.search("*", load: false, order: { created_at: { order: :desc, unmapped_type: "long" } }, where: { id: self.id }).results.last
+    repository.create(user.without("_index", "_type", "_id", "_score", "sort"))
+    Publishers::User.publish QUEUE_USER_CHANGED, { id: self.id }
   end
-  
+
 
   def search_data
     # Api::V1::Me::Entities::UserSimple
     # API::V1::Clusters::Entities::ClusterDetail
-    {
-      id:         self.id,
-      email:      self.email,
-      full_name:  self.full_name,
-      username:   self.username,
-      avatar:     self.avatar,
-      verified:   self.verified,
-      about:      self.about,
-      created_at: self.created_at,
-      cluster:    {
-        id: self.cluster.try(:id),
-        members_count: self.cluster.try(:members_count),
-        is_eligible: self.cluster.try(:is_eligible),
-        magic_link: self.cluster.try(:magic_link),
+    results = {
+      id:                   self.id,
+      email:                self.email,
+      full_name:            self.full_name,
+      username:             self.username,
+      avatar:               self.avatar,
+      verified:             self.verified,
+      about:                self.about,
+      created_at:           self.created_at,
+      cluster:              {
+        id:             self.cluster.try(:id),
+        members_count:  self.cluster.try(:members_count),
+        is_eligible:    self.cluster.try(:is_eligible),
+        magic_link:     self.cluster.try(:magic_link),
         is_link_active: self.cluster.try(:is_link_active),
-        status: self.cluster.try(:status),
-        name: self.cluster.try(:name),
-        category_id: self.cluster.try(:category_id),
-        category: {
-          id: self.cluster.try(:category).try(:id),
+        status:         self.cluster.try(:status),
+        name:           self.cluster.try(:name),
+        category_id:    self.cluster.try(:category_id),
+        category:       {
+          id:   self.cluster.try(:category).try(:id),
           name: self.cluster.try(:category).try(:name)
         },
-        description: self.cluster.try(:description),
-        image: self.cluster.try(:image),
-        is_displayed: self.cluster.try(:is_displayed)
+        description:    self.cluster.try(:description),
+        image:          self.cluster.try(:image),
+        is_displayed:   self.cluster.try(:is_displayed)
       },
-      status_verification: self.verification.try(:status),
+      status_verification:  self.verification.try(:status),
       sent_at_verification: self.verification.try(:created_at),
     }
+
+    repository = Repository.new(index_name: :users, klass: User)
+    repository.create(results.without("_index", "_type", "_id", "_score", "sort"))
+    results
   end
 
   def invite_to_symbolic(u, invite_code)
@@ -103,7 +115,7 @@ class User < ApplicationRecord
       # uncomment the line below to skip the confirmation emails.
       # user.skip_confirmation!
     end
-    u.update_attributes({full_name: [auth.info.first_name, auth.info.last_name].join(" ")})
+    u.update_attributes({ full_name: [auth.info.first_name, auth.info.last_name].join(" ") })
     u.update_attribute(:username, auth.info.username) if auth.info.username.present?
     u.give_default_badge
     u
