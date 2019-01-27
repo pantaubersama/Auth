@@ -23,7 +23,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
     end
     oauth2
     put "/username" do
-      response = current_user.update_attributes!({ username: params[:username] })
+      response = current_user.update_attributes!({ username: params[:username], skip_publish_changes: true })
       present :user, current_user, with: Api::V1::Me::Entities::User
     end
 
