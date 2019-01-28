@@ -23,7 +23,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
     end
     oauth2
     put "/username" do
-      response = current_user.update_attributes!({ username: params[:username] })
+      response = current_user.update_attributes!({ username: params[:username], skip_publish_changes: true })
       present :user, current_user, with: Api::V1::Me::Entities::User
     end
 
@@ -49,6 +49,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
     end
     oauth2
     put "/vote_preference" do
+      params[:skip_publish_changes] = true
       response = current_user.update_attributes(vote_preference_params)
       present :user, current_user, with: Api::V1::Me::Entities::User
     end
@@ -76,7 +77,7 @@ class Api::V1::Me::Resources::UpdateMe < API::V1::ApplicationResource
     end
 
     def vote_preference_params
-      permitted_params(params.except(:access_token)).permit(:vote_preference, :political_party_id)
+      permitted_params(params.except(:access_token)).permit(:vote_preference, :political_party_id, :skip_publish_changes)
     end
   end
 

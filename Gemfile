@@ -124,7 +124,11 @@ gem 'carrierwave', '~> 1.0'
 gem 'fog-aws'
 gem 'file_validators'
 
+# elastic search
 gem 'searchkick'
+gem 'elasticsearch-model'
+gem 'elasticsearch-persistence'
+gem 'elasticsearch-rails'
 
 gem "twitter", "6.1.0"
 gem 'koala'
