@@ -23,7 +23,7 @@ RSpec.describe FirebaseKey, type: :model do
       f = FirebaseKey.assign! user.id, "ios", fcm2
       expect(f.user_id).to eq(user.id)  
       expect(f.key_type).to eq("ios")  
-      expect(f.content).to eq(fcm)
+      expect(f.content).to eq(fcm2)
 
       total = FirebaseKey.all.size
       expect(total).to eq(1)  
