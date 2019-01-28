@@ -176,7 +176,16 @@ RSpec.describe "Api::V1::Dashboard::Clusters", type: :request do
     end
   end
 
-  describe "List Trash" do
+  describe "Detail Cluster" do
+    it "success" do
+      cluster = FactoryBot.create :cluster
+      get "/dashboard/v1/clusters/#{cluster.id}", headers: {Authorization: token.token}
+      expect(response.status).to eq(200)
+      expect(json_response[:data][:cluster][:id]).to eq(cluster.id)
+    end
+  end
+
+  describe "Detail Trash" do
     it "success" do
       cluster = FactoryBot.create :cluster
       delete "/dashboard/v1/clusters/#{cluster.id}", headers: {Authorization: token.token}
