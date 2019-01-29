@@ -9,6 +9,7 @@ class API::V1::Dashboard::Users::Resources::UsersClusters < API::V1::Application
 
       desc 'List, Where' do
         detail "List, Where"
+        headers AUTHORIZATION_HEADERS
       end
       paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
       params do
