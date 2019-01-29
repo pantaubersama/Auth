@@ -48,9 +48,9 @@ class User < ApplicationRecord
 
   def publish_changes
     unless skip_publish_changes
-      repository = Repository.new(index_name: :users, klass: User)
+      repository = UserRepository.new
       user       = User.search("*", load: false, order: { created_at: { order: :desc, unmapped_type: "long" } }, where: { id: self.id }).results.last
-      repository.create(user.without("_index", "_type", "_id", "_score", "sort")) if user.present?
+      repository.save((UserCache.new user.without("_index", "_type", "_id", "_score", "sort"))) if user.present?
       Publishers::User.publish QUEUE_USER_CHANGED, { id: self.id }
     end
   end
@@ -89,8 +89,8 @@ class User < ApplicationRecord
       sent_at_verification: self.verification.try(:created_at),
     }
 
-    repository = Repository.new(index_name: :users, klass: User)
-    repository.create(results.without("_index", "_type", "_id", "_score", "sort"))
+    repository = UserRepository.new
+    repository.save((UserCache.new results.without("_index", "_type", "_id", "_score", "sort")))
     results
   end
 
