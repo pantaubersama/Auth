@@ -64,6 +64,15 @@ RSpec.describe "Api::V1::Dashboard::UsersClusters", type: :request do
       expect(json_response[:data].size).to be >= 1
     end
 
+    it "Filter by Cluster ID" do
+      get "/dashboard/v1/users_clusters", headers: { Authorization: token2.token },
+        params: {
+          cluster_id: @cluster.id
+        }
+      expect(response.status).to  eq(200)
+      expect(json_response[:data].size).to be >= 1
+    end
+
     it "Success" do
       get "/dashboard/v1/users_clusters?ids=&q=&o=&m=&filter_by=", headers: { Authorization: token2.token }
       expect(response.status).to  eq(200)
