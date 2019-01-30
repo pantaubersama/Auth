@@ -83,6 +83,7 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
     DatabaseCleaner.strategy = :transaction
     Publishers::ApplicationPublisher.connection = BunnyMock.new.start
+    User.reindex
   end
 
   config.after(:all) do

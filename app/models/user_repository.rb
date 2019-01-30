@@ -1,4 +1,4 @@
-class Repository
+class UserRepository
   include Elasticsearch::Persistence::Repository
   include Elasticsearch::Persistence::Repository::DSL
 
@@ -9,5 +9,4 @@ class Repository
   def create(params)
     save(params)
   end
-
 end

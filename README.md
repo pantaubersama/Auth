@@ -26,5 +26,5 @@ Password : admin
 #### Test
 
 - run `rake db:test:prepare`
-- run `rake seed:migrate RAILS_ENV=test`
+- run `rake seed:migrate MIGRATION=20190127053507_seed_default_user.rb RAILS_ENV=test`
 - run `rspec`

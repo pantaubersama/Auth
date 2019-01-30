@@ -185,6 +185,19 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       present_metas resources      
     end
 
+    desc 'Detail Cluster' do
+      detail "Detail Cluster"
+      headers AUTHORIZATION_HEADERS
+    end
+    oauth2
+    params do
+      requires :id, type: String, desc: "Cluster Trash ID"
+    end
+    get "/:id" do
+      results        = ::Cluster.find(params.id)
+      present :cluster, results, with: API::V1::Clusters::Entities::ClusterDetail, current_user: current_user
+    end
+
     desc 'Detail Trash Cluster' do
       detail "Detail Trash Cluster"
       headers AUTHORIZATION_HEADERS
