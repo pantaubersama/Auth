@@ -16,6 +16,8 @@ class API::V1::Dashboard::Users::Resources::UsersClusters < API::V1::Application
         optional :ids, type: String, desc: "string of ID separate by comma"
         use :searchkick_search, default_m: "word_start", default_o: "and"
         use :filter_no_value, filter_by: ["", "verified_true", "verified_false", "verified_all"]
+        optional :cluster_id, type: String, desc: "Cluster ID"
+        optional :cluster_name, type: String, desc: "Cluster name"
       end
       oauth2
       get "/" do
@@ -29,8 +31,9 @@ class API::V1::Dashboard::Users::Resources::UsersClusters < API::V1::Application
         default_conditions = {cluster: {not: nil}}
         build_conditions = params.filter_by.present? ? user_filter(params.filter_by) : default_conditions
         build_conditions = build_conditions.merge({id: params.ids.split(",").map(&:strip)}) if params.ids.present?
+        build_conditions = build_conditions.merge({"cluster.id" => params.cluster_id}) if params.cluster_id.present?
+        build_conditions = build_conditions.merge({"cluster.name" => params.cluster_name}) if params.cluster_name.present?
         
-        # user_cluster = User.joins(:roles).where(:roles => {resource_type: "Cluster", name: [MODERATOR, MEMBER]})
         resources = User.search(q, 
           operator: operator, 
           match: match_word, 

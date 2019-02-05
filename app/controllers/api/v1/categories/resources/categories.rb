@@ -23,8 +23,8 @@ class API::V1::Categories::Resources::Categories< API::V1::ApplicationResource
     end
     get "/" do
       results = ::Category.order("created_at desc")
-      results = results.where(id: params.ids.split(",").map(&:strip)) if params.ids 
-      results = results.where("lower(name) like ?", "%"+params.name.downcase+"%") if params.name 
+      results = results.where(id: params.ids.split(",").map(&:strip)) if params.ids
+      results = results.where("lower(name) like ?", "%"+params.name.downcase+"%") if params.name
       resources = paginate(results)
       present :categories, resources, with: API::V1::Categories::Entities::Category
       present_metas resources
@@ -37,6 +37,7 @@ class API::V1::Categories::Resources::Categories< API::V1::ApplicationResource
     oauth2
     params do
       requires :name, type: String, desc: "Name"
+      optional :description, type: String, desc: "Deskripsi"
     end
     post "/" do
       b = ::Category.new categories_params
@@ -48,7 +49,7 @@ class API::V1::Categories::Resources::Categories< API::V1::ApplicationResource
 
   helpers do
     def categories_params
-      permitted_params(params.except(:access_token)).permit(:name)
+      permitted_params(params.except(:access_token)).permit(:name, :description)
     end
   end
 
