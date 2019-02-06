@@ -39,7 +39,7 @@ class Cluster < ApplicationRecord
   end
 
   def reject!
-    self.update_attributes(is_displayed: false, status: 3)
+    self.update_attributes(is_displayed: false, status: 2)
   end
 
   def members_count
