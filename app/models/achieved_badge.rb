@@ -11,8 +11,8 @@ class AchievedBadge < ApplicationRecord
   after_create :create_image
 
   def send_notification
-    Publishers::ProfileNotification.publish BADGE_NOTIFICATION, { 
-      receiver_id: user.id, notif_type: :profile, event_type: badge.namespace, badge_title: badge.name 
+    Publishers::BadgeNotification.publish BADGE_NOTIFICATION, {
+      receiver_id: user.id, notif_type: :badge, event_type: badge.event_type, badge_name: badge.name
     }
   end
 
