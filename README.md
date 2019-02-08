@@ -2,7 +2,7 @@
 ## Pantau Bersama Auth
 
 #### Setup
-- `git clone git@git.extrainteger.com:pantau-group/API/pantau-bersama-auth.git`
+- `git clone git@github.com:pantaubersama/Auth.git`
 - setup your database (postgresql)
 - create env variable files (.env.development , .env.test) from env.example
 - `$ bundle install`
