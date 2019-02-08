@@ -2,7 +2,7 @@
 lock "~> 3.11.0"
 
 set :application, "pantau_auth_staging"
-set :repo_url, "git@git.extrainteger.com:pantau-group/API/pantau-bersama-auth.git"
+set :repo_url, "git@github.com:pantaubersama/Auth.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
