@@ -12,7 +12,7 @@ class AchievedBadge < ApplicationRecord
 
   def send_notification
     Publishers::BadgeNotification.publish BADGE_NOTIFICATION, {
-      receiver_id: user.id, notif_type: :badge, event_type: badge.event_type, badge_name: badge.name
+      receiver_id: user.id, notif_type: :badge, event_type: badge.event_type, badge_id: badge.id
     }
   end
 
