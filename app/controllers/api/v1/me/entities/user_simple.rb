@@ -16,4 +16,5 @@ class Api::V1::Me::Entities::UserSimple < Grape::Entity
     obj.facebook?
   end
   expose :cluster, using: API::V1::Clusters::Entities::ClusterDetail
+  expose :created_at
 end
