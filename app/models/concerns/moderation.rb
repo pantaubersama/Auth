@@ -32,20 +32,22 @@ module Moderation
   def remove_admin!
     self.remove_role ADMIN
   end
-  
+
 
   def make_me_moderator! cluster
     self.remove_role MODERATOR
     self.remove_role MEMBER
     self.add_role MODERATOR, cluster
     cluster.reindex
+    self.reindex
   end
-    
+
   def add_me_to_cluster! cluster
     self.remove_role MODERATOR
     self.remove_role MEMBER
     self.add_role MEMBER, cluster
     cluster.reindex
+    self.reindex
   end
 
   def quit_cluster!
@@ -53,11 +55,12 @@ module Moderation
     self.remove_role MODERATOR, self.cluster
     self.remove_role MEMBER, self.cluster
     c.reindex
+    self.reindex
     return true
   end
-  
+
 
   class_methods do
-    
+
   end
 end
