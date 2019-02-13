@@ -92,7 +92,7 @@ class API::V1::Clusters::Resources::Moderations < API::V1::ApplicationResource
           status = u.update_attributes!({provider: result["provider"], uid: result["uid"]})
 
           Publishers::BadgeNotification.publish PROFILE_NOTIFICATION, {
-            receiver_id: u.id, notif_type: :profile, event_type: :cluster_invited, cluster_id: u.tmp_cluster_id, user_action_id: current_user.id
+            receiver_id: u.id, notif_type: :profile, event_type: :cluster_invited_email_sent, cluster_id: u.tmp_cluster_id, user_action_id: current_user.id
           }
 
           results << {id: u.id, email: u.email, status: u.tmp_cluster_id}
