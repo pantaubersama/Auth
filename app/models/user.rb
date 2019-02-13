@@ -59,7 +59,17 @@ class User < ApplicationRecord
   def search_data
     # Api::V1::Me::Entities::UserSimple
     # API::V1::Clusters::Entities::ClusterDetail
-    results = {
+    user_accounts = []
+    if self.accounts.present?
+      self.accounts.each do |account|
+        user_accounts << {
+          account_type: account.account_type,
+          email:        account.email,
+          uid:          account.uid,
+        }
+      end
+    end
+    results    = {
       id:                   self.id,
       email:                self.email,
       full_name:            self.full_name,
@@ -68,6 +78,7 @@ class User < ApplicationRecord
       verified:             self.verified,
       about:                self.about,
       created_at:           self.created_at,
+      connected_accounts:   user_accounts,
       cluster:              {
         id:             self.cluster.try(:id),
         members_count:  self.cluster.try(:members_count),
@@ -88,15 +99,14 @@ class User < ApplicationRecord
       status_verification:  self.verification.try(:status),
       sent_at_verification: self.verification.try(:created_at),
     }
-
     repository = UserRepository.new
     repository.save((UserCache.new results.without("_index", "_type", "_id", "_score", "sort")))
     results
   end
 
   def invite_to_symbolic(u, invite_code)
-    api    = Ruby::Identitas::Main.new nil, ENV["AUTH_KEY"]
-    result = api.user_invite({ email: u.email, invite_code: invite_code }).parsed_response
+    api = Ruby::Identitas::Main.new nil, ENV["AUTH_KEY"]
+    api.user_invite({ email: u.email, invite_code: invite_code }).parsed_response
   end
 
   def verified
