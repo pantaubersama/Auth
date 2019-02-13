@@ -1,5 +1,6 @@
 class Account < ApplicationRecord
   belongs_to :user
+  after_save :reload_user
 
   enum account_type: [:twitter, :facebook]
 
@@ -61,5 +62,9 @@ class Account < ApplicationRecord
     self.destroy!
     u
   end
-  
+
+  private
+  def reload_user
+    user.publish_changes
+  end
 end
