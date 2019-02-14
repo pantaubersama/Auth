@@ -12,6 +12,9 @@ module API
             expose :approved
             expose :step
             expose :status
+            expose :note do |obj, opts|
+              User.find(obj.user_id).note
+            end
             expose :user, with: Api::V1::Me::Entities::User
           end
         end

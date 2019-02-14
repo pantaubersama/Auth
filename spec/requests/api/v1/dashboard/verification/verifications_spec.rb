@@ -34,6 +34,36 @@ RSpec.describe "Api::V1::Dashboard::Verifications", type: :request do
   end
 
   describe "authorized" do
+    it "update note" do
+      put '/dashboard/v1/verifications/note',
+        headers: {Authorization: token.token},
+        params: {
+          id: yusuf.id,
+          note: "KTP Buram"
+        }
+      expect(response.status).to eq(200)
+      expect(json_response['data']).to eq(true)
+    end
+
+    it "success reset" do
+      put '/dashboard/v1/verifications/note',
+        headers: {Authorization: token.token},
+        params: {
+          id: yusuf.id,
+          note: "KTP Buram"
+        }
+
+      put '/dashboard/v1/verifications/reset',
+        headers: {Authorization: token.token},
+        params: {
+          id: yusuf.id,
+          step: 1
+        }
+
+      expect(response.status).to eq(200)
+      expect(json_response["data"]).to eq(true)
+    end
+
     it "success verification" do
       post '/dashboard/v1/verifications/user',
         params:{

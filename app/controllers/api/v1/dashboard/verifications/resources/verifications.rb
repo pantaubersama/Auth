@@ -6,6 +6,40 @@ class API::V1::Dashboard::Verifications::Resources::Verifications < API::V1::App
       authorize_admin!
     end
 
+    desc "Add note to user verification" do
+      headers AUTHORIZATION_HEADERS
+      detail "Add note to user verification"
+    end
+    oauth2
+    params do
+      requires :id, type: String, desc: "User ID"
+      requires :note, type: String, desc: "Note"
+    end
+    put '/note' do
+      u = User.find params.id
+      result = u.update_attribute(:note, params.note)
+      present result
+    end
+
+    desc "Reset user verification" do
+      headers AUTHORIZATION_HEADERS
+      detail "Reset user verification"
+    end
+    oauth2
+    params do
+      requires :id, type: String, desc: "User ID"
+      requires :step, type: Integer, desc: "Step", values: [1,2,3,4]
+    end
+    put '/reset' do
+      u = User.find params.id
+      ver = u.verification
+
+      error! "You have to add note before resetting verification", 422 if u.note.nil?
+
+      result = ver.reset! params.step
+      present true
+    end
+
     desc "show user verification" do
       headers AUTHORIZATION_HEADERS
       detail "show user verification"
@@ -16,7 +50,7 @@ class API::V1::Dashboard::Verifications::Resources::Verifications < API::V1::App
     end
 
     get '/show' do
-      verification = Verification.where(user_id: params.id)
+      verification = Verification.find_by(user_id: params.id)
       present verification, with: API::V1::Dashboard::Verifications::Entities::Verification
     end
 
@@ -39,5 +73,6 @@ class API::V1::Dashboard::Verifications::Resources::Verifications < API::V1::App
       verification.verified!
       present verification, with: API::V1::Dashboard::Verifications::Entities::Verification
     end
+
   end
 end
