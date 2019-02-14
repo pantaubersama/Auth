@@ -33,10 +33,10 @@ RSpec.describe Account, type: :model do
       expect(account.account_type).to  eq("twitter")
       expect(account.access_token).to  eq("token2")
       expect(account.access_token_secret).to  eq("secret2")
-      expect(user.accounts.twitter.size).to  eq(1)
+      expect(user.accounts.reload.twitter.size).to  eq(1)
 
-      expect(user.accounts.size).to  eq(1)
-      expect(user.twitter?).to  eq(true)
+      expect(user.accounts.reload.size).to  eq(1)
+      expect(user.reload.twitter?).to  eq(true)
 
       a = account.disconnect! "twitter"
       expect(a.twitter?).to eq(false)
@@ -49,7 +49,7 @@ RSpec.describe Account, type: :model do
       expect(account.user_id).to  eq(user.id)
       expect(account.account_type).to  eq("facebook")
       expect(account.access_token).to  eq("token1")
-      expect(user.accounts.facebook.size).to  eq(1)
+      expect(user.accounts.reload.facebook.size).to  eq(1)
       expect(account.uid).to eq("102058887556301")
       expect(account.email).to eq("open_nporhpu_user@tfbnw.net")
 
@@ -57,7 +57,7 @@ RSpec.describe Account, type: :model do
       expect(account.user_id).to  eq(user.id)
       expect(account.account_type).to  eq("facebook")
       expect(account.access_token).to  eq("token2")
-      expect(user.accounts.facebook.size).to  eq(1)
+      expect(user.accounts.reload.facebook.size).to  eq(1)
 
       expect(user.accounts.size).to  eq(1)
       expect(user.facebook?).to  eq(true)
@@ -73,18 +73,18 @@ RSpec.describe Account, type: :model do
       expect(account.user_id).to  eq(user.id)
       expect(account.account_type).to  eq("facebook")
       expect(account.access_token).to  eq("token1")
-      expect(user.accounts.facebook.size).to  eq(1)
+      expect(user.accounts.reload.facebook.size).to  eq(1)
 
       account = Account.connect! user.id, :twitter, "token2", "secret2"
       expect(account.user_id).to  eq(user.id)
       expect(account.account_type).to  eq("twitter")
       expect(account.access_token).to  eq("token2")
       expect(account.access_token_secret).to  eq("secret2")
-      expect(user.accounts.twitter.size).to  eq(1)
+      expect(user.accounts.reload.twitter.size).to  eq(1)
 
-      expect(user.accounts.size).to  eq(2)
-      expect(user.twitter?).to  eq(true)
-      expect(user.facebook?).to  eq(true)
+      expect(user.accounts.reload.size).to  eq(2)
+      expect(user.reload.twitter?).to  eq(true)
+      expect(user.reload.facebook?).to  eq(true)
     end
   end
 
