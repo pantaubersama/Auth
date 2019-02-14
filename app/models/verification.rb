@@ -23,6 +23,10 @@ class Verification < ApplicationRecord
   end
 
   def reset! new_step
+    Publishers::BadgeNotification.publish PROFILE_NOTIFICATION, {
+      receiver_id: user.id, notif_type: :profile, event_type: :gagal_verifikasi
+    }
+
     case new_step
     when 1
       update_attributes({ktp_number: nil})
