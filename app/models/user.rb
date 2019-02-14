@@ -39,9 +39,9 @@ class User < ApplicationRecord
   after_save :give_achievement
 
   def give_achievement
-    Badges::Achieve.new.run({user_id: self.id, badge_code: "biodata"}) if is_complete?
+    Badges::Achieve.new.run({ user_id: self.id, badge_code: "biodata" }) if is_complete?
   end
-  
+
   def is_complete?
     full_name.present? && username.present? && location.present? && about.present? && education.present? && occupation.present?
   end
@@ -49,7 +49,7 @@ class User < ApplicationRecord
   def publish_changes
     unless skip_publish_changes
       repository = UserRepository.new
-      user       = User.search("*", load: false, order: { created_at: { order: :desc, unmapped_type: "long" } }, where: { id: self.id }).results.last
+      user       = User.search("*", load: false, order: { created_at: { order: :desc, unmapped_type: "long" } }, where: { id: "3b5326dd-9878-439a-bc39-675e6895202e" }).results.last
       repository.save((UserCache.new user.without("_index", "_type", "_id", "_score", "sort"))) if user.present?
       Publishers::User.publish QUEUE_USER_CHANGED, { id: self.id }
     end
@@ -59,7 +59,17 @@ class User < ApplicationRecord
   def search_data
     # Api::V1::Me::Entities::UserSimple
     # API::V1::Clusters::Entities::ClusterDetail
-    results = {
+    user_accounts = []
+    if self.accounts.present?
+      self.accounts.each do |account|
+        user_accounts << {
+          account_type: account.account_type,
+          email:        account.email,
+          uid:          account.uid,
+        }
+      end
+    end
+    results    = {
       id:                   self.id,
       email:                self.email,
       full_name:            self.full_name,
@@ -68,6 +78,7 @@ class User < ApplicationRecord
       verified:             self.verified,
       about:                self.about,
       created_at:           self.created_at,
+      connected_accounts:   user_accounts,
       cluster:              {
         id:             self.cluster.try(:id),
         members_count:  self.cluster.try(:members_count),
@@ -88,15 +99,14 @@ class User < ApplicationRecord
       status_verification:  self.verification.try(:status),
       sent_at_verification: self.verification.try(:created_at),
     }
-
     repository = UserRepository.new
     repository.save((UserCache.new results.without("_index", "_type", "_id", "_score", "sort")))
     results
   end
 
   def invite_to_symbolic(u, invite_code)
-    api    = Ruby::Identitas::Main.new nil, ENV["AUTH_KEY"]
-    result = api.user_invite({ email: u.email, invite_code: invite_code }).parsed_response
+    api = Ruby::Identitas::Main.new nil, ENV["AUTH_KEY"]
+    api.user_invite({ email: u.email, invite_code: invite_code }).parsed_response
   end
 
   def verified
@@ -126,9 +136,9 @@ class User < ApplicationRecord
   end
 
   def give_default_badge
-    Badges::Achieve.new.run({user_id: self.id, badge_code: "pantaubersama"})
+    Badges::Achieve.new.run({ user_id: self.id, badge_code: "pantaubersama" })
   end
-  
+
 
   def is_admin
     is_admin?

@@ -28,11 +28,11 @@ class API::V1::Clusters::Resources::Moderations < API::V1::ApplicationResource
     oauth2
     post "/:id/magic_link" do
       c = ::Cluster.visible.find params.id
-      
+
       authorize_moderator_or_admin! c
 
       c.update_attribute :is_link_active, params.enable
-      present :cluster, c, with: API::V1::Clusters::Entities::ClusterDetail 
+      present :cluster, c, with: API::V1::Clusters::Entities::ClusterDetail
     end
 
     desc "Join cluster" do
@@ -45,12 +45,12 @@ class API::V1::Clusters::Resources::Moderations < API::V1::ApplicationResource
     oauth2
     get "join" do
       c = ::Cluster.visible.find_by magic_link: params.magic_link
-      
+
       error! "Magic link disabled", 403 unless c.is_link_active
 
       current_user.add_me_to_cluster! c
       c.increase_referal
-      present :cluster, c, with: API::V1::Clusters::Entities::ClusterDetail 
+      present :cluster, c, with: API::V1::Clusters::Entities::ClusterDetail
     end
 
     desc "Invite to my cluster" do
@@ -91,6 +91,10 @@ class API::V1::Clusters::Resources::Moderations < API::V1::ApplicationResource
 
           status = u.update_attributes!({provider: result["provider"], uid: result["uid"]})
 
+          Publishers::BadgeNotification.publish PROFILE_NOTIFICATION, {
+            receiver_id: u.id, notif_type: :profile, event_type: :cluster_invited_email_sent, cluster_id: u.tmp_cluster_id, user_action_id: current_user.id
+          }
+
           results << {id: u.id, email: u.email, status: u.tmp_cluster_id}
         end
       end
@@ -98,7 +102,7 @@ class API::V1::Clusters::Resources::Moderations < API::V1::ApplicationResource
       present results
 
     end
-    
+
   end
 
 end
