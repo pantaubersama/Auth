@@ -18,6 +18,8 @@ class API::V1::Dashboard::Users::Resources::UsersClusters < API::V1::Application
         use :filter_no_value, filter_by: ["", "verified_true", "verified_false", "verified_all"]
         optional :cluster_id, type: String, desc: "Cluster ID"
         optional :cluster_name, type: String, desc: "Cluster name"
+        optional :full_name, type: String, desc: "User name"
+        optional :email, type: String, desc: "User Email"
       end
       oauth2
       get "/" do
@@ -33,6 +35,8 @@ class API::V1::Dashboard::Users::Resources::UsersClusters < API::V1::Application
         build_conditions = build_conditions.merge({id: params.ids.split(",").map(&:strip)}) if params.ids.present?
         build_conditions = build_conditions.merge({"cluster.id" => params.cluster_id}) if params.cluster_id.present?
         build_conditions = build_conditions.merge({"cluster.name" => params.cluster_name}) if params.cluster_name.present?
+        build_conditions = build_conditions.merge({"full_name" => params.full_name}) if params.full_name.present?
+        build_conditions = build_conditions.merge({"email" => params.email}) if params.email.present?
         
         resources = User.search(q, 
           operator: operator, 
