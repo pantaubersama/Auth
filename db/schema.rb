@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_27_154350) do
+ActiveRecord::Schema.define(version: 2019_02_14_094456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -192,6 +192,7 @@ ActiveRecord::Schema.define(version: 2019_01_27_154350) do
     t.uuid "political_party_id"
     t.string "invite_code"
     t.string "tmp_cluster_id"
+    t.text "note"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
   end
 
@@ -211,6 +212,8 @@ ActiveRecord::Schema.define(version: 2019_01_27_154350) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_verifications_on_deleted_at"
   end
 
   create_table "versions", force: :cascade do |t|
