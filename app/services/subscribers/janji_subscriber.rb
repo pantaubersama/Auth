@@ -1,15 +1,17 @@
 module Subscribers
   class JanjiSubscriber < ApplicationSubscriber
     include Sneakers::Worker
-    from_queue BADGE_JANJI_ACHIEVED, env: nil
+    from_queue BADGE_JANJI_ACHIEVED, env: nil, timeout_job_after: 1.minutes
 
     def work(data)
-      logger.info "Subscribers::JanjiSubscriber - #{data}"
+      ActiveRecord::Base.connection_pool.with_connection do
+        logger.info "Subscribers::JanjiSubscriber - #{data}"
 
-      params = json_response data
-      Badges::Janji.new.run params
+        params = json_response data
+        Badges::Janji.new.run params
 
-      logger.info "Subscribers::JanjiSubscriber finished"
+        logger.info "Subscribers::JanjiSubscriber finished"
+      end
 
       ack!
     end
