@@ -23,13 +23,10 @@ class Verification < ApplicationRecord
   end
 
   def reset! new_step
-    Publishers::BadgeNotification.publish PROFILE_NOTIFICATION, {
-      receiver_id: user.id, notif_type: :profile, event_type: :gagal_verifikasi
-    }
-
+    status = "requested"
     case new_step
     when 1
-      update_attributes({ktp_number: nil})
+      ktp_number = nil
       remove_ktp_selfie!
       remove_ktp_photo!
       remove_signature!
@@ -44,6 +41,7 @@ class Verification < ApplicationRecord
       remove_signature!
     else
     end
+    save!
   end
 
   def send_notification
