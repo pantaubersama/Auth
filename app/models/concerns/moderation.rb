@@ -48,6 +48,10 @@ module Moderation
     self.add_role MEMBER, cluster
     cluster.reindex
     self.reindex
+
+    Publishers::BadgeNotification.publish PROFILE_NOTIFICATION, {
+      receiver_id: self.id, user_action_id: nil, notif_type: :profile, event_type: :cluster_invited, cluster_id: cluster.id
+    }
   end
 
   def quit_cluster!

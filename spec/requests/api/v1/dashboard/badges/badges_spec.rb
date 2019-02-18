@@ -19,7 +19,7 @@ RSpec.describe "Api::V1::Dashboard::badges", type: :request do
           description: "hello bro",
           image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           position: 1,
-          namespace: "badge_pantau_bersama",
+          namespace: "pantau_bersama",
           code: Faker::Lorem.sentence(2)
         }
       expect(response.status).to  eq(200)
@@ -35,7 +35,7 @@ RSpec.describe "Api::V1::Dashboard::badges", type: :request do
           description: "hello bro",
           image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           position: 1,
-          namespace: "badge_pantau_bersama",
+          namespace: "pantau_bersama",
           code: Faker::Lorem.sentence(2)
         }
       expect(response.status).to  eq(403)
@@ -51,7 +51,7 @@ RSpec.describe "Api::V1::Dashboard::badges", type: :request do
           image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           image_gray: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           position: 1,
-          namespace: "badge_pantau_bersama",
+          namespace: "pantau_bersama",
           code: Faker::Lorem.sentence(2)
         }
       expect(response.status).to  eq(200)
@@ -71,7 +71,7 @@ RSpec.describe "Api::V1::Dashboard::badges", type: :request do
           image: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           image_gray: Rack::Test::UploadedFile.new(File.open(File.join(Rails.root, '/spec/images/html.png'))),
           position: 1,
-          namespace: "badge_pantau_bersama",
+          namespace: "pantau_bersama",
           code: Faker::Lorem.sentence(2)
         }
       expect(response.status).to  eq(201)

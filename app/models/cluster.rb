@@ -2,10 +2,10 @@ class Cluster < ApplicationRecord
   acts_as_paranoid
   resourcify
   mount_uploader :image, ClusterUploader
-  searchkick searchable: [:name, :description], 
-    word_start: [:name, :description], 
-    word_middle: [:name, :description], 
-    word_end: [:name, :description], 
+  searchkick searchable: [:name, :description],
+    word_start: [:name, :description],
+    word_middle: [:name, :description],
+    word_end: [:name, :description],
     word: [:name, :description]
 
   belongs_to :category, optional: true, counter_cache: true
@@ -36,10 +36,16 @@ class Cluster < ApplicationRecord
       self.requester.remove_role MEMBER
       self.requester.add_role MODERATOR, self
     end
+    Publishers::BadgeNotification.publish PROFILE_NOTIFICATION, {
+      receiver_id: self.requester_id, notif_type: :profile, event_type: :claster_approved, cluster_id: self.id
+    }
   end
 
   def reject!
     self.update_attributes(is_displayed: false, status: 2)
+    Publishers::BadgeNotification.publish PROFILE_NOTIFICATION, {
+      receiver_id: self.requester_id, notif_type: :profile, event_type: :claster_rejected, cluster_id: self.id
+    }
   end
 
   def members_count
@@ -78,6 +84,6 @@ class Cluster < ApplicationRecord
   def should_index?
     deleted_at.nil?
   end
-  
+
 
 end
