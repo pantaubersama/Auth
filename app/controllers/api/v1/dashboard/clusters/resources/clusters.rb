@@ -14,8 +14,10 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
     paginate per_page: Pagy::VARS[:items], max_per_page: Pagy::VARS[:max_per_page]
     params do
       optional :q, type: String, desc: "Keyword"
+      use :order, order_by: [:created_at, :name], default_order_by: :name, default_order: :desc
       use :filter, filter_by: ["", "category_id"]
       optional :status, type: String, values: ["", "requested", "approved", "rejected"]
+      optional :admin, type: String, desc: "Admin/Requester Full Name"
     end
     oauth2
     get "/" do
@@ -25,14 +27,18 @@ class API::V1::Dashboard::Clusters::Resources::Clusters < API::V1::ApplicationRe
       end
       build_conditions = params.filter_by.present? && params.filter_value.present? ? { params.filter_by => params.filter_value } : {}
       build_conditions = params.status.present? ? build_conditions.merge({status: params.status})  : build_conditions
+      build_conditions = params.admin.present? ? build_conditions.merge({"requester.full_name": params.admin})  : build_conditions
+      
       default_order = {name: {order: :desc, unmapped_type: "long"}}
+      build_order = params.order_by.present? && params.direction.present? ? { params.order_by.to_sym => { order: params.direction.to_sym, unmapped_type: "long"  } } : default_order
+
       resources        = ::Cluster.visible.search(query, 
         match: :word_start, 
         misspellings: false, 
         load: false, 
         page: (params.page || 1), 
         per_page: (params.per_page || Pagy::VARS[:items]),
-        order: default_order, 
+        order: build_order,
         where: build_conditions
       )
       present :clusters, resources, with: API::V1::Clusters::Entities::ClusterDetail, current_user: current_user

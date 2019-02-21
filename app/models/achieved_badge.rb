@@ -19,5 +19,9 @@ class AchievedBadge < ApplicationRecord
   def create_image
     AchievedBadgeShareJob.perform_later(self.id)
   end
-  
+
+  def share_url
+    ENV["SHARE_DOMAIN"] + "/share/badge/" + id
+  end
+
 end

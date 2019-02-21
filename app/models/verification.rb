@@ -23,6 +23,7 @@ class Verification < ApplicationRecord
   end
 
   def reset! new_step
+    requested!
     case new_step
     when 1
       update_attributes({ktp_number: nil})
@@ -40,6 +41,7 @@ class Verification < ApplicationRecord
       remove_signature!
     else
     end
+    self.save!
   end
 
   def send_notification

@@ -4,5 +4,6 @@ module API::V1::Badges::Entities
     expose :badge, using: API::V1::Badges::Entities::Badge
     expose :user, using: Api::V1::Me::Entities::UserSimple
     expose :image_result
+    expose :share_url
   end
 end
