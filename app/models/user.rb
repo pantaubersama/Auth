@@ -51,7 +51,7 @@ class User < ApplicationRecord
       repository    = UserRepository.new
       user          = User.search("*", load: false, order: { created_at: { order: :desc, unmapped_type: "long" } }, where: { id: "3b5326dd-9878-439a-bc39-675e6895202e" }).results.last
       user_accounts = []
-      if self.accounts.present?
+      if self.accounts.reload.present?
         self.accounts.each do |account|
           user_accounts << {
             account_type: account.account_type,
