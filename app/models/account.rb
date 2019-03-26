@@ -24,6 +24,7 @@ class Account < ApplicationRecord
       uid: api.credentials.id,
       email: api.credentials.email,
     }) if api.valid?
+    user.publish_changes
     self.user
   end
 
@@ -34,6 +35,8 @@ class Account < ApplicationRecord
       uid: api.credentials["id"],
       email: api.credentials["email"]
     }) if api.valid?
+    user.publish_changes
+    self.user
   end
 
   def disconnect! tipe
@@ -52,6 +55,7 @@ class Account < ApplicationRecord
     api.invalidate self.access_token
     u = self.user
     self.destroy!
+    u.publish_changes
     u
   end
 
@@ -60,6 +64,7 @@ class Account < ApplicationRecord
     api.invalidate self.access_token, self.uid
     u = self.user
     self.destroy!
+    u.publish_changes
     u
   end
 
