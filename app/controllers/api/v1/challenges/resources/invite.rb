@@ -12,16 +12,15 @@ class API::V1::Challenges::Resources::Invite < API::V1::ApplicationResource
     end
     post "/direct/invite" do
       challenge = Wordstadium::Challenge.find_or_initialize_by invite_code: params.invite_code
-      s = challenge.update_attributes! challenge_params
+      challenge.twitter_uid = params.invitation_id if params.type == "twitter"
+      challenge.user_id = params.invitation_id if params.type == "user"
+      challenge.invite_code = params.invite_code
+
+      s = challenge.save!
+
       present :status, s
       present :challenge, challenge, with: API::V1::Challenges::Entities::Challenge
     end
   end
 
-  # permitted params
-  helpers do
-    def challenge_params
-      permitted_params(params.except(:access_token)).permit(:invite_code, :invitation_id, :type)
-    end
-  end
 end

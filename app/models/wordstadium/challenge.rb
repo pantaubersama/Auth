@@ -1,13 +1,6 @@
 class Wordstadium::Challenge < ApplicationRecord
   attr_accessor :type, :invitation_id
 
-  before_create :check_type
-
-  def check_type
-    self.twitter_uid = self.invitation_id if self.type == "twitter"
-    self.user_id = self.invitation_id if self.type == "user"
-  end
-
   def type
     twitter_uid.present? ? "twitter" : "user"
   end
@@ -26,8 +19,11 @@ class Wordstadium::Challenge < ApplicationRecord
 
   def accept!
     # hit endpoint accept wordstadium
+    wordstadium = nil
 
-    update_attributes!(accepted_at: Time.now.utc)
+    s = update_attributes!(accepted_at: Time.now.utc, invite_code: nil)
+
+    [s, wordstadium]
   end
 
   def accepted?
