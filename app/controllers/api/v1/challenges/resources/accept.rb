@@ -19,10 +19,12 @@ class API::V1::Challenges::Resources::Accept < API::V1::ApplicationResource
       error!('Akun tertantang tidak sama. Cek user (atau twitter) yang digunakan', 422) unless challenge.check! current_user
       error!('Tantangan sudah diterima', 422) if challenge.accepted?
 
+
+      w = challenge.callback_to_wordstadium doorkeeper_access_token.token unless challenge.accepted?
       s = challenge.accept!
 
-      present :status, s.first
-      present :wordstadium, s.last
+      present :message, w["data"]["message"]
+      present :status, s
       present :challenge, challenge, with: API::V1::Challenges::Entities::Challenge
     end
   end

@@ -18,16 +18,23 @@ class Wordstadium::Challenge < ApplicationRecord
   end
 
   def accept!
-    # hit endpoint accept wordstadium
-    wordstadium = nil
-
     s = update_attributes!(accepted_at: Time.now.utc, invite_code: nil)
-
-    [s, wordstadium]
+    s
   end
 
   def accepted?
     accepted_at
+  end
+
+  def callback_to_wordstadium token
+    r = HTTParty.put(ENV["WORDSTADIUM_BASE_URL"] + "/word_stadium/v1/challenges/direct/approve", {
+      body: {
+        invite_code: invite_code
+      },
+      headers: {
+        "Authorization" => token
+      }
+    }).parsed_response
   end
 
 end

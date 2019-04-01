@@ -30,6 +30,8 @@ RSpec.describe "API::V1::Challenge::Accept", type: :request do
       end
 
       it "was already accepted" do
+        stub_accept_failed token.token, "ABC"
+
         connect_twitter token.token
         accept_challenge "ABC", token.token
         accept_challenge "ABC", token.token
@@ -39,6 +41,8 @@ RSpec.describe "API::V1::Challenge::Accept", type: :request do
 
     context "[twitter] success" do
       it "accepted" do
+        stub_accept_success token.token, "ABC"
+
         connect_twitter token.token
         accept_challenge "ABC", token.token
         expect(response.status).to eq(201)
@@ -54,6 +58,8 @@ RSpec.describe "API::V1::Challenge::Accept", type: :request do
       end
 
       it "was already accepted" do
+        stub_accept_failed token.token, "ABCDEF"
+
         accept_challenge "ABCDEF", token.token
         accept_challenge "ABCDEF", token.token
         expect(response.status).to eq(422)
@@ -62,7 +68,9 @@ RSpec.describe "API::V1::Challenge::Accept", type: :request do
 
     context "[user] success" do
       it "accepted" do
+        stub_accept_success token2.token, "ABCDEF"
         accept_challenge "ABCDEF", token2.token
+
         expect(response.status).to eq(201)
         expect(json_response[:data][:status]).to eq(true)
         expect(json_response[:data][:challenge][:invite_code]).to eq(nil)
