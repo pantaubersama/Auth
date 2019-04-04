@@ -24,7 +24,7 @@ class Account < ApplicationRecord
       uid: api.credentials.id,
       email: api.credentials.email,
     }) if api.valid?
-    user.publish_changes
+    user.reindex
     self.user
   end
 
@@ -35,7 +35,7 @@ class Account < ApplicationRecord
       uid: api.credentials["id"],
       email: api.credentials["email"]
     }) if api.valid?
-    user.publish_changes
+    user.reindex
     self.user
   end
 
@@ -55,6 +55,7 @@ class Account < ApplicationRecord
     api.invalidate self.access_token
     u = self.user
     self.destroy!
+    user.reindex
     u.publish_changes
     u
   end
@@ -64,12 +65,14 @@ class Account < ApplicationRecord
     api.invalidate self.access_token, self.uid
     u = self.user
     self.destroy!
+    user.reindex
     u.publish_changes
     u
   end
 
   private
   def reload_user
+    user.reindex
     user.publish_changes
   end
 end
