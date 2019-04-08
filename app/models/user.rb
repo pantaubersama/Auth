@@ -48,9 +48,19 @@ class User < ApplicationRecord
 
   def publish_changes
     unless skip_publish_changes
-      repository = UserRepository.new
-      user       = User.search("*", load: false, order: { created_at: { order: :desc, unmapped_type: "long" } }, where: { id: "3b5326dd-9878-439a-bc39-675e6895202e" }).results.last
-      repository.save((UserCache.new user.without("_index", "_type", "_id", "_score", "sort"))) if user.present?
+      repository    = UserRepository.new
+      user          = User.search("*", load: false, order: { created_at: { order: :desc, unmapped_type: "long" } }, where: { id: "3b5326dd-9878-439a-bc39-675e6895202e" }).results.last
+      user_accounts = []
+      if self.accounts.reload.present?
+        self.accounts.each do |account|
+          user_accounts << {
+            account_type: account.account_type,
+            email:        account.email,
+            uid:          account.uid,
+          }
+        end
+      end
+      repository.save(UserCache.new(user.without("_index", "_type", "_id", "_score", "sort")).merge({ user_accounts: user_accounts })) if user.present?
       Publishers::User.publish QUEUE_USER_CHANGED, { id: self.id }
     end
   end

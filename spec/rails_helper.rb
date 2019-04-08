@@ -77,6 +77,7 @@ RSpec.configure do |config|
   config.include SymbolicStubber
   config.include TwitterStubber
   config.include FacebookStubber
+  config.include WordstadiumStubber
 
   # start by truncating all the tables but then use the faster transaction strategy the rest of the time.
   config.before(:suite) do

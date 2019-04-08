@@ -132,6 +132,8 @@ gem 'elasticsearch-rails'
 
 gem "twitter", "6.1.0"
 gem 'koala'
+gem 'omniauth-twitter'
+gem 'omniauth-facebook'
 
 # sub
 gem 'sneakers'
