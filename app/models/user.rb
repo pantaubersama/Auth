@@ -60,7 +60,7 @@ class User < ApplicationRecord
           }
         end
       end
-      repository.save(UserCache.new(user.without("_index", "_type", "_id", "_score", "sort")).merge({ user_accounts: user_accounts })) if user.present?
+      repository.save(UserCache.new(user.without("_index", "_type", "_id", "_score", "sort"))).merge({ user_accounts: user_accounts }) if user.present?
       Publishers::User.publish QUEUE_USER_CHANGED, { id: self.id }
     end
   end
