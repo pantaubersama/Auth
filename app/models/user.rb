@@ -49,7 +49,7 @@ class User < ApplicationRecord
   def publish_changes
     unless skip_publish_changes
       repository    = UserRepository.new
-      user          = User.search("*", load: false, order: { created_at: { order: :desc, unmapped_type: "long" } }, where: { id: "3b5326dd-9878-439a-bc39-675e6895202e" }).results.last
+      user          = User.search("*", load: false, order: { created_at: { order: :desc, unmapped_type: "long" } }, where: { id: self.id }).results.last
       user_accounts = []
       if self.accounts.reload.present?
         self.accounts.each do |account|
